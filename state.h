@@ -1,9 +1,18 @@
 #ifndef STATE_H
 #define STATE_H
 
+#define PID_DT 0.02
+  /** @todo verificar se este valor está correto. */
+
+#define FINAL_SPEED 300 /** @todo Definir corretamente */
+#define KP 0.1   /** @todo Definir corretamente */
+#define KI 0.01  /** @todo Definir corretamente */
+#define KD 0.005 /** @todo Definir corretamente */
+
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
+#include "PID.h"
 #include "BaseDriver.h"
 #include "CarState.h"
 #include "CarControl.h"
@@ -38,7 +47,16 @@ public:
 class StateStraightLine : public State {
 public:
     void drive(FsmDriver *fsmdriver);
+    StateStraightLine()
 
+private:
+	float finalSpeed, desiredDirection;	/** Target Speed **/
+	PIDController speedPID;
+	
+	int getGear(CarState & cs);
+	float getSteering(CarState & cs);
+	float getDistTrackAxis(CarState & cs);
+	float getSpeed(CarState & cs);
 };
 
 //------------------------------------------------------------------------------------------------------------------------
