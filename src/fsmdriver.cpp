@@ -13,7 +13,7 @@ void FsmDriver::ChangeState(State *_newState) {
 string FsmDriver::drive(string sensors) {
     CarState cs(sensors);
     this->ChangeState(transition(cs));
-    return (_state->execute(this));
+    return (_state->execute(this, cs));
 }
 
 State* FsmDriver::transition(CarState &cs) {

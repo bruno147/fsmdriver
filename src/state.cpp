@@ -2,8 +2,7 @@
 
 //-----------------------------------------------------------------------------------------------------------------
 //StateCurve Class
-
-string StateCurve::execute(FsmDriver *fsmdriver) {
+string StateCurve::execute(FsmDriver *fsmdriver, CarState string) {
     /*
      *
      *
@@ -62,19 +61,19 @@ float StateStraightLine::getSpeed(CarState & cs) {
     return sqrt(pow(cs.getSpeedX(), 2) + pow(cs.getSpeedY(), 2));
 }
 
-string StateStraightLine::execute(FsmDriver *fsmdriver) {
+string StateStraightLine::execute(FsmDriver *fsmdriver, CarState cs) {
     // CarState cs(sensors);
 
     // static int flag = 0;
 
     float brake = 0, clutch = 0;
 
-    float accel = speedPID.output(finalSpeed, straightFunctions::getSpeed(cs), PID_DT);
+    float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
 
     // float steer = steeringPID.output(desiredDirection, getDistTrackAxis(cs), PID_DT);
-    float steer = straightFunctions::getSteering(cs);
+    float steer = StateStraightLine::getSteering(cs);
 
-    int gear = straightFunctions::getGear(cs), focus = 0, meta = 0;
+    int gear = StateStraightLine::getGear(cs), focus = 0, meta = 0;
 
     std::cout << "accel = " << accel << " gear = " << gear << " steer = " << steer << " fuel = " << cs.getFuel() << std::endl;  
 
@@ -91,14 +90,14 @@ string StateStraightLine::execute(FsmDriver *fsmdriver) {
     return cc.toString();
 }
 
-StateStraightLine::StateStraightLine() speedPID(KP, KI, KD) {
+StateStraightLine::StateStraightLine() : speedPID(KP, KI, KD) {
     finalSpeed = FINAL_SPEED;
 }
 
 //-----------------------------------------------------------------------------------------------------------------
 //StateCurve Class
 
-string StateOutOfTrack::execute(FsmDriver *fsmdriver) {
+string StateOutOfTrack::execute(FsmDriver *fsmdriver, CarState ) {
     /*
      *
      *
