@@ -31,6 +31,7 @@ class FsmDriver;
 class State {
 public:
     virtual void drive(FsmDriver* fsmdriver)  = 0;
+    virtual ~State();
 };
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -47,7 +48,9 @@ public:
 class StateStraightLine : public State {
 public:
     void drive(FsmDriver *fsmdriver);
-    StateStraightLine()
+    StateStraightLine();
+
+    virtual ~StateStraightLine();
 
 private:
 	float finalSpeed, desiredDirection;	/** Target Speed **/
