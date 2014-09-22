@@ -10,6 +10,19 @@
 *.dll
 *.dylib
 
+# CMake files
+
+*.cmake
+/CMakeFiles
+CMakeCache.txt
+
+# MakeFile
+
+Makefile
+
+# Folder
+bin/
+
 # Qt-es
 
 /.qmake.cache
