@@ -10,9 +10,10 @@ void FsmDriver::ChangeState(State *_newState) {
     _state = _newState;
 }
 
-void FsmDriver::drive(CarState &cs) {
+string FsmDriver::drive(string sensors) {
+    CarState cs(sensors);
     this->ChangeState(transition(cs));
-    _state->drive(this);
+    return (_state->execute(this));
 }
 
 State* FsmDriver::transition(CarState &cs) {
