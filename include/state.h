@@ -30,8 +30,7 @@ class FsmDriver;
 
 class State {
 public:
-    virtual void drive(FsmDriver* fsmdriver)  = 0;
-    virtual ~State();
+    virtual string execute(FsmDriver* fsmdriver)  = 0;
 };
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -39,7 +38,7 @@ public:
 
 class StateCurve : public State {
 public:
-    void drive(FsmDriver *fsmdriver);
+    virtual string execute(FsmDriver *fsmdriver);
 };
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -47,10 +46,8 @@ public:
 
 class StateStraightLine : public State {
 public:
-    void drive(FsmDriver *fsmdriver);
-    StateStraightLine();
-
-    virtual ~StateStraightLine();
+    virutal string execute(FsmDriver *fsmdriver);
+    StateStraightLine()
 
 private:
 	float finalSpeed, desiredDirection;	/** Target Speed **/
@@ -67,7 +64,7 @@ private:
 
 class StateOutOfTrack : public State {
 public:
-    void drive(FsmDriver *fsmdriver);
+    virutal string execute(FsmDriver *fsmdriver);
 };
 
 #endif // STATE_H

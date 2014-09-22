@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------------------------------------------
 //StateCurve Class
 
-void StateCurve::drive(FsmDriver *fsmdriver) {
+string StateCurve::execute(FsmDriver *fsmdriver) {
     /*
      *
      *
@@ -62,7 +62,7 @@ float StateStraightLine::getSpeed(CarState & cs) {
     return sqrt(pow(cs.getSpeedX(), 2) + pow(cs.getSpeedY(), 2));
 }
 
-void StateStraightLine::drive(FsmDriver *fsmdriver) {
+string StateStraightLine::execute(FsmDriver *fsmdriver) {
     // CarState cs(sensors);
 
     // static int flag = 0;
@@ -98,7 +98,7 @@ StateStraightLine::StateStraightLine() speedPID(KP, KI, KD) {
 //-----------------------------------------------------------------------------------------------------------------
 //StateCurve Class
 
-void StateOutOfTrack::drive(FsmDriver *fsmdriver) {
+string StateOutOfTrack::execute(FsmDriver *fsmdriver) {
     /*
      *
      *
