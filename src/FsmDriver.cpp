@@ -153,16 +153,16 @@ CarControl StateStraightLine::execute(FsmDriver *fsmdriver) {
     CarState& cs = fsmdriver->getCarState();
     // static int flag = 0;
 
-    float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
+    // float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
 
     fsmdriver->setAccel( speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT) );
 
     // float steer = steeringPID.output(desiredDirection, getDistTrackAxis(cs), PID_DT);
-    float steer = StateStraightLine::getSteering(cs);
+    // float steer = StateStraightLine::getSteering(cs);
 
     fsmdriver->setSteer( StateStraightLine::getSteering(cs) );
 
-    int gear = StateStraightLine::getGear(cs);
+    // int gear = StateStraightLine::getGear(cs);
 
     fsmdriver->setGear( StateStraightLine::getGear(cs) );
 
