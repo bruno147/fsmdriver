@@ -1,6 +1,15 @@
 #include "FsmDriver.h"
 
 //-------------------------------------------------------------------------------------------------------------------
+//FsmDriver Class
+
+FsmDriver::FsmDriver() {
+    this->accel = 0;
+    this->brake = 0;
+    this->steer = 0;
+    this->gear = 0;
+}
+
 CarState& FsmDriver::getCarState() {
     return this->_cs;
 }
@@ -16,6 +25,38 @@ State* FsmDriver::getState() {
 void FsmDriver::SetState(State *_newState) {
     delete this->_state;
     this->_state = _newState;
+}
+
+float FsmDriver::getAccel() {
+    return this->accel;
+}
+
+void FsmDriver::setAccel(float accel) {
+    this->accel = accel;
+}
+
+float FsmDriver::getBrake() {
+    return this->brake;
+}
+
+void FsmDriver::setBrake(float brake) {
+    this->brake = brake;
+}
+
+float FsmDriver::getSteer() {
+    return this->steer;
+}
+
+void FsmDriver::setSteer(float steer) {
+    this->steer = steer;
+}
+
+int FsmDriver::getGear() {
+    return this->gear;
+}
+
+void FsmDriver::setGear(int gear) {
+    this->gear = gear;
 }
 
 CarControl FsmDriver::wDrive(CarState cs) {
@@ -142,14 +183,47 @@ StateStraightLine::StateStraightLine() : speedPID(KP, KI, KD) {
 
 //-----------------------------------------------------------------------------------------------------------------
 //StateOutOfTrack Class
+float StateOutOfTrack::getBrake(CarState & cs){
+    if(abs(cs.getSpeedY())>3){
+        return=0.1;
+    }else{
+        return=0;
+    }
+}
+float StateOutOfTrack::getAccel(CarState & cs){
+    return(1-abs(cs.getSpeedY())*0.1);        //can be negative, need to fix
+}
+
+int StateOutOfTrack::getGear(CarState & cs){
+    if(cs.getSpeedX()>90){
+        return cs.getGear();
+    }else if(cs.getSpeedX()>70){
+        return 3;
+    }else if(cs.getSpeedX()>40){
+        return 2;
+    }else{
+        return 1;
+    }
+}
+float StateOutOfTrack::getSteer(CarState & cs){
+    if(cs.getTrackPos()>0){
+        if(cs.getAngle()>0.6){          //0.6 is close to 35 degrees
+            steer=1;
+        }else if(cs.getAngle()<0.4){    //0.4 is close to 23 degrees
+            steer=-1;
+        }
+    }else{
+        if(cs.getAngle()<-0.6){
+            steer=-1;
+        }else if(cs.getAngle()<0.4){
+            steer=1;
+        }
+    }
+}
 
 CarControl StateOutOfTrack::execute(FsmDriver *fsmdriver) {
-    /*
-     *
-     *
-     * INSERT SOUSA'S CODE HERE.
-     *
-     *
-     * */
+    CarState& cs = fsmdriver->getCarState();
+    CarControl cc(getAccel(cs), getBrake(cs), getGear(cs), getSteer(cs), 0, 0, 0);
+    return cc;
 }
 //-----------------------------------------------------------------------------------------------------------------

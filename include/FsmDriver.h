@@ -12,6 +12,7 @@
 #include "PID.h"
 #include "SimpleParser.h"
 #include "WrapperBaseDriver.h"
+#include <cmath>
 
 using namespace std;
 
@@ -68,6 +69,12 @@ public:
     virtual CarControl execute(FsmDriver *fsmdriver);
     ~StateOutOfTrack(){}
     StateOutOfTrack(){}
+private:
+    float getBrake(CarState & cs);
+    float getAccel(CarState & cs);
+    int getGear(CarState & cs);
+    float getSteer(CarState & cs);
+
 };
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -75,8 +82,10 @@ public:
 
 class FsmDriver : public WrapperBaseDriver {
 private:
-    State* _state;      //Pointer to current state
-    CarState _cs;       //Sensorial information
+    State* _state;                      //Pointer to current state
+    CarState _cs;                       //Sensorial information
+    float accel, brake, steer;          //Actuators values
+    int gear;
 public:
     // Print a shutdown message
     virtual void onShutdown();
@@ -88,7 +97,7 @@ public:
     virtual void init(float *angles);
 
     //Empty constructor and destructor
-    FsmDriver(){}
+    FsmDriver();
     ~FsmDriver(){}
 
     //Getters and Setters methods.
@@ -96,6 +105,14 @@ public:
     void setCarState(CarState);
     void SetState(State* _newState);
     State* getState();
+    float getAccel();
+    void setAccel(float acel);
+    float getBrake();
+    void setBrake(float brake);
+    float getSteer();
+    void setSteer(float steer);
+    int getGear();
+    void setGear(int gear);
 
     //Checks whenever _state need to be changed.
     State* transition(CarState&);
