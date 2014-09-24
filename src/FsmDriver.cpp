@@ -79,15 +79,36 @@ void FsmDriver::init(float *angles){
 }
 
 State* FsmDriver::transition(CarState &cs) {
-    /*
-     *
-     *
-     * INSERT GALI'S CODE HERE.
-     *
-     *
-     * */
-    State* p = new StateStraightLine();
-    return p;
+    State* p;
+    if(cs.getTrackPos() > -1 && cs.getTrackPos() < 1) {
+        // Getting track information from the sensor at +5 degrees towards the car axis
+        float rSensor = cs.getTrack(10);
+        // Getting track information from the sensor parallel to the car axis
+        float cSensor = cs.getTrack(9);
+        // Getting track information from the sensor at -5 degrees towards the car axis
+        float lSensor = cs.getTrack(8);
+        // Characteristics of a 'straight' to the FSM:
+        // 		- If the central sensor is beyond the distance of maximum speed or if it
+        // 		the biggest of {central, right (+5 degrees), left (-5 degrees)} sensors
+        if (cSensor > 70 || (cSensor >= rSensor && cSensor >= lSensor)) {
+            p = new StateStraightLine;
+            cout << "Straight" << endl;
+            return p;
+        }
+        // Characteristics of a 'curve' to the FSM
+        else {
+            p = new StateCurve;
+            cout << "Curve" << endl;
+            return p;
+        }
+    }
+    // Characteristics of 'outside of track' states
+    else {
+        // Returns
+        cout << "OutOfTrack" << endl;
+        p = new StateOutOfTrack;
+        return p;
+    }
 }
 
 //-----------------------------------------------------------------------------------------------------------------
@@ -155,22 +176,26 @@ CarControl StateStraightLine::execute(FsmDriver *fsmdriver) {
     CarState& cs = fsmdriver->getCarState();
     // static int flag = 0;
 
-    // float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
+    float brake = 0, clutch = 0;
 
-    fsmdriver->setAccel( speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT) );
+    float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
 
     // float steer = steeringPID.output(desiredDirection, getDistTrackAxis(cs), PID_DT);
-    // float steer = StateStraightLine::getSteering(cs);
+    float steer = StateStraightLine::getSteering(cs);
 
-    fsmdriver->setSteer( StateStraightLine::getSteering(cs) );
+    int gear = StateStraightLine::getGear(cs), focus = 0, meta = 0;
 
-    // int gear = StateStraightLine::getGear(cs);
+    std::cout << "accel = " << accel << " gear = " << gear << " steer = " << steer << " fuel = " << cs.getFuel() << std::endl;
 
-    fsmdriver->setGear( StateStraightLine::getGear(cs) );
+    CarControl cc(accel, brake, gear, steer, clutch, focus, meta);
 
-    std::cout << "accel = " << fsmdriver->getAccel() << " gear = " << fsmdriver->getGear() << " steer = " << fsmdriver->getSteer() << " fuel = " << cs.getFuel() << std::endl;
-
-    CarControl cc(fsmdriver->getAccel(), 0, fsmdriver->getGear(), fsmdriver->getSteer(), 0, 0, 0);
+    // std::cout << getSpeed(cs) << std::endl;
+    // if(getSpeed(cs) >= 297 && flag == 0)
+    // {
+    //     // t = clock() - t;
+    //     std::cout << "Velocidade Limite em = " << ((float)(clock() - t))/(CLOCKS_PER_SEC) << " segundos" << std::endl;
+    //     flag = 1;
+    // }
 
     return cc;
 }
