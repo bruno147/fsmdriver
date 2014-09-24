@@ -183,50 +183,47 @@ StateStraightLine::StateStraightLine() : speedPID(KP, KI, KD) {
 
 //-----------------------------------------------------------------------------------------------------------------
 //StateOutOfTrack Class
+float StateOutOfTrack::getBrake(CarState & cs){
+    if(abs(cs.getSpeedY())>3){
+        return=0.1;
+    }else{
+        return=0;
+    }
+}
+float StateOutOfTrack::getAccel(CarState & cs){
+    return(1-abs(cs.getSpeedY())*0.1);        //can be negative, need to fix
+}
+
+int StateOutOfTrack::getGear(CarState & cs){
+    if(cs.getSpeedX()>90){
+        return cs.getGear();
+    }else if(cs.getSpeedX()>70){
+        return 3;
+    }else if(cs.getSpeedX()>40){
+        return 2;
+    }else{
+        return 1;
+    }
+}
+float StateOutOfTrack::getSteer(CarState & cs){
+    if(cs.getTrackPos()>0){
+        if(cs.getAngle()>0.6){          //0.6 is close to 35 degrees
+            steer=1;
+        }else if(cs.getAngle()<0.4){    //0.4 is close to 23 degrees
+            steer=-1;
+        }
+    }else{
+        if(cs.getAngle()<-0.6){
+            steer=-1;
+        }else if(cs.getAngle()<0.4){
+            steer=1;
+        }
+    }
+}
 
 CarControl StateOutOfTrack::execute(FsmDriver *fsmdriver) {
     CarState& cs = fsmdriver->getCarState();
-
-    //set the brake
-    if(abs(cs.getSpeedY())>3){
-    brake=0.1;
-    }else{
-    brake=0;
-    }
-
-    //set the acceleration
-    accel=1-abs(cs.getSpeedY())*0.1;        
-                                          //can be negative, need fix
-
-
-    //gear
-    if(cs.getSpeedX()>90){
-    gear=cs.getGear();
-    }else if(cs.getSpeedX()>70){
-    gear=3;
-    }else if(cs.getSpeedX()>40){
-    gear=2;
-    }else{
-    gear=1;
-    }
-
-    //set the steering
-    if(cs.getTrackPos()>0){
-    if(cs.getAngle()>0.6){          //0.6 is close to 35 degrees
-      steer=1;
-    }else if(cs.getAngle()<0.4){    //0.4 is close to 23 degrees
-      steer=-1;
-    }
-    }else{
-    if(cs.getAngle()<-0.6){
-      steer=-1;
-    }else if(cs.getAngle()<0.4){
-      steer=1;
-    }
-    }
-
-
-    CarControl cc(accel, brake, gear, steer, 0, 0, 0);
+    CarControl cc(getAccel(cs), getBrake(cs), getGear(cs), getSteer(cs), 0, 0, 0);
     return cc;
 }
 //-----------------------------------------------------------------------------------------------------------------

@@ -69,6 +69,12 @@ public:
     virtual CarControl execute(FsmDriver *fsmdriver);
     ~StateOutOfTrack(){}
     StateOutOfTrack(){}
+private:
+    float getBrake(CarState & cs);
+    float getAccel(CarState & cs);
+    int getGear(CarState & cs);
+    float getSteer(CarState & cs);
+
 };
 
 //------------------------------------------------------------------------------------------------------------------------
