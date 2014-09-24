@@ -144,12 +144,50 @@ StateStraightLine::StateStraightLine() : speedPID(KP, KI, KD) {
 //StateOutOfTrack Class
 
 CarControl StateOutOfTrack::execute(FsmDriver *fsmdriver) {
-    /*
-     *
-     *
-     * INSERT SOUSA'S CODE HERE.
-     *
-     *
-     * */
+    CarState& cs = fsmdriver->getCarState();
+
+    float accel=0, brake=0, steer=0;
+    int gear=0;
+    //set the brake
+    if(abs(cs.getSpeedY())>3){
+    brake=0.1;
+    }else{
+    brake=0;
+    }
+
+    //set the acceleration
+    accel=1-abs(cs.getSpeedY())*0.1;        
+                                          //can be negative, need fix
+
+
+    //gear
+    if(cs.getSpeedX()>90){
+    gear=cs.getGear();
+    }else if(cs.getSpeedX()>70){
+    gear=3;
+    }else if(cs.getSpeedX()>40){
+    gear=2;
+    }else{
+    gear=1;
+    }
+
+    //set the steering
+    if(cs.getTrackPos()>0){
+    if(cs.getAngle()>0.6){          //0.6 is close to 35 degrees
+      steer=1;
+    }else if(cs.getAngle()<0.4){    //0.4 is close to 23 degrees
+      steer=-1;
+    }
+    }else{
+    if(cs.getAngle()<-0.6){
+      steer=-1;
+    }else if(cs.getAngle()<0.4){
+      steer=1;
+    }
+    }
+
+
+    CarControl cc(accel, brake, gear, steer, 0, 0, 0);
+    return cc;
 }
 //-----------------------------------------------------------------------------------------------------------------

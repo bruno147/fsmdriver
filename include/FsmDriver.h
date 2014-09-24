@@ -12,6 +12,7 @@
 #include "PID.h"
 #include "SimpleParser.h"
 #include "WrapperBaseDriver.h"
+#include <cmath>
 
 using namespace std;
 
