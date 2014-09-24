@@ -155,26 +155,22 @@ CarControl StateStraightLine::execute(FsmDriver *fsmdriver) {
     CarState& cs = fsmdriver->getCarState();
     // static int flag = 0;
 
-    float brake = 0, clutch = 0;
+    // float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
 
-    float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
+    fsmdriver->setAccel( speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT) );
 
     // float steer = steeringPID.output(desiredDirection, getDistTrackAxis(cs), PID_DT);
-    float steer = StateStraightLine::getSteering(cs);
+    // float steer = StateStraightLine::getSteering(cs);
 
-    int gear = StateStraightLine::getGear(cs), focus = 0, meta = 0;
+    fsmdriver->setSteer( StateStraightLine::getSteering(cs) );
 
-    std::cout << "accel = " << accel << " gear = " << gear << " steer = " << steer << " fuel = " << cs.getFuel() << std::endl;
+    // int gear = StateStraightLine::getGear(cs);
 
-    CarControl cc(accel, brake, gear, steer, clutch, focus, meta);
+    fsmdriver->setGear( StateStraightLine::getGear(cs) );
 
-    // std::cout << getSpeed(cs) << std::endl;
-    // if(getSpeed(cs) >= 297 && flag == 0)
-    // {
-    //     // t = clock() - t;
-    //     std::cout << "Velocidade Limite em = " << ((float)(clock() - t))/(CLOCKS_PER_SEC) << " segundos" << std::endl;
-    //     flag = 1;
-    // }
+    std::cout << "accel = " << fsmdriver->getAccel() << " gear = " << fsmdriver->getGear() << " steer = " << fsmdriver->getSteer() << " fuel = " << cs.getFuel() << std::endl;
+
+    CarControl cc(fsmdriver->getAccel(), 0, fsmdriver->getGear(), fsmdriver->getSteer(), 0, 0, 0);
 
     return cc;
 }

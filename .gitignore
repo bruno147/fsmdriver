@@ -19,7 +19,7 @@
 *.cmake
 /CMakeFiles
 CMakeCache.txt
-#CMakeLists.txt
+CMakeLists.txt
 
 # MakeFile
 
