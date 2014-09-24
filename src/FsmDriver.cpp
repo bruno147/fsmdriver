@@ -1,6 +1,15 @@
 #include "FsmDriver.h"
 
 //-------------------------------------------------------------------------------------------------------------------
+//FsmDriver Class
+
+FsmDriver::FsmDriver() {
+    this->accel = 0;
+    this->brake = 0;
+    this->steer = 0;
+    this->gear = 0;
+}
+
 CarState& FsmDriver::getCarState() {
     return this->_cs;
 }
@@ -16,6 +25,38 @@ State* FsmDriver::getState() {
 void FsmDriver::SetState(State *_newState) {
     delete this->_state;
     this->_state = _newState;
+}
+
+float FsmDriver::getAccel() {
+    return this->accel;
+}
+
+void FsmDriver::setAccel(float accel) {
+    this->accel = accel;
+}
+
+float FsmDriver::getBrake() {
+    return this->brake;
+}
+
+void FsmDriver::setBrake(float brake) {
+    this->brake = brake;
+}
+
+float FsmDriver::getSteer() {
+    return this->steer;
+}
+
+void FsmDriver::setSteer(float steer) {
+    this->steer = steer;
+}
+
+int FsmDriver::getGear() {
+    return this->gear;
+}
+
+void FsmDriver::setGear(int gear) {
+    this->gear = gear;
 }
 
 CarControl FsmDriver::wDrive(CarState cs) {
@@ -146,8 +187,6 @@ StateStraightLine::StateStraightLine() : speedPID(KP, KI, KD) {
 CarControl StateOutOfTrack::execute(FsmDriver *fsmdriver) {
     CarState& cs = fsmdriver->getCarState();
 
-    float accel=0, brake=0, steer=0;
-    int gear=0;
     //set the brake
     if(abs(cs.getSpeedY())>3){
     brake=0.1;
