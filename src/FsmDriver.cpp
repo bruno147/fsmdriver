@@ -86,6 +86,8 @@ State* FsmDriver::transition(CarState &cs) {
      *
      *
      * */
+    State* p = new StateStraightLine();
+    return p;
 }
 
 //-----------------------------------------------------------------------------------------------------------------
@@ -185,9 +187,9 @@ StateStraightLine::StateStraightLine() : speedPID(KP, KI, KD) {
 //StateOutOfTrack Class
 float StateOutOfTrack::getBrake(CarState & cs){
     if(abs(cs.getSpeedY())>3){
-        return=0.1;
+        return 0.1;
     }else{
-        return=0;
+        return 0;
     }
 }
 float StateOutOfTrack::getAccel(CarState & cs){
@@ -207,23 +209,23 @@ int StateOutOfTrack::getGear(CarState & cs){
 }
 float StateOutOfTrack::getSteer(CarState & cs){
     if(cs.getTrackPos()>0){
-        if(cs.getAngle()>0.6){          //0.6 is close to 35 degrees
-            steer=1;
-        }else if(cs.getAngle()<0.4){    //0.4 is close to 23 degrees
-            steer=-1;
+        if(cs.getAngle()>0.7){
+            return 1;
+        }else if(cs.getAngle()<0.5){
+            return -1;
         }
     }else{
-        if(cs.getAngle()<-0.6){
-            steer=-1;
-        }else if(cs.getAngle()<0.4){
-            steer=1;
+        if(cs.getAngle()<-0.7){
+            return -1;
+        }else if(cs.getAngle()<0.5){
+            return 1;
         }
     }
 }
 
 CarControl StateOutOfTrack::execute(FsmDriver *fsmdriver) {
     CarState& cs = fsmdriver->getCarState();
-    CarControl cc(getAccel(cs), getBrake(cs), getGear(cs), getSteer(cs), 0, 0, 0);
+    CarControl cc(this->getAccel(cs), this->getBrake(cs), this->getGear(cs), this->getSteer(cs), 0, 0, 0);
     return cc;
 }
 //-----------------------------------------------------------------------------------------------------------------
