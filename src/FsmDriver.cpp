@@ -208,19 +208,19 @@ StateStraightLine::StateStraightLine() : speedPID(KP, KI, KD) {
 //-----------------------------------------------------------------------------------------------------------------
 //StateOutOfTrack Class
 float StateOutOfTrack::getBrake(CarState & cs){
-    if(abs(cs.getSpeedY())>3){
+    if(abs(cs.getSpeedY())>3){              //if the vehicle begins to skidding bigger than 3m/s in axis Y the brake will return 0.1
         return 0.1;
     }else{
         return 0;
     }
 }
 float StateOutOfTrack::getAccel(CarState & cs){
-    return(1-abs(cs.getSpeedY())*0.1);        //can be negative, need to fix
+    return(1-abs(cs.getSpeedY())*0.1);        //can be negative, need some fix
 }
 
 int StateOutOfTrack::getGear(CarState & cs){
-    if(cs.getSpeedX()>90){
-        return cs.getGear();
+    if(cs.getSpeedX()>90){                      //out of track the gear control based on velocity seems better than the one based on rpm
+        return cs.getGear();                    //need reverse behavior 
     }else if(cs.getSpeedX()>70){
         return 3;
     }else if(cs.getSpeedX()>40){
@@ -230,10 +230,10 @@ int StateOutOfTrack::getGear(CarState & cs){
     }
 }
 float StateOutOfTrack::getSteer(CarState & cs){
-    if(cs.getTrackPos()>0){
-        if(cs.getAngle()>0.7){
+    if(cs.getTrackPos()>0){                 //aim to go back to the track with a range of angles, between 40 and 28 with relation to the axis of track
+        if(cs.getAngle()>0.7){              //0.7rad is about 40 degrees
             return 1;
-        }else if(cs.getAngle()<0.5){
+        }else if(cs.getAngle()<0.5){        //0.5rad is about 28 degress, this values are just a guess
             return -1;
         }
     }else{
