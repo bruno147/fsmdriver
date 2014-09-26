@@ -97,7 +97,8 @@ State* FsmDriver::transition(CarState &cs) {
         }
         // Characteristics of a 'curve' to the FSM
         else {
-            p = new StateCurve;
+            // p = new StateCurve;
+            p = new StateStraightLine;
             cout << "Curve" << endl;
             return p;
         }
@@ -135,10 +136,10 @@ int StateStraightLine::getGear(CarState & cs) {
     if(current_gear > 1 && current_gear < 4 && cs.getRpm() < 1500)
         return(current_gear - 1);
 
-    if(current_gear < 2 && cs.getRpm() > 8000)
+    if(current_gear < 2 && cs.getRpm() > 10000)
         return(current_gear + 1);
 
-    if(current_gear >= 2 && cs.getRpm() > 8500)
+    if(current_gear >= 2 && cs.getRpm() > 9500)
         return(current_gear + 1);
 
     if(current_gear >= 4 && cs.getRpm() < 4000)
@@ -178,16 +179,16 @@ CarControl StateStraightLine::execute(FsmDriver *fsmdriver) {
 
     float brake = 0, clutch = 0;
 
-    float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
+    // float accel = speedPID.output(finalSpeed, StateStraightLine::getSpeed(cs), PID_DT);
 
     // float steer = steeringPID.output(desiredDirection, getDistTrackAxis(cs), PID_DT);
     float steer = StateStraightLine::getSteering(cs);
 
     int gear = StateStraightLine::getGear(cs), focus = 0, meta = 0;
 
-    std::cout << "accel = " << accel << " gear = " << gear << " steer = " << steer << " fuel = " << cs.getFuel() << std::endl;
+    std::cout << "accel = " << 1 << " gear = " << gear << " steer = " << steer << " fuel = " << cs.getFuel() << std::endl;
 
-    CarControl cc(accel, brake, gear, steer, clutch, focus, meta);
+    CarControl cc(1, brake, gear, steer, clutch, focus, meta);
 
     // std::cout << getSpeed(cs) << std::endl;
     // if(getSpeed(cs) >= 297 && flag == 0)
