@@ -14,20 +14,6 @@
 
 *~
 
-# CMake files
-
-*.cmake
-/CMakeFiles
-CMakeCache.txt
-CMakeLists.txt
-
-# MakeFile
-
-Makefile
-
-# Folder
-bin/
-
 # Qt-es
 
 /.qmake.cache
