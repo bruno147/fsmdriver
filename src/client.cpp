@@ -15,8 +15,8 @@
  ***************************************************************************/
 /* Uncomment the following lines under windows */
 //#define WIN32 // maybe not necessary because already define
-#define __DRIVER_CLASS__ FsmDriver     // put here the name of your driver class
-#define __DRIVER_INCLUDE__ "FsmDriver.h" // put here the filename of your driver h\\eader
+// #define __DRIVER_CLASS__ FsmDriver     // put here the name of your driver class
+// #define __DRIVER_INCLUDE__ "FsmDriver.h" // put here the filename of your driver h\\eader
 
 #ifdef WIN32
 #include <WinSock.h>

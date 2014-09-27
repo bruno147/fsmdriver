@@ -19,19 +19,13 @@ using namespace std;
 //-----------------------------------------------------------------------------------------------------------------------
 //Class Prototypes
 class FsmDriver;
-class State;
+
+
+#include "State.h"
 
 //-----------------------------------------------------------------------------------------------------------------------
 //Abstract class for modeling behavior according to it's current state.
 
-class State {
-public:
-    //Virtual method to drive according the state
-    virtual CarControl execute(FsmDriver* fsmdriver)  = 0;
-
-    //Virtual destructor
-    virtual ~State(){}
-};
 
 //------------------------------------------------------------------------------------------------------------------------
 //Curve State
@@ -41,24 +35,6 @@ public:
     virtual CarControl execute(FsmDriver *fsmdriver);
     StateCurve(){}
     ~StateCurve(){}
-};
-
-//------------------------------------------------------------------------------------------------------------------------
-//Straight Line State
-
-class StateStraightLine : public State {
-public:
-    virtual CarControl execute(FsmDriver *fsmdriver);
-    StateStraightLine();
-    ~StateStraightLine(){}
-private:
-	float finalSpeed, desiredDirection;	/** Target Speed **/
-    PIDController speedPID;
-	
-	int getGear(CarState & cs);
-	float getSteering(CarState & cs);
-	float getDistTrackAxis(CarState & cs);
-	float getSpeed(CarState & cs);
 };
 
 //------------------------------------------------------------------------------------------------------------------------
