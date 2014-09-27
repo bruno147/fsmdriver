@@ -1,6 +1,9 @@
 #ifndef FSMDRIVER_STATE_H
 #define FSMDRIVER_STATE_H
 
+//FSMDriver class prototype
+class FsmDriver;
+
 class State {
 public:
     //Virtual method to drive according the state

@@ -16,42 +16,7 @@
 
 using namespace std;
 
-//-----------------------------------------------------------------------------------------------------------------------
-//Class Prototypes
-class FsmDriver;
-
-
 #include "State.h"
-
-//-----------------------------------------------------------------------------------------------------------------------
-//Abstract class for modeling behavior according to it's current state.
-
-
-//------------------------------------------------------------------------------------------------------------------------
-//Curve State
-
-class StateCurve : public State {
-public:
-    virtual CarControl execute(FsmDriver *fsmdriver);
-    StateCurve(){}
-    ~StateCurve(){}
-};
-
-//------------------------------------------------------------------------------------------------------------------------
-//Out of the Track State
-
-class StateOutOfTrack : public State {
-public:
-    virtual CarControl execute(FsmDriver *fsmdriver);
-    ~StateOutOfTrack(){}
-    StateOutOfTrack(){}
-private:
-    float getBrake(CarState & cs);
-    float getAccel(CarState & cs);
-    int getGear(CarState & cs);
-    float getSteer(CarState & cs);
-
-};
 
 //------------------------------------------------------------------------------------------------------------------------
 //Finite State Machine Driver
