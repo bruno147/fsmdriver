@@ -6,6 +6,8 @@ typedef StraightLine StateStraightLine;
 typedef Curve StateCurve;
 #include "OutOfTrack.h"
 typedef OutOfTrack StateOutOfTrack;
+#include "Stuck.h"
+typedef Stuck StateStuck;
 
 //Define constants for transition method:
     const float FsmDriver::LEFT_EDGE        =-1.0;
@@ -13,7 +15,7 @@ typedef OutOfTrack StateOutOfTrack;
     const float FsmDriver::MAX_SPEED_DIST   =  70.0;
     const float FsmDriver::MAX_STR_ANGLE    =0.3;
     const float FsmDriver::MIN_STR_ANGLE    =-0.3;
-    const int FsmDriver::STUCK_TICKS        =25;
+    const int FsmDriver::STUCK_TICKS        =100;
     //Global variable to count the tics in stuck mode
     int stuck_Counter   =   0;
     int in_Stuck_Counter    =0;
@@ -95,8 +97,8 @@ void FsmDriver::init(float *angles){
         angles[i]=-90+i*10;
 }
 
-int iterate_Stuck(){
-    if(abs(cs.getSpeedX()<15)){
+void iterate_Stuck(CarState & cs){
+    if(abs(cs.getSpeedX()<5)&&(cs.getDistRaced()>100)){
         stuck_Counter++;
     }else{
         stuck_Counter = 0;
@@ -109,13 +111,13 @@ State* FsmDriver::transition(CarState &cs) {
         p = new Stuck;
         cout << "Stuck" << endl;
         // @todo global counter to run stuck state for a defined time
-        if(++in_Stuck_Counter == 50){
+        if(++in_Stuck_Counter == 100){
             in_Stuck_Counter = 0;
             stuck_Counter = 0;
         }
         return p;
     }else{
-        stuck_Counter=iterate_Stuck();
+        iterate_Stuck(cs);
     }
     if(cs.getTrackPos() > LEFT_EDGE && cs.getTrackPos() < RIGHT_EDGE) {
         // Getting track information from the sensor at +5 degrees towards the car axis
