@@ -27,6 +27,13 @@ private:
     CarState _cs;                       //Sensorial information
     float accel, brake, steer;          //Actuators values
     int gear;
+
+    static const float  LEFT_EDGE;
+    static const float  RIGHT_EDGE;
+    static const float  MAX_SPEED_DIST;
+    static const float  MAX_STR_ANGLE;
+    static const float  MIN_STR_ANGLE;
+    static const int    STUCK_TICKS;
 public:
     // Print a shutdown message
     virtual void onShutdown();

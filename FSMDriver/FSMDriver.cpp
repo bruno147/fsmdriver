@@ -7,6 +7,16 @@ typedef Curve StateCurve;
 #include "OutOfTrack.h"
 typedef OutOfTrack StateOutOfTrack;
 
+//Define constants for transition method:
+    const float FsmDriver::LEFT_EDGE        =-1.0;
+    const float FsmDriver::RIGHT_EDGE       =1.0;
+    const float FsmDriver::MAX_SPEED_DIST   =  70.0;
+    const float FsmDriver::MAX_STR_ANGLE    =0.3;
+    const float FsmDriver::MIN_STR_ANGLE    =-0.3;
+    const int FsmDriver::STUCK_TICKS        =25;
+    //Global variable to count the tics in stuck mode
+    int stuck_Counter   =   0;
+    int in_Stuck_Counter    =0;
 //-------------------------------------------------------------------------------------------------------------------
 //FsmDriver Class
 
@@ -85,9 +95,29 @@ void FsmDriver::init(float *angles){
         angles[i]=-90+i*10;
 }
 
+int iterate_Stuck(){
+    if(abs(cs.getSpeedX()<15)){
+        stuck_Counter++;
+    }else{
+        stuck_Counter = 0;
+    }
+}
+
 State* FsmDriver::transition(CarState &cs) {
     State* p;
-    if(cs.getTrackPos() > -1 && cs.getTrackPos() < 1) {
+    if(stuck_Counter > STUCK_TICKS){
+        p = new Stuck;
+        cout << "Stuck" << endl;
+        // @todo global counter to run stuck state for a defined time
+        if(++in_Stuck_Counter == 50){
+            in_Stuck_Counter = 0;
+            stuck_Counter = 0;
+        }
+        return p;
+    }else{
+        stuck_Counter=iterate_Stuck();
+    }
+    if(cs.getTrackPos() > LEFT_EDGE && cs.getTrackPos() < RIGHT_EDGE) {
         // Getting track information from the sensor at +5 degrees towards the car axis
         float rSensor = cs.getTrack(10);
         // Getting track information from the sensor parallel to the car axis
@@ -97,7 +127,7 @@ State* FsmDriver::transition(CarState &cs) {
         // Characteristics of a 'straight' to the FSM:
         // 		- If the central sensor is beyond the distance of maximum speed or if it
         // 		the biggest of {central, right (+5 degrees), left (-5 degrees)} sensors
-        if (cSensor > 70 || (cSensor >= rSensor && cSensor >= lSensor)) {
+        if (cSensor > MAX_SPEED_DIST || (cSensor >= rSensor && cSensor >= lSensor)) {
             p = new StraightLine;
             cout << "Straight" << endl;
             return p;
