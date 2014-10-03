@@ -117,10 +117,7 @@ void FsmDriver::transition(CarState &cs) {
             in_Stuck_Counter = 0;
             stuck_Counter = 0;
         }
-    }else{
-        iterate_Stuck(cs);
-    }
-    if(cs.getTrackPos() > LEFT_EDGE && cs.getTrackPos() < RIGHT_EDGE) {
+    }else if(cs.getTrackPos() > LEFT_EDGE && cs.getTrackPos() < RIGHT_EDGE) {
         // Getting track information from the sensor at +5 degrees towards the car axis
         float rSensor = cs.getTrack(10);
         // Getting track information from the sensor parallel to the car axis
@@ -152,4 +149,5 @@ void FsmDriver::transition(CarState &cs) {
             this->SetState(OutOfTrack::Instance());
         }
     }
+    iterate_Stuck(cs);
 }
