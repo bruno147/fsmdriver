@@ -27,6 +27,7 @@ FsmDriver::FsmDriver() {
     this->brake = 0;
     this->steer = 0;
     this->gear = 0;
+    this->_state = StraightLine::Instance();
 }
 
 CarState& FsmDriver::getCarState() {
@@ -41,8 +42,8 @@ State* FsmDriver::getState() {
     return this->_state;
 }
 
-void FsmDriver::SetState(State *_newState) {
-    delete this->_state;
+void FsmDriver::SetState(State* _newState) {
+    assert(this->_state && _newState);
     this->_state = _newState;
 }
 
@@ -80,7 +81,7 @@ void FsmDriver::setGear(int gear) {
 
 CarControl FsmDriver::wDrive(CarState cs) {
     this->setCarState(cs);
-    this->SetState(transition(this->getCarState()));
+    this->transition(this->getCarState());
     return (this->getState())->execute(this);
 }
 
@@ -105,17 +106,17 @@ void iterate_Stuck(CarState & cs){
     }
 }
 
-State* FsmDriver::transition(CarState &cs) {
-    State* p;
+void FsmDriver::transition(CarState &cs) {
     if(stuck_Counter > STUCK_TICKS){
-        p = new Stuck;
+        if (this->_state != Stuck::Instance()) {
+            this->SetState(Stuck::Instance());
+        }
         cout << "Stuck" << endl;
         // @todo global counter to run stuck state for a defined time
         if(++in_Stuck_Counter == 100){
             in_Stuck_Counter = 0;
             stuck_Counter = 0;
         }
-        return p;
     }else{
         iterate_Stuck(cs);
     }
@@ -130,22 +131,25 @@ State* FsmDriver::transition(CarState &cs) {
         // 		- If the central sensor is beyond the distance of maximum speed or if it
         // 		the biggest of {central, right (+5 degrees), left (-5 degrees)} sensors
         if (cSensor > MAX_SPEED_DIST || (cSensor >= rSensor && cSensor >= lSensor)) {
-            p = new StraightLine;
             cout << "Straight" << endl;
-            return p;
+            if (this->_state != StraightLine::Instance()) {
+                this->SetState(StraightLine::Instance());
+            }
         }
         // Characteristics of a 'curve' to the FSM
         else {
-            p = new Curve;
+            if (this->_state != Curve::Instace()) {
+                this->SetState(Curve::Instace());
+            }
             cout << "Curve" << endl;
-            return p;
         }
     }
     // Characteristics of 'outside of track' states
     else {
         // Returns
         cout << "OutOfTrack" << endl;
-        p = new OutOfTrack;
-        return p;
+        if (this->_state != OutOfTrack::Instance()) {
+            this->SetState(OutOfTrack::Instance());
+        }
     }
 }

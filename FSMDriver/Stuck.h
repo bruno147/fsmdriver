@@ -10,10 +10,14 @@ public:
 	    CarControl cc(1, 0, -1,this->getSteer(cs), 0, 0, 0);
 	    return cc;
 	}
+    static Stuck* Instance() {
+        static Stuck instance;
+        return &instance;
+    }
 
     ~Stuck(){}
-    Stuck(){}
 private:
+    Stuck(){}
 	float getSteer(CarState & cs){
 		if(cs.getAngle()>0){
 			return -1;
@@ -22,4 +26,4 @@ private:
 		}
 	}
 };
-#endif // FSMDRIVER_STATE_OUTOFTRACK_H
+#endif // FSMDRIVER_STATE_STUCK_H

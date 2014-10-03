@@ -5,9 +5,6 @@
 
 class StraightLine : public State {
 public:
-    StraightLine(float fs = FINAL_SPEED)  : finalSpeed(fs), speedPID(KP, KI, KD) {
-    }
-
     ~StraightLine(){}
 
     virtual CarControl execute(FsmDriver *fsmdriver) {
@@ -26,7 +23,15 @@ public:
         return cc;
     }
 
+    static StraightLine* Instance() {
+        static StraightLine instance;
+        return &instance;
+    }
+
 private:
+    StraightLine(float fs = FINAL_SPEED)  : finalSpeed(fs), speedPID(KP, KI, KD) {
+    }
+
 	float finalSpeed, desiredDirection;	/** Target Speed **/
     PIDController speedPID;
 	

@@ -10,7 +10,6 @@
 #define KD 0.005 /** @todo Definir corretamente */
 
 #include "PID.h"
-#include "SimpleParser.h"
 #include "WrapperBaseDriver.h"
 #include <cmath>
 
@@ -63,7 +62,7 @@ public:
     void setGear(int gear);
 
     //Checks whenever _state need to be changed.
-    State* transition(CarState&);
+    void transition(CarState&);
 
     //Main driving function.
     virtual CarControl wDrive(CarState cs);

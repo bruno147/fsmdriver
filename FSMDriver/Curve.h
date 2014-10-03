@@ -70,9 +70,14 @@ public:
 	    return cc;
 
 	}
+    static Curve* Instace() {
+        static Curve instance;
+        return &instance;
+    }
 
-    Curve(){}
     ~Curve(){}
+private:
+    Curve(){}
 };
 
 #endif // FSMDRIVER_STATE_CURVE_H
