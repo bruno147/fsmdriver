@@ -35,26 +35,29 @@ private:
     float MIN_RETURN_ANGLE;
 
     float getBrake(CarState & cs){
-    if(abs(cs.getSpeedY())>MAX_SKIDDING){              //if the vehicle begins to skidding bigger than 3m/s in axis Y the brake will return 0.1
-        return 0.1;
-    }else{
-        return 0;
-    	}
+        if(cs.getSpeedX()<0){
+            return 1;
+        }
+        if(abs(cs.getSpeedY())>MAX_SKIDDING){              //if the vehicle begins to skidding bigger than 3m/s in axis Y the brake will return 0.1
+            return 0.1;
+        }else{
+            return 0;
+       	}
 	}
 
     float getAccel(CarState & cs){
-    return(1-abs(cs.getSpeedY())*NEGATIVE_ACCEL_PERCENT);        //can be negative, need some fix
-	}
+        return(1-abs(cs.getSpeedY())*NEGATIVE_ACCEL_PERCENT);        //can be negative, need some fix
+    }
 
     int getGear(CarState & cs){
-    if(cs.getSpeedX()>VELOCITY_GEAR_4){                      //out of track the gear control based on velocity seems better than the one based on rpm
-        return cs.getGear();                    //need reverse behavior 
-    }else if(cs.getSpeedX()>VELOCITY_GEAR_3){
-        return 3;
-    }else if(cs.getSpeedX()>VELOCITY_GEAR_2){
-        return 2;
-    }else{
-        return 1;
+        if(cs.getSpeedX()>VELOCITY_GEAR_4){                      //out of track the gear control based on velocity seems better than the one based on rpm
+            return cs.getGear();                    //need reverse behavior 
+        }else if(cs.getSpeedX()>VELOCITY_GEAR_3){
+            return 3;
+        }else if(cs.getSpeedX()>VELOCITY_GEAR_2){
+            return 2;
+        }else{
+            return 1;
     	}
 	}
 

@@ -106,16 +106,36 @@ void iterate_Stuck(CarState & cs){
     }
 }
 
+void reset_Stuck_Counters(){
+    in_Stuck_Counter = 0;
+    stuck_Counter = 0;
+}
+
 void FsmDriver::transition(CarState &cs) {
     if(stuck_Counter > STUCK_TICKS){
         if (this->_state != Stuck::Instance()) {
             this->SetState(Stuck::Instance());
         }
         cout << "Stuck" << endl;
+        cout << cs.getAngle() << endl;
+        cout << cs.getTrackPos() <<endl;
         // @todo global counter to run stuck state for a defined time
+        if((cs.getTrackPos()>1)&&((cs.getAngle()>0))){
+            reset_Stuck_Counters();
+        }
+        if((cs.getTrackPos()<-1)&&((cs.getAngle()<0))){
+            reset_Stuck_Counters();
+        }
+        if(abs(cs.getTrackPos())<1){
+            if((cs.getTrackPos()<0)&&(cs.getAngle()<0)){
+                reset_Stuck_Counters();
+            }
+            if((cs.getTrackPos()>0)&&(cs.getAngle()>0)){
+                reset_Stuck_Counters();
+            }
+        }
         if(++in_Stuck_Counter == 100){
-            in_Stuck_Counter = 0;
-            stuck_Counter = 0;
+            reset_Stuck_Counters();
         }
     }else if(cs.getTrackPos() > LEFT_EDGE && cs.getTrackPos() < RIGHT_EDGE) {
         // Getting track information from the sensor at +5 degrees towards the car axis

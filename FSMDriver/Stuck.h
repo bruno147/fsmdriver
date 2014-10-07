@@ -7,7 +7,7 @@ class Stuck : public State {
 public:
     virtual CarControl execute(FsmDriver *fsmdriver) {
 	    CarState& cs = fsmdriver->getCarState();
-	    CarControl cc(1, 0, -1,this->getSteer(cs), 0, 0, 0);
+	    CarControl cc(1, 0, -1, this->getSteer(cs), 0, 0, 0);
 	    return cc;
 	}
     static Stuck* Instance() {
@@ -19,10 +19,10 @@ public:
 private:
     Stuck(){}
 	float getSteer(CarState & cs){
-		if(cs.getAngle()>0){
-			return -1;
-		}else{
+		if(cs.getTrackPos()>0){
 			return 1;
+		}else{
+			return -1;
 		}
 	}
 };
