@@ -134,7 +134,7 @@ void FsmDriver::transition(CarState &cs) {
                 reset_Stuck_Counters();
             }
         }
-        if(++in_Stuck_Counter == 100){
+        if(++in_Stuck_Counter == 300){
             reset_Stuck_Counters();
         }
     }else if(cs.getTrackPos() > LEFT_EDGE && cs.getTrackPos() < RIGHT_EDGE) {
