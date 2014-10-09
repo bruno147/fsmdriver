@@ -11,40 +11,36 @@ typedef OutOfTrack StateOutOfTrack;
 typedef Stuck StateStuck;
 
 //Define constants for transition method:
-    const float FsmDriver::LEFT_EDGE        =-1.0;
-    const float FsmDriver::RIGHT_EDGE       =1.0;
-    const float FsmDriver::MAX_SPEED_DIST   =  70.0;
-    const float FsmDriver::MAX_STR_ANGLE    =0.3;
-    const float FsmDriver::MIN_STR_ANGLE    =-0.3;
-    const int FsmDriver::STUCK_TICKS        =100;
+    const float FSMDriver::LEFT_EDGE        =-1.0;
+    const float FSMDriver::RIGHT_EDGE       =1.0;
+    const float FSMDriver::MAX_SPEED_DIST   =  70.0;
+    const float FSMDriver::MAX_STR_ANGLE    =0.3;
+    const float FSMDriver::MIN_STR_ANGLE    =-0.3;
+    const int FSMDriver::STUCK_TICKS        =100;
     //Global variable to count the tics in stuck mode
     int stuck_Counter   =   0;
     int in_Stuck_Counter    =0;
 //-------------------------------------------------------------------------------------------------------------------
-//FsmDriver Class
+//FSMDriver Class
 
-FsmDriver::FsmDriver() {
-    this->accel = 0;
-    this->brake = 0;
-    this->steer = 0;
-    this->gear = 0;
-    this->_state = StraightLine::instance();
+FSMDriver::FSMDriver() : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0),gear(0) {
+    change_to(StraightLine::instance());
 }
 
-CarControl FsmDriver::wDrive(CarState cs) {
-    this->transition(current_state);
+CarControl FSMDriver::wDrive(CarState cs) {
+    this->transition(cs);
     return update(cs);
 }
 
-void FsmDriver::onRestart() {
+void FSMDriver::onRestart() {
     cout << "Restarting the race!" << endl;
 }
 
-void FsmDriver::onShutdown() {
+void FSMDriver::onShutdown() {
     cout << "End of race!" << endl;
 }
 
-void FsmDriver::init(float *angles){
+void FSMDriver::init(float *angles){
     for (int i = 0; i < 19; ++i)
         angles[i]=-90+i*10;
 }
@@ -62,12 +58,12 @@ void reset_Stuck_Counters(){
     stuck_Counter = 0;
 }
 
-void FsmDriver::transition(CarState &cs) {
+void FSMDriver::transition(CarState &cs) {
     if(stuck_Counter > STUCK_TICKS){
-        if (this->_state != Stuck::instance()) {
-            this->SetState(Stuck::instance());
-        }
-        cout << "Stuck" << endl;
+        if (current_state != Stuck::instance()) {
+            change_to(Stuck::instance());
+        } else
+            cout << "Stuck" << endl;
         cout << cs.getAngle() << endl;
         cout << cs.getTrackPos() <<endl;
         // @todo global counter to run stuck state for a defined time
@@ -106,16 +102,16 @@ void FsmDriver::transition(CarState &cs) {
         }
         // Characteristics of a 'curve' to the FSM
         else {
-            if (current_state != Curve::Instace()) {
-                change_to(Curve::Instace());
+            if (current_state != Curve::instance()) {
+                change_to(Curve::instance());
             } else 
                 cout << "Curve" << endl;
         }
     }
     // Characteristics of 'outside of track' states
     else {
-        if (this->_state != OutOfTrack::instance()) {
-            this->SetState(OutOfTrack::instance());
+        if (current_state != OutOfTrack::instance()) {
+            change_to(OutOfTrack::instance());
         } else
             cout << "OutOfTrack" << endl;
     }

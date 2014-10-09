@@ -1,12 +1,32 @@
 #ifndef FSMDRIVER_STATE_CURVE_H
 #define FSMDRIVER_STATE_CURVE_H
 
-#include "State.h"
+#include "FSM.h"
 
-class Curve : public State {
+class FSMDriver;
+
+class Curve : public DrivingState<FSMDriver> {
 public:
-    virtual CarControl execute(FsmDriver *fsmdriver) {
-	    CarState cs = fsmdriver->getCarState();
+    static Curve *instance() {
+        static Curve instance;
+        return &instance;
+    }
+
+private:
+    Curve() {}
+    Curve(Curve const &);
+    void operator=(Curve const&);
+
+public:
+    void enter(FSMDriver *driver) {
+        std::cout << "Enter Curve" << std::endl;
+    }
+
+    void exit(FSMDriver *driver) {
+        std::cout << "Exit Curve" << std::endl;
+    }
+
+    virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
 	    int gear = 1;
 	    float steer = 0;
 	    int gear0[3]={-1,1,2};//This set of gear were defined by tests
@@ -70,14 +90,8 @@ public:
 	    return cc;
 
 	}
-    static Curve* Instace() {
-        static Curve instance;
-        return &instance;
-    }
 
     ~Curve(){}
-private:
-    Curve(){}
 };
 
 #endif // FSMDRIVER_STATE_CURVE_H

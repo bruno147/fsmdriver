@@ -17,7 +17,7 @@ public:
 template <class Driver>
 class DrivingFSM {
 public:
-	DrivingFSM(Driver *o) : owner(o), current_state(nullptr), previous_state(nullptr) {
+	DrivingFSM(Driver *o) : owner(o), previous_state(nullptr), current_state(nullptr) {
 		assert(owner);
 	}
 
@@ -42,7 +42,10 @@ public:
 
 private:
 	Driver *owner;
-	DrivingState<Driver> *current_state, *previous_state;
+	DrivingState<Driver> *previous_state;
+	
+protected:
+	DrivingState<Driver> *current_state;
 };
 
 #endif // FSMDRIVER_FSM_H

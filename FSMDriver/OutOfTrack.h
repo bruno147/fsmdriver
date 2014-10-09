@@ -1,12 +1,36 @@
 #ifndef FSMDRIVER_STATE_OUTOFTRACK_H
 #define FSMDRIVER_STATE_OUTOFTRACK_H
 
-#include "State.h"
+#include "FSM.h"
 
-class OutOfTrack : public State {
+class FSMDriver;
+
+class OutOfTrack : public DrivingState<FSMDriver> {
 public:
-    virtual CarControl execute(FsmDriver *fsmdriver) {
-	    CarState& cs = fsmdriver->getCarState();
+    static OutOfTrack *instance() {
+        static OutOfTrack instance;
+        return &instance;
+    }
+
+private:
+    OutOfTrack() : 
+        MAX_SKIDDING(3), NEGATIVE_ACCEL_PERCENT(0.1), 
+        VELOCITY_GEAR_4(90), VELOCITY_GEAR_3(70), 
+        VELOCITY_GEAR_2(40), MAX_RETURN_ANGLE(0.7),
+        MIN_RETURN_ANGLE(0.5) {}
+    OutOfTrack(OutOfTrack const &);
+    void operator=(OutOfTrack const&);
+
+public:
+    void enter(FSMDriver *driver) {
+        std::cout << "Enter OutOfTrack" << std::endl;
+    }
+
+    void exit(FSMDriver *driver) {
+        std::cout << "Exit OutOfTrack" << std::endl;
+    }
+
+    virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
 	    CarControl cc(this->getAccel(cs), this->getBrake(cs), this->getGear(cs), this->getSteer(cs), 0, 0, 0);
 	    return cc;
 	}
@@ -16,16 +40,8 @@ public:
     }
 
     ~OutOfTrack(){}
+
 private:
-    OutOfTrack() {
-        MAX_SKIDDING=3;
-        NEGATIVE_ACCEL_PERCENT=0.1;
-        VELOCITY_GEAR_4=90;
-        VELOCITY_GEAR_3=70;
-        VELOCITY_GEAR_2=40;
-        MAX_RETURN_ANGLE=0.7;
-        MIN_RETURN_ANGLE=0.5;
-    }
     float MAX_SKIDDING;
     float NEGATIVE_ACCEL_PERCENT;
     int VELOCITY_GEAR_4;

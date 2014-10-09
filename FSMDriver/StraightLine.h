@@ -1,15 +1,34 @@
 #ifndef FSMDRIVER_STATE_STRAIGHTLINE_H
 #define FSMDRIVER_STATE_STRAIGHTLINE_H
 
-#include "State.h"
+#include "FSM.h"
 
-class StraightLine : public State {
+class FSMDriver;
+
+class StraightLine : public DrivingState<FSMDriver> {
+public:
+    static StraightLine *instance() {
+        static StraightLine instance;
+        return &instance;
+    }
+
+private:
+    StraightLine() : finalSpeed(FINAL_SPEED), speedPID(KP, KI, KD) {}
+    StraightLine(StraightLine const &);
+    void operator=(StraightLine const&);
+
 public:
     ~StraightLine(){}
 
-    virtual CarControl execute(FsmDriver *fsmdriver) {
-        CarState& cs = fsmdriver->getCarState();
+    void enter(FSMDriver *driver) {
+        std::cout << "Enter StraightLine" << std::endl;
+    }
 
+    void exit(FSMDriver *driver) {
+        std::cout << "Exit StraightLine" << std::endl;
+    }
+
+    virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
         float brake = 0, clutch = 0;
 
         float steer = getSteering(cs);
@@ -23,15 +42,7 @@ public:
         return cc;
     }
 
-    static StraightLine* Instance() {
-        static StraightLine instance;
-        return &instance;
-    }
-
 private:
-    StraightLine(float fs = FINAL_SPEED)  : finalSpeed(fs), speedPID(KP, KI, KD) {
-    }
-
 	float finalSpeed, desiredDirection;	/** Target Speed **/
     PIDController speedPID;
 	

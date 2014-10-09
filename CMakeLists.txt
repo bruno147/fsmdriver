@@ -11,13 +11,13 @@ project( FSMDriver )
 # set(__DRIVER_CLASS__ FSMDriver)
 # set(__DRIVER_INCLUDE__ "FSMDriver.h")
 set(DRIVER "FSMDriver")
-set(DRIVER_CLASS FsmDriver)
+set(DRIVER_CLASS FSMDriver)
 set(EXTFLAGS "-D __DRIVER_CLASS__=${DRIVER_CLASS} -D __DRIVER_INCLUDE__='\"../${DRIVER}/${DRIVER}.h\"'")	
-set(CMAKE_CXX_FLAGS "-Wall -O3 ${EXTFLAGS}")
+set(CMAKE_CXX_FLAGS "-Wall -O3 -std=c++11 ${EXTFLAGS}")
 
 include_directories(include)
 set(FSMDRIVER_SRC
-	FSMDriver/State.h
+	FSMDriver/FSM.h
 	FSMDriver/FSMDriver.h
 	FSMDriver/FSMDriver.cpp
 	# src/state.cpp
@@ -29,5 +29,4 @@ set(FSMDRIVER_SRC
 	# src/segmentadoras.cpp
 	)
 
-file(MAKE_DIRECTORY "bin")
 add_executable(../bin/FSMDriver ${FSMDRIVER_SRC})

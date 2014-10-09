@@ -18,7 +18,7 @@
 //------------------------------------------------------------------------------------------------------------------------
 //Finite State Machine Driver
 
-class FsmDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
+class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
 private:
     float accel, brake, steer;          //Actuators values
     int gear;
@@ -40,11 +40,11 @@ public:
     virtual void init(float *angles);
 
     //Empty constructor and destructor
-    FsmDriver();
-    ~FsmDriver(){}
+    FSMDriver();
+    virtual ~FSMDriver(){}
 
     //Checks whenever _state need to be changed.
-    void transition(CarState&);
+    void transition(CarState &);
 
     //Main driving function.
     virtual CarControl wDrive(CarState cs);
