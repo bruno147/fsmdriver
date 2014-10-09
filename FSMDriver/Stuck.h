@@ -1,7 +1,6 @@
 #ifndef FSMDRIVER_STATE_STUCK_H
 #define FSMDRIVER_STATE_STUCK_H
 
-
 #include "FSM.h"
 
 class FSMDriver;
@@ -28,19 +27,14 @@ public:
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
-	    CarControl cc(1, 0, -1, this->getSteer(cs), 0, 0, 0);
-	    return cc;
+	    return CarControl(1, 0, -1, this->getSteer(cs), 0, 0, 0);
 	}
 
     ~Stuck(){}
 
 private:
 	float getSteer(CarState & cs){
-		if(cs.getTrackPos()>0){
-			return 1;
-		}else{
-			return -1;
-		}
+        return (cs.getTrackPos() > 0 ? 1 : -1);
 	}
 };
 #endif // FSMDRIVER_STATE_STUCK_H
