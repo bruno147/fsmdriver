@@ -51,14 +51,10 @@ private:
     float MIN_RETURN_ANGLE;
 
     float getBrake(CarState & cs){
-        if(cs.getSpeedX()<0){
-            return 1;
-        }
-        if(abs(cs.getSpeedY())>MAX_SKIDDING){              //if the vehicle begins to skidding bigger than 3m/s in axis Y the brake will return 0.1
-            return 0.1;
-        }else{
-            return 0;
-       	}
+        if(cs.getSpeedX()<0) return 1;
+        if(abs(cs.getSpeedY()) > MAX_SKIDDING) return 0.1;
+        
+        return 0;
 	}
 
     float getAccel(CarState & cs){
@@ -66,31 +62,23 @@ private:
     }
 
     int getGear(CarState & cs){
-        if(cs.getSpeedX()>VELOCITY_GEAR_4){                      //out of track the gear control based on velocity seems better than the one based on rpm
-            return cs.getGear();                    //need reverse behavior 
-        }else if(cs.getSpeedX()>VELOCITY_GEAR_3){
-            return 3;
-        }else if(cs.getSpeedX()>VELOCITY_GEAR_2){
-            return 2;
-        }else{
-            return 1;
-    	}
+        if(cs.getSpeedX()>VELOCITY_GEAR_4) return cs.getGear(); //out of track the gear control based on velocity seems better than the one based on rpm
+                                                                //need reverse behavior 
+        if(cs.getSpeedX()>VELOCITY_GEAR_3) return 3;
+        if(cs.getSpeedX()>VELOCITY_GEAR_2) return 2;
+        
+        return 1;
 	}
 
 	float getSteer(CarState & cs){
-	    if(cs.getTrackPos()>0){                 //aim to go back to the track with a range of angles, between 40 and 28 with relation to the axis of track
-	        if(cs.getAngle()>MAX_RETURN_ANGLE){              //0.7rad is about 40 degrees
-	            return 1;
-	        }else if(cs.getAngle()<MIN_RETURN_ANGLE){        //0.5rad is about 28 degress, this values are just a guess
-	            return -1;
-	        }
-	    }else{
-	        if(cs.getAngle()<-(MAX_RETURN_ANGLE)){
-	            return -1;
-	        }else if(cs.getAngle()>-(MIN_RETURN_ANGLE)){
-	            return 1;
-	        }
+	    if(cs.getTrackPos()>0){                             //aim to go back to the track with a range of angles, between 40 and 28 with relation to the axis of track
+	        if(cs.getAngle()>MAX_RETURN_ANGLE) return 1;    //0.7rad is about 40 degrees
+	        if(cs.getAngle()<MIN_RETURN_ANGLE) return -1;  //0.5rad is about 28 degress, this values are just a guess
+	    } else {
+	        if(cs.getAngle()<-(MAX_RETURN_ANGLE)) return -1;
+	        if(cs.getAngle()>-(MIN_RETURN_ANGLE)) return 1;
 	    }
+        
         return 0;
 	}
 
