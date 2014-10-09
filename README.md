@@ -1,37 +1,25 @@
 FSMDriver
 =========
 
-Inserir descrição do projeto.
+Implementation of a [TORCS](http://torcs.sourceforge.net/) controller for the 
+[Simulated Car Racing Championship](http://arxiv.org/abs/1304.1672). The controller
+implements a finite state machine for driving.
 
-Compilação
-----------
+Compiling & Executing
+---------------------
 
-Arquivos binários devem ser gerados no diretório _bin_. A compilação é simples:
+Binary files will be created in the _bin_ directory. To compile:
 
     cd build
     cmake ..
     make
 
-Execução
---------
-
-Descerver a execução:
+To execute:
 
     torcs &
-    ./bin/FSMDrive
+    ./bin/FSMDriver
 
-Desenvolvimento
------------
+Finite State Machine
+--------------------
 
-A ferramenta Git é ideal para desenvolvimento em grupo. Basta ter cuidados para
-não alterar diretamente o _master_ (geralmente, via _[branching](http://git-scm.com/book/en/Git-Branching-What-a-Branch-Is)_.
-Um exemplo simples:
-
-    git checkout master
-    git pull
-    git branch MinhasAlteracoes
-    git checkout MinhasAlteracoes
-    # alterações + commit
-    git checkout master
-    git merge MinhasAlteracoes
-    git push
+    Insert description.
