@@ -1,12 +1,13 @@
 #include "FSMDriver.h"
 
 #include "StraightLine.h"
-typedef StraightLine StateStraightLine;
 #include "Curve.h"
-typedef Curve StateCurve;
 #include "OutOfTrack.h"
-typedef OutOfTrack StateOutOfTrack;
 #include "Stuck.h"
+
+typedef StraightLine StateStraightLine;
+typedef Curve StateCurve;
+typedef OutOfTrack StateOutOfTrack;
 typedef Stuck StateStuck;
 
 //Define constants for transition method:
@@ -27,62 +28,12 @@ FsmDriver::FsmDriver() {
     this->brake = 0;
     this->steer = 0;
     this->gear = 0;
-    this->_state = StraightLine::Instance();
-}
-
-CarState& FsmDriver::getCarState() {
-    return this->_cs;
-}
-
-void FsmDriver::setCarState(CarState cs) {
-    this->_cs = cs;
-}
-
-State* FsmDriver::getState() {
-    return this->_state;
-}
-
-void FsmDriver::SetState(State* _newState) {
-    assert(this->_state && _newState);
-    this->_state = _newState;
-}
-
-float FsmDriver::getAccel() {
-    return this->accel;
-}
-
-void FsmDriver::setAccel(float accel) {
-    this->accel = accel;
-}
-
-float FsmDriver::getBrake() {
-    return this->brake;
-}
-
-void FsmDriver::setBrake(float brake) {
-    this->brake = brake;
-}
-
-float FsmDriver::getSteer() {
-    return this->steer;
-}
-
-void FsmDriver::setSteer(float steer) {
-    this->steer = steer;
-}
-
-int FsmDriver::getGear() {
-    return this->gear;
-}
-
-void FsmDriver::setGear(int gear) {
-    this->gear = gear;
+    this->_state = StraightLine::instance();
 }
 
 CarControl FsmDriver::wDrive(CarState cs) {
-    this->setCarState(cs);
-    this->transition(this->getCarState());
-    return (this->getState())->execute(this);
+    this->transition(current_state);
+    return update(cs);
 }
 
 void FsmDriver::onRestart() {
@@ -113,8 +64,8 @@ void reset_Stuck_Counters(){
 
 void FsmDriver::transition(CarState &cs) {
     if(stuck_Counter > STUCK_TICKS){
-        if (this->_state != Stuck::Instance()) {
-            this->SetState(Stuck::Instance());
+        if (this->_state != Stuck::instance()) {
+            this->SetState(Stuck::instance());
         }
         cout << "Stuck" << endl;
         cout << cs.getAngle() << endl;
@@ -148,26 +99,25 @@ void FsmDriver::transition(CarState &cs) {
         // 		- If the central sensor is beyond the distance of maximum speed or if it
         // 		the biggest of {central, right (+5 degrees), left (-5 degrees)} sensors
         if (cSensor > MAX_SPEED_DIST || (cSensor >= rSensor && cSensor >= lSensor)) {
-            cout << "Straight" << endl;
-            if (this->_state != StraightLine::Instance()) {
-                this->SetState(StraightLine::Instance());
-            }
+            if (current_state != StraightLine::instance()) {
+                change_to(StraightLine::instance());
+            } else
+                cout << "Straight" << endl;
         }
         // Characteristics of a 'curve' to the FSM
         else {
-            if (this->_state != Curve::Instace()) {
-                this->SetState(Curve::Instace());
-            }
-            cout << "Curve" << endl;
+            if (current_state != Curve::Instace()) {
+                change_to(Curve::Instace());
+            } else 
+                cout << "Curve" << endl;
         }
     }
     // Characteristics of 'outside of track' states
     else {
-        // Returns
-        cout << "OutOfTrack" << endl;
-        if (this->_state != OutOfTrack::Instance()) {
-            this->SetState(OutOfTrack::Instance());
-        }
+        if (this->_state != OutOfTrack::instance()) {
+            this->SetState(OutOfTrack::instance());
+        } else
+            cout << "OutOfTrack" << endl;
     }
     iterate_Stuck(cs);
 }
