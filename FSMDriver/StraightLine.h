@@ -36,8 +36,6 @@ public:
 
         int gear = getGear(cs), focus = 0, meta = 0;
 
-        std::cout << "accel = " << 1 << " gear = " << gear << " steer = " << steer << " fuel = " << cs.getFuel() << std::endl;
-
         CarControl cc(1, brake, gear, steer, clutch, focus, meta);
 
         return cc;
@@ -47,8 +45,6 @@ private:
 	int getGear(CarState & cs) {
         int current_gear = cs.getGear();
         if(!current_gear) return 1;
-
-        // if(current_gear == 1 || current_gear == 2)   std::cout << "Current Gear = " << current_gear <<  " RPM = " << cs.getRpm() << std::endl;
 
         if(current_gear > 1 && current_gear < 4 && cs.getRpm() < 1500)
             return(current_gear - 1);
