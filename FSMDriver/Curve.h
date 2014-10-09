@@ -27,67 +27,244 @@ public:
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
-	    int gear = 1;
-	    float steer = 0;
-	    int gear0[3]={-1,1,2};//This set of gear were defined by tests
-	    float steer0[5]={0.1,0.6,-0.4,-0.8,-1};//This set of steer were defined by tests
-	    float accel,accel0[3]={0,0.5,1};//This set of accel were defined by tests
-	    float angle,angle_lim[4]={3.1415/2-1,-3.1415/2+1,0.1,-0.1};// angle and angles limits in this code
-	    float track_dis,track_lim[2]={0.2,-0.2};
-	    float factor[2]={1.5,1.2};//proportionate fator to steer, track_dis and angle
+	   	
+int gear = 1;
+float accel=1,accel0[4]= {0.8,0.7,0.85,1};
+float steer = 0,steer0[20]={0,0.025,0.05,0.075,0.1,0.125,0.150,0.175,0.2,0.225,0.25,0.275,0.3,0.325,0.4,0.45,0.5,0.6,0.7,0.8};
+float clutch=0;
+float brake=0;
+float brake0[3]={0,0.1,0.5};
+float vx,vy;
+float angle,angle_lim[5]={0.1,0.2,0.3,0.4,0.5};
+float track_dis,track_lim[5]={0.1,0.2,0.3,0.4,0.5};
+float factor[6] ={1,-10,-20,-30,-5,2.0};
+float d_angle,d_track;
+gear=cs.getGear();
+vy = cs.getSpeedY();
+vx = cs.getSpeedX();
+angle = cs.getAngle();
+track_dis = cs.getTrackPos();
+
+d_angle = angle/abs(angle);
+d_track = -track_dis/abs(track_dis);
+d_track = d_angle*abs(angle)*35;
+
+if(vx<1){
+	vx =1;	
+}
+
+if((angle<angle_lim[0])&&(angle>-angle_lim[0])){
+	if((track_dis<track_lim[0])&&(track_dis>-track_lim[0])){
+		steer = steer0[0]*d_track;
+	}
+	else{
+		if((track_dis<track_lim[1])&&(track_dis>-track_lim[1])){
+			steer = steer0[3]*d_track;
+		}
+		else{
+			if((track_dis<track_lim[2])&&(track_dis>-track_lim[2])){
+				steer = steer0[6]*d_track;
+			}
+			else{
+				if((track_dis<track_lim[3])&&(track_dis>-track_lim[3])){
+					steer = steer0[9]*d_track;	
+				}
+				else{
+					if((track_dis<track_lim[4])&&(track_dis>-track_lim[4])){
+						steer = steer0[11]*d_track;					
+					}
+					else{
+						steer = steer0[15]*d_track;	
+					}	
+				}		
+			}		
+		}	
+	}
+
+}
+else{
+	if((angle<angle_lim[1])&&(angle>-angle_lim[1])){
+		if((track_dis<track_lim[0])&&(track_dis>-track_lim[0])){
+			steer = steer0[3]*d_track;
+		}
+		else{
+			if((track_dis<track_lim[1])&&(track_dis>-track_lim[1])){
+				steer = steer0[4]*d_track;
+			}
+			else{
+				if((track_dis<track_lim[2])&&(track_dis>-track_lim[2])){
+					steer = steer0[7]*d_track;
+				}
+				else{
+					if((track_dis<track_lim[3])&&(track_dis>-track_lim[3])){
+						steer = steer0[9]*d_track;
+					}
+					else{
+						if((track_dis<track_lim[4])&&(track_dis>-track_lim[4])){
+							steer = steer0[12]*d_track;
+						}
+							
+						else{
+							steer = steer0[16]*d_track;	
+						}	
+					}		
+				}		
+			}	
+		}
+	}
+	else{
+		if((angle<angle_lim[2])&&(angle>-angle_lim[2])){
+				if((track_dis<track_lim[0])&&(track_dis>-track_lim[0])){
+					steer = steer0[5]*d_track;
+				}
+				else{
+					if((track_dis<track_lim[1])&&(track_dis>-track_lim[1])){
+						steer = steer0[6]*d_track;
+					}
+					else{
+						if((track_dis<track_lim[2])&&(track_dis>-track_lim[2])){
+							steer = steer0[7]*d_track;
+						}
+						else{
+							if((track_dis<track_lim[3])&&(track_dis>-track_lim[3])){
+								steer = steer0[10]*d_track;
+							}
+							else{
+								if((track_dis<track_lim[4])&&(track_dis>-track_lim[4])){
+									steer = steer0[13]*d_track;
+								}
+								else{
+									steer = steer0[17]*d_track;	
+								}	
+							}		
+						}		
+					}	
+				}
+		}
+		else{
+			if((angle<angle_lim[3])&&(angle>-angle_lim[3])){
+				if((track_dis<track_lim[0])&&(track_dis>-track_lim[0])){
+					steer = steer0[6]*d_track;
+				}
+				else{
+					if((track_dis<track_lim[1])&&(track_dis>-track_lim[1])){
+						steer = steer0[7]*d_track;
+					}
+					else{
+						if((track_dis<track_lim[2])&&(track_dis>-track_lim[2])){
+							steer = steer0[9]*d_track;
+						}
+						else{
+							if((track_dis<track_lim[3])&&(track_dis>-track_lim[3])){
+								steer = steer0[11]*d_track;
+							}
+							else{
+								if((track_dis<track_lim[4])&&(track_dis>-track_lim[4])){
+									steer = steer0[14]*d_track;
+								}
+								else{
+									steer = steer0[18]*d_track;	
+								}	
+							}		
+						}		
+					}	
+				}
+			}
+			else{
+				if((angle<angle_lim[4])&&(angle>-angle_lim[4])){
+						if((track_dis<track_lim[0])&&(track_dis>-track_lim[0])){
+							steer = steer0[8]*d_track;
+						}
+						else{
+							if((track_dis<track_lim[1])&&(track_dis>-track_lim[1])){
+								steer = steer0[9]*d_track;
+							}
+							else{
+								if((track_dis<track_lim[2])&&(track_dis>-track_lim[2])){
+									steer = steer0[10]*d_track;
+								}
+								else{
+									if((track_dis<track_lim[3])&&(track_dis>-track_lim[3])){
+										steer = steer0[12]*d_track;
+									}
+									else{
+										if((track_dis<track_lim[4])&&(track_dis>-track_lim[4])){
+											steer = steer0[15]*d_track;
+										}
+										else{
+											steer = steer0[19]*d_track;	
+										}	
+									}		
+								}		
+							}	
+						}
+				
+				}
+				else{
+					if((track_dis<track_lim[0])&&(track_dis>-track_lim[0])){
+						steer = steer0[9]*d_track;
+					}
+					else{
+						if((track_dis<track_lim[1])&&(track_dis>-track_lim[1])){
+							steer = steer0[10]*d_track;
+						}
+						else{
+							if((track_dis<track_lim[2])&&(track_dis>-track_lim[2])){
+								steer = steer0[11]*d_track;
+							}
+							else{
+								if((track_dis<track_lim[3])&&(track_dis>-track_lim[3])){
+									steer = steer0[12]*d_track;
+								}
+								else{
+									if((track_dis<track_lim[4])&&(track_dis>-track_lim[4])){
+										steer = steer0[14]*d_track;
+									}	
+									else{
+										steer = steer0[20]*d_track;	
+									}
+								}		
+							}		
+						}	
+					}
+							
+				}
+							
+			}
+		}	
+	}
 
 
-	    accel=accel0[2];
-	    steer=steer0[0];
-	    gear = gear0[1];
+}
 
-	    track_dis=cs.getTrackPos();
-	    angle = cs.getAngle();
+if((steer>0.5)&&(gear>1)){
+	gear=gear -1;
+}
 
-	    //printf("%f %f\n",angle,track_dis);
-	        if(((angle<angle_lim[0])&&(angle>angle_lim[1]))){// In the case the car is in the right direction
+if(vx < 70){
+	gear = 1;
+}
+else{
+	if(vx < 100){
+		gear = 2;
+	}
+	else{
+		if(vx <150){
+			gear = 3;
+		}
+		else{
+			gear = 4;
+		}
+	}
 
-	            if(((angle<angle_lim[2])&&(angle>angle_lim[3]))){
-
-	                if(((track_dis>track_lim[0])||(track_dis<track_lim[1]))){ //change the steer when the car is in a turn
-	                    gear =gear0[1];
-	                    steer=factor[0]*steer0[2]*track_dis;
-	                    accel = accel0[2];
-
-	                }
-
-	                else{
-	                    if((steer>0.05)&&(steer<-0.05)){
-	                        steer = steer-0.0001*steer/abs(steer);// Try to minimaze the steer when the condition of the track normalize(retiline) in order to maximaxe the speed
-	                    }
-	                    accel= accel0[2];
-	                    if(gear<5){
-	                        gear=gear+1;
-	                    }
-
-	                }
-	            }
-
-	            else{
-
-	                steer=-factor[1]*steer0[2]*angle/abs(angle);// Adjust the steer according with the angle.
-	                gear = gear0[1];
-	                accel = accel0[1];
+}
+printf("\n%f\n",steer);
+clutch= factor[0]*vy;//According with the YSpeed
 
 
-	            }
+CarControl cc(accel,brake,gear,steer,clutch);
 
-	        }
-
-	        else{ //In the case the car is NOT in the right direction
-	            accel = accel0[1];
-	            steer= -steer0[3]*angle/abs(angle);
-	            gear = gear0[1];
-	        }
-
-	    CarControl cc(accel,0,gear,steer,0);
-
-	    return cc;
+return cc;
 
 	}
 
