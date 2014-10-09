@@ -1,6 +1,7 @@
 #ifndef FSMDRIVER_STATE_STRAIGHTLINE_H
 #define FSMDRIVER_STATE_STRAIGHTLINE_H
 
+#include <cmath>
 #include "FSM.h"
 
 class FSMDriver;
@@ -13,7 +14,7 @@ public:
     }
 
 private:
-    StraightLine() : finalSpeed(FINAL_SPEED), speedPID(KP, KI, KD) {}
+    StraightLine() {}
     StraightLine(StraightLine const &);
     void operator=(StraightLine const&);
 
@@ -43,9 +44,6 @@ public:
     }
 
 private:
-	float finalSpeed, desiredDirection;	/** Target Speed **/
-    PIDController speedPID;
-	
 	int getGear(CarState & cs) {
         int current_gear = cs.getGear();
         if(!current_gear) return 1;
