@@ -1,12 +1,51 @@
 \section{The Simulated Car Racing Championship}
+	
+	The Simulated Car Racing Championship, or simply SCR, \cite{scr2009} is a well-known event comprising three sequential
+	competitions held in association with important names such as \textit{IEEE}, and present in ackowledged conferences
+	such as the \textit{Congress on Evolutionary Computation} (CEC), \textit{ACM Genetic and Evolutionary Computational
+	Conference} (GECCO) and the \textit{Symposium on Computational Intelligence and Games} (CIG). This competition held at
+	such major conferences in the fields of \textbf{Evolutionary Computation} and \textbf{Computational Intelligence} - and
+	their standard relations to Gaming in general - uses \textbf{The Open Car Racing Simulator} (TORCS) as its pillar for
+	all activities of development and analysis. This simulator is state-of-art in the car racing game sphere, for it provides
+	not only an outstanding method of comparing algorithms in the topics cited, but also the full 3D visualization of every
+	process, a life-like physics engine containing movement and dynamic aspects in a highly-detailed manner, such as fuel
+	usage, damage received to the car, wheel traction and so on.
+	
+	\subsection{The Open Car Racing Simulator}
+	
+	TORCS is a platform focused on the establishment of ground rules towards the comparison of algorithms concerning
+	\textbf{programming} and \textbf{AI}. The purpose is to create intelligent controllers to simulate real-life situations
+	of racing competitions, and to do so, the Formula 1 score/awarding system is used as unbiased criteria.\\
+	The interface provides with a diversified set of sensors, such as the current position of the car in the track, its
+	acceleration and brake values, and so on. Utilizing this sensors is the method with which the users communicate with
+	their created pilots and the environment, and it is of their responsibility to program the entire behavior of this pilot,
+	in whichever programming language of desire.\\
+	TORCS serves both as a research platform for AI on racing development and as an ordinary car racing game. The main reason
+	why TORCS is widespread in the AI gaming universe is its portability; it runs on all \textit{Linux}'s architectures,
+	\textit{FreeBSD}, \textit{OpenSolaris}, \textit{MacOSX} and both 32 and 64 bits \textit{Windows}. TORCS started some years
+	ago to have its own competitions, where groups of development can submit their pilots in order to compete with others,
+	and the goal of FSMDriver - the pilot of this publication's topic - is to be submitted to one of such competitions.
+	
+	\subsection{Algorithms implemented in the Simulated Car Racing Championship}
+	
+	Works submitted to TORCS have a wide range of variety, going from [...]
 
-The Simulated Car Racing Championship is \toDo{descrição mais completa ligação lógica com a subseção seguinte}. 
+	%\toDo{Paragraph introducing other works submitted to TORCS. Paragraph highlighting deficiencies these other works possess. 
+	%Paragraph explaining how FSMs could solve these problems.}
 
-\subsection{The Open Car Racing Simulator}
-
-TORCS is a platform focused on the establishment of ground rules towards the comparison of algorithms concerning \textbf{programming} and \textbf{AI}. The purpose is to create pilots to simulate real-life situations of racing competitions, and to do so, the Formula 1 score/awarding system is used as unbiased criteria.\\
-The interface provides with a diversified set of sensors, such as the current position of the car in the track, its acceleration and brake values, and so on. Utilizing this sensors is the method with which the users communicate with their created pilots and the environment, and it is of their responsibility to program the entire behavior of this pilot, in whichever programming language of desire.\\
-TORCS serves both as a research platform for AI on racing development and as an ordinary car racing game. The main reason why TORCS is widespread in the AI gaming universe is its portability; it runs on all \textit{Linux}'s architectures, \textit{FreeBSD}, \textit{OpenSolaris}, \textit{MacOSX} and both 32 and 64 bits \textit{Windows}. TORCS started some years ago to have its own competitions, where groups of development can submit their pilots in order to compete with others, and the goal of FSMDriver - the pilot of this publication's topic - is to be submitted to one of such competitions.
-
-\subsection{Finite State Machines}
-\toDo{Inserir teoria.}
+	\subsection{Finite State Machines}
+	
+	\textbf{Finite State Machines} (\textbf{FSM}), \textbf{Finite-State Automaton}, or even the simple \textbf{State Machine},
+	are designations of the same model. They all describe a \textbf{mathematical model of computation} used in computer 
+	programs, such as this one, and also in sequential logic circuits. FSM has a typical \textit{abstract machine} behavior,
+	with a limited number of states, and, by definition, can be only and exclusively in one of these states at a time. The 
+	state in which the machine is in a present/defined moment will be hereby called the \textbf{current state}, as a matter
+	of convenience. The machine changes its current state when triggered by a pre-defined event, also hereby called a 
+	\textbf{transition}.\\
+	
+	Thus, a FSM is a model defined by states, which the \textit{current state} is changed every time a \textit{transition}
+	defined by the designated conditions is triggered. According to Mat Buckland's definition published inside 
+	\textbf{\emph{Programming Game AI by Example}} \cite{Prog-AI}, ``\emph{A finite state machine is a device, or a model
+	of a device, which has a finite number of states it can be in at any given time and can operate on	input to either 
+	make transitions from one state to another or to cause an output or action to take place. A finite state machine can
+	only be in one	state at any moment in time.}''\\[0.2cm]
