@@ -1,6 +1,9 @@
 \documentclass[journal]{IEEEtran}%
 \usepackage[utf8]{inputenc}
 
+\usepackage{xcolor}%
+\newcommand{\toDo}[1]{\textcolor{red}{#1}}%
+
 \begin{document}
 	\title{A Finite State Machine Controller for the Simulated Car Racing Championship}
 
@@ -9,13 +12,8 @@
 		Gabriel S. Silva\IEEEauthorrefmark{1},\\
 		Matheus C. Crestani\IEEEauthorrefmark{1},
 		Yuri B. Galli\IEEEauthorrefmark{1} and
-		Guilherme N. Ramos\IEEEauthorrefmark{2}\\[0.2cm]}
-	\IEEEauthorblockA{\IEEEauthorrefmark{1}Students from University of Brasília - UnB\\
-		Mechatronical Engineering\\}
-	\IEEEauthorblockA{\IEEEauthorrefmark{2}Professor at University of Brasília - UnB\\
-		Department of Computer Science - CIC\\
-		Email: gnramos@cic.unb.br\\
-		\hfill October 13, 2014}}
+		Guilherme N. Ramos\IEEEauthorrefmark{1}\IEEEauthorrefmark{2}\\[0.2cm]}
+	\IEEEauthorblockA{\IEEEauthorrefmark{1}University of Brasília}}
 
 % The paper headers
 \markboth{Postgraduate Program Workshop in Computer Science}%
@@ -30,7 +28,7 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-This publication aims for the explanation concerning the development of an artificial intelligence - henceforth called AI - to be implemented in a driver inside the TORCS (The Open Racing Car Simulator) environment, for which was chosen a Finite State Machine - henceforth called FSM - as the method of architecture for the pilot.
+\toDo{Apresentação do contexto. Definição do problema. Breve descrição da solução. breve descrição da avaliação da solução (experimentos). Resultados.}
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -38,11 +36,11 @@ This publication aims for the explanation concerning the development of an artif
 finite state machines, computer games, Simulated Car Racing Championship, artificial intelligence
 \end{IEEEkeywords}%
 
-%\input{Introduction}%
-%\input{SCR}%
-%\input{FSMDriver}%
-%\input{Results}%
-%\input{Conclusions}%
+\input{Introduction}%
+\input{SCR}%
+\input{FSMDriver}%
+\input{Results}%
+\input{Conclusions}%
 
 \bibliographystyle{IEEEtran}%
 \bibliography{bibliografia}%
