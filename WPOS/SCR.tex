@@ -1,20 +1,20 @@
 \section{The Simulated Car Racing Championship}
-	
+
 	The Simulated Car Racing Championship, or simply SCR, \cite{scr2009} is a well-known event comprising three sequential
 	competitions held in association with important names such as \textit{IEEE}, and present in ackowledged conferences
 	such as the \textit{Congress on Evolutionary Computation} (CEC), \textit{ACM Genetic and Evolutionary Computational
 	Conference} (GECCO) and the \textit{Symposium on Computational Intelligence and Games} (CIG). This competition held at
-	such major conferences in the fields of \textbf{Evolutionary Computation} and \textbf{Computational Intelligence} - and
-	their standard relations to Gaming in general - uses \textbf{The Open Car Racing Simulator} (TORCS) as its pillar for
+	such major conferences in the fields of Evolutionary Computation and Computational Intelligence - and
+	their standard relations to Gaming in general - uses \emph{The Open Car Racing Simulator} (TORCS) as its pillar for
 	all activities of development and analysis. This simulator is state-of-art in the car racing game sphere, for it provides
 	not only an outstanding method of comparing algorithms in the topics cited, but also the full 3D visualization of every
 	process, a life-like physics engine containing movement and dynamic aspects in a highly-detailed manner, such as fuel
 	usage, damage received to the car, wheel traction and so on.
-	
-	\subsection{The Open Car Racing Simulator}
-	
+
+\subsection{The Open Car Racing Simulator}
+
 	TORCS is a platform focused on the establishment of ground rules towards the comparison of algorithms concerning
-	\textbf{programming} and \textbf{AI}. The purpose is to create intelligent controllers to simulate real-life situations
+	\emph{programming} and \emph{AI}. The purpose is to create intelligent controllers to simulate real-life situations
 	of racing competitions, and to do so, the Formula 1 score/awarding system is used as unbiased criteria.\\
 	The interface provides with a diversified set of sensors, such as the current position of the car in the track, its
 	acceleration and brake values, and so on. Utilizing this sensors is the method with which the users communicate with
@@ -25,27 +25,42 @@
 	\textit{FreeBSD}, \textit{OpenSolaris}, \textit{MacOSX} and both 32 and 64 bits \textit{Windows}. TORCS started some years
 	ago to have its own competitions, where groups of development can submit their pilots in order to compete with others,
 	and the goal of FSMDriver - the pilot of this publication's topic - is to be submitted to one of such competitions.
-	
-	\subsection{Algorithms implemented in the Simulated Car Racing Championship}
-	
-	Works submitted to TORCS have a wide range of variety, going from [...]
 
-	%\toDo{Paragraph introducing other works submitted to TORCS. Paragraph highlighting deficiencies these other works possess. 
-	%Paragraph explaining how FSMs could solve these problems.}
+\subsection{Algorithms implemented in the Simulated Car Racing Championship}
 
-	\subsection{Finite State Machines}
-	
-	\textbf{Finite State Machines} (\textbf{FSM}), \textbf{Finite-State Automaton}, or even the simple \textbf{State Machine},
-	are designations of the same model. They all describe a \textbf{mathematical model of computation} used in computer 
+	Works submitted to TORCS have a wide range of variety, going from sophisticated heuristic designs to completely mathematical
+	and statistical approaches. The controller that won the 2009 Simulated Car Racing Championship, \cite{2009SCR} %todo{include}
+	perhaps one of the most important editions realized so far, was created by \emph{Enrique Onieva} and \emph{David A. Pelta}%todo{cite},
+	and it consists on a simple set of controllers in an \emph{modular configuration}. Although this competitors won the competition,
+	a modular approach for controllers was weighed and the effort to implement it would be increasingly troublesome as more
+	problems were introduced and the whole picture became more complex; also, reworking and debugging such an architecture
+	requires changing perhaps all the other modules not involved in the change, as the individual modules are not entirely 
+	independent. Another well-rewarded method was the \emph{anticipatory behavior}; such an implementation is even more
+	complex than the modular configuration, as it envolves a remarkable amount of relations between sensor entries, and has to
+	provide a considerable amount of outputs, and the analysis previous to the proper assembly of the controller requires a
+	deeper understanding of the operation of the physical model in question. As a last example of previous works submitted to
+	Simulated Car Racing Championships, \emph{Neural Networks} were chosen; using Neural Networks is a general approach that
+	requires possibly the lowest domain knowledge of all, and provides a satisfactory result in comparison, but its implementation
+	is also quite complex, and involves thinking of an extense number of possibilities for sensor inputs.\\
+	Given the overall look on the previous controllers that acquired a high performance on the competitions, the deficiencies and
+	the missing perks were all weighed, and the solution came in the form of a \emph{Finite State Machine}, whose characteristics
+	cover: the lack of simplicity of other methods, the implementation difficulties they presented and the independence of the
+	parts in which the whole problem is divided. Such properties of a Finite State Machine are highlighted in Section 3.A.
+
+\subsection{Finite State Machines}
+
+	\emph{Finite State Machines} (FSM), \emph{Finite-State Automaton}, or even the simple \emph{State Machine},
+	are designations of the same model. They all describe a mathematical model of computation used in computer 
 	programs, such as this one, and also in sequential logic circuits. FSM has a typical \textit{abstract machine} behavior,
 	with a limited number of states, and, by definition, can be only and exclusively in one of these states at a time. The 
-	state in which the machine is in a present/defined moment will be hereby called the \textbf{current state}, as a matter
+	state in which the machine is in a present/defined moment will be hereby called the \emph{current state}, as a matter
 	of convenience. The machine changes its current state when triggered by a pre-defined event, also hereby called a 
-	\textbf{transition}.\\
-	
+	\emph{transition}.\\
+
 	Thus, a FSM is a model defined by states, which the \textit{current state} is changed every time a \textit{transition}
 	defined by the designated conditions is triggered. According to Mat Buckland's definition published inside 
-	\textbf{\emph{Programming Game AI by Example}} \cite{buckland2005}, ``\emph{A finite state machine is a device, or a model
-	of a device, which has a finite number of states it can be in at any given time and can operate on	input to either 
-	make transitions from one state to another or to cause an output or action to take place. A finite state machine can
-	only be in one	state at any moment in time.}''\\[0.2cm]
+	\emph{Programming Game AI by Example} \cite{buckland2005}, 
+	``\emph{A finite state machine is a device, or a model
+		of a device, which has a finite number of states it can be in at any given time and can operate on	input to either 
+		make transitions from one state to another or to cause an output or action to take place. A finite state machine can
+		only be in one	state at any moment in time.}''\\[0.2cm]

@@ -1,6 +1,6 @@
 \section{The FSM Driver}
 
-	The method of choice to submit the pilot to future TORCS competitions is, naturally, a \textbf{Finite State Machine}.
+	The method of choice to submit the pilot to future TORCS competitions is, naturally, a \emph{Finite State Machine}.
 	A brief explanation of the behavior of this method was presented in section 2.C, for more information[2], FSMs are
 	widespread over the academic knowledge in books and in the web.
 	
@@ -31,19 +31,16 @@
 	new state would solve the matter, in about no time and almost without interference in the other parts of the whole.
 \end{itemize}
 
-The division of states for the FSMDriver itself are in agreement with the advantages of a FSM, meaning that the choice of
-which states to be used relied on the human intuition of the development of a car in operation. The states designed are:
+	The division of states for the FSMDriver itself are in agreement with the advantages of a FSM, meaning that the choice of
+	which states to be used relied on the human intuition of the development of a car in operation. The states designed are:
 
 % \includegraphics[width=\textwidth]{}%
 \begin{figure}[!t]
-\centering
-\includegraphics[width=2.5in]{StatesDiagram}
-\caption{State transition diagram.}
-\label{fig_sim}
+	\centering
+	\includegraphics[width=2.5in]{StatesDiagram}
+	\caption{State transition diagram.}
+	\label{fig_sim}
 \end{figure}
-
-
-%\toDo{Insert image containing the proper visual state diagram image for the FSMDriver}}
 
 \begin{itemize}
 	\item \textbf{Straight line}: The state in which the pilot commands the car to full throttle and maximum 
@@ -62,9 +59,9 @@ which states to be used relied on the human intuition of the development of a ca
 	performance of the pilot in the race.
 \end{itemize}
 
-In other words, the pilot will encounter four situations in a race, two of them are desired, whereas the other two are 
-emergency actions. While the car is either on a \textbf{straight line} or on a \textbf{curve}, the behavior is normal; 
-but when the criteria defined to manipulate the pilot into entering those states fails to keep it racing, and the car 
-goes \textbf{outside of the track} or gets \textbf{stuck}, the car encounters troubles and loses performance. That is why
-the accurate definition of the requirements the pilot has to fulfill to be in each of these states needs to be thought 
-thoroughly for good and competitive results.
+	In other words, the pilot will encounter four situations in a race, two of them are desired, whereas the other two are 
+	emergency actions. While the car is either on a \emph{straight line} or on a \emph{curve}, the behavior is normal; 
+	but when the criteria defined to manipulate the pilot into entering those states fails to keep it racing, and the car 
+	goes \emph{outside of the track} or gets \emph{stuck}, the car encounters troubles and loses performance. That is why
+	the accurate definition of the requirements the pilot has to fulfill to be in each of these states needs to be thought 
+	thoroughly for good and competitive results.
