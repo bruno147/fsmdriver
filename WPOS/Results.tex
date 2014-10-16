@@ -1,8 +1,7 @@
 \section{Experimental Results}
 
-The very first results showed that
-% find an better expression than showed that
-this controller achieves a better performance in more simple tracks, like oval ones, rather than in those with a higher degree of elaboration, like road or dirty tracks.
+The very first results emphasize
+this controller achievements: a better performance in more simple tracks, like oval ones, rather than in those with a higher degree of elaboration, like road or dirty tracks.
 
 When racing in oval tracks, particularly in B-speedway, the FSMDriver outperforms some of the controllers provided by the TORCS distribution. The FSMDriver raced against considered average drivers and performed very well, winning even if it started behind them.
 
@@ -76,9 +75,7 @@ In the other hand, when facing considered good drivers the controller was defeat
 
 The damage taken can be significantly reduced by implementing an enemy avoidance and overtaking behavior,
 
-Although, when it comes to road tracks, especially the ones filled with critical curves combinations, the controller faces several problems at staying between the track boundaries. These troubles are mainly caused by entering curves with high speed values, fact that reinforces the idea of an approaching curve state, to deal with speed reductions and angle corrections. In addition, the constants used in transition process do not represent the optimal values for that role, an evolutionary method needs to be implemented in order to achieve those values. Moreover, oval tracks barely requires a state transition, in the overwhelming majority of time the car fits in the straight state. This lack of transitions and accentuated curves enabled
-% is enable correct within this context?
-a significantly gain in performance.
+Although, when it comes to road tracks, especially the ones filled with critical curves combinations, the controller faces several problems at staying between the track boundaries. These troubles are mainly caused by entering curves with high speed values, fact that reinforces the idea of an approaching curve state, to deal with speed reductions and angle corrections. In addition, the constants used in transition process do not represent the optimal values for that role, an evolutionary method needs to be implemented in order to achieve those values. Moreover, oval tracks barely requires a state transition, in the overwhelming majority of time the car fits in the straight state. This lack of transitions and accentuated curves improves significantly the gain in performance.
 
 \subsection{Parameter changing}
 Each state of the FSM uses specific parameters for ruling the state behavior. The transition function as well uses constants to decide whenever state must change. At the beginning those parameter were imported from the Simple Driver provided by Danielle Loiacono, as expected they did not lead to satisfying results when compared to the drivers available in TORCS.
