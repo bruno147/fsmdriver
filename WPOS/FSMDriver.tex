@@ -1,31 +1,28 @@
 \section{The FSM Driver}
+The proposal for controlling the car is a \emph{Finite State Machine}, which
+enables a modular development, ideal for teamwork, and separates behaviors, reducing
+the effort necessary to evolve a complete controller by breaking this problem into
+evolving each state.
 
-	The method of choice to submit the pilot to future TORCS competitions is, naturally, a \emph{Finite State Machine}.
-	A brief explanation of the behavior of this method was presented in section 2.C, for more information[2], FSMs are
-	widespread over the academic knowledge in books and in the web.
-	
-	A race inside TORCS has some peculiarities perhaps only visible for those who possess a deeper understanding on the
-	behavior of a real car, however, a layperson can absolutely develop a pilot in the environment, given the easy 
-	features the interface provides. The communication between programmer and car is the main aspect that led the choice
-	of a FSM for the pilot. FSMs have been one of the favorite instruments for AI gaming, and they are present in almost
-	every game due to many reasons as follows:
+FSMs have been one of the favorite instruments f'or AI gaming, and they are present 
+in many digital games~\cite{buckland2005}, due to characteristics as follows:
 
 \begin{itemize}
-	\item \textbf{Readiness}: A FSM is quickly and simply implemented, in almost every one of its forms;
+	\item \textbf{Readiness}: a FSM is quickly and simply implemented, in almost every one of its forms.
 	
-	\item \textbf{Modularity}: Debugging and reworking a FSM become catalyzed processes due to the abstraction of its
+	\item \textbf{Modularity}: debugging and refactoring a FSM becomes a catalyzed processe due to the abstraction of its
 	structure, that is, its behavior can be divided into smaller, independent parts, which can be treated separately
-	in a way that reduces labor;
+	in a way that reduces the effort.
 	
-	\item \textbf{Low computational complexity}: A FSM would hardly ever require great amounts of processor time, and
-	that is because its operation mainly follows but hard-coded rules;
+	\item \textbf{Low computational complexity}: a FSM would hardly ever require great amounts of processor time, and
+	that is because its operation mainly follows but hard-coded rules.
 	
-	\item \textbf{Intuitive behavior}: Analyzing a FSM is an easy process because human minds are often used to
+	\item \textbf{Intuitive behavior}: analyzing a FSM is an easy process because human minds are often used to
 	categorizing situations and conditions of conduct. This characteristic is both a good employment for debugging in
 	real time and for turning the pilot's behavior simple enough so that a common person, i.e. non-programmer, could
-	identify mistakes and spectate a race understanding the development of the pilot;
+	identify mistakes and spectate a race understanding the development of the pilot.
 	
-	\item \textbf{Flexibility}: A fundamental quirk of a FSM, one which makes the process of expanding the scope of the
+	\item \textbf{Flexibility}: a fundamental quirk of a FSM, one which makes the process of expanding the scope of the
 	structure easier in a level hardly other choice of method would provide. If a new situation occurs, one that was
 	not foreseen by the states defined and also one that could not be inserted in any of them, the mere creation of a
 	new state would solve the matter, in about no time and almost without interference in the other parts of the whole.
@@ -34,10 +31,9 @@
 	The division of states for the FSMDriver itself are in agreement with the advantages of a FSM, meaning that the choice of
 	which states to be used relied on the human intuition of the development of a car in operation. The states designed are:
 
-% \includegraphics[width=\textwidth]{}%
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=2.5in]{StatesDiagram}
+	\includegraphics[width=3in]{StatesDiagram}
 	\caption{State transition diagram.}
 	\label{fig_sim}
 \end{figure}
@@ -65,3 +61,13 @@
 	goes \emph{outside of the track} or gets \emph{stuck}, the car encounters troubles and loses performance. That is why
 	the accurate definition of the requirements the pilot has to fulfill to be in each of these states needs to be thought 
 	thoroughly for good and competitive results.
+
+Each state of the FSMDriver uses specific parameters for defining its behavior. 
+There is a transition function that uses specific (constant) parameters to decide 
+when state must change (and which state to change to). This function mainly uses four constants:
+\begin{itemize}
+\item MAX\_SPEED\_DIST, the maximum distance for recognizing a curve.
+\item LEFT\_EDGE, track position value that indicate the left boundary of the track.
+\item RIGHT\_EDGE, track position value that indicate the right boundary of the track
+\item STUCK\_TICKS, number of ticks required to leave the stuck state.
+\end{itemize}

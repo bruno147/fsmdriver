@@ -1,17 +1,23 @@
 \section{Introduction}
 \IEEEPARstart{D}{igital} games provide a great test bed for experimentation and 
 study of Artificial Intelligence (AI), and there has been a growing interest in 
-applying AI in them, regardless of genre \cite{simon2008}. Some applications 
-include controlling non-playable characters \cite{stanley2005}, path planning \cite{freitas2012}, human pose recognition \cite{shotton2011}, and others. 
+applying AI in them, regardless of genre~\cite{simon2008}. Some applications 
+include controlling non-playable characters~\cite{stanley2005}, path planning 
+\cite{freitas2012}, human pose recognition~\cite{shotton2011}, and others. 
 
 Electronic games also present a well defined environment, which may simulate 
-extremely complex situations such as flying an airplane or controlling a car 
-\cite{scr2009}. One such simulator is TORCS, \emph{The Open Racing Car Simulator}
-\cite{TORCS} whose input and output are constrained by the software's characteristics, providing an ideal benchmark for comparing AI solutions for creating car controllers.
+extremely complex situations such as flying an airplane or controlling a car. One such simulator is \emph{The Open Racing Car Simulator} (TORCS)~\cite{TORCS}, whose input and output are constrained by the software's characteristics, providing an ideal benchmark for comparing AI solutions for creating car controllers.
 
-\toDo{1 parágrafo apresentando o SCR. 1 parágrafo apresentando outras soluções do 
-SCR. 1 parágrafo, identificando uma carência nas abordagens feitas e dizendo como 
-vamos suprí-la com o FSMDriver}.
+The Simulated Car Racing Championship is competition held in major conferences 
+in the fields of Evolutionary Computation and Computational as a standard test
+for such controllers. It allows different AI techniques, such as modular
+controllers, sensory-to-motor couplings, neural networks, decision trees, finite
+state machines, fuzzy logic, an others to be compared fairly~\cite{scr2009}. 
+
+Due to  the complexity of the task, most solutions attempt to develop an efficient
+controller by evolving it completely, that is, by considering its performance on
+the whole track. This is a very complex task, and in an attempt to
+reduce this complexity, this works proposes the FSMDriver, a finite state machine based controller that divides the track into different types of streches and evolves a state for handling each one.
 
  This paper is organized as follows: Section 2 presents the details on TORCS and 
  the Simulated Car Racing Championship and some background on finite state machines,
