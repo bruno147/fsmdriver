@@ -53,6 +53,7 @@ in many digital games~\cite{buckland2005}, due to characteristics as follows:
 	\item \textbf{Out of track}: When the previous states fail to prevent the car from entering an undesired situation
 	such as going outside of the track, where conditions such as friction are much worse for the car than inside the
 	track, this state takes control of the car and tries to return it to the race;
+	\toDo{Complementar o a descrição do estado Out of track com isso: To reach this goal, the function that control the steering of the car turn into the track with some angle of return, this angle, with relation to the axis of track, initially arbitrarily defined. To avoid the car lose the control, due to normally low friction out of track, the acceleration and brake function are defined proportional of the speed in direction of the side of car, this speed can inform how much the car is slipping.}
 	
 	\item \textbf{Stuck}: In a worst case scenario, when the car is barely moving, drastic measures need to be taken,
 	such as reversing the car and steering it out of an obstacle. The appearence of such events reduce largely the
