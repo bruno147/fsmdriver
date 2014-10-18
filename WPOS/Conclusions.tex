@@ -1,15 +1,30 @@
-\section{Conclusion and Future Works}
+\section{Conclusion and Future Works}\label{sec:conclusions}
+Digital games provide an excellent opportunity to experiment and study the 
+different applications of Artificial Intelligence, such as controlling an autonomous
+vehicle. The The Simulated Car Racing Championship is used as a standard test for 
+such controllers, allowing different solutions compared in a straightforward manner.
 
-	In this article it was presented a Finite State Machine approach, in its early days, to the problem of simulated car racing at the TORCS.
-	
-	At this stage the pilot showed can win just in few tracks and just of some bots available at the package TORCS. The code developed aim to win some of the competitions at the conference it's necessary, at least, to be better than the bots on average of the various tracks, so there's a lot a work to do to achieve this goal. 
-	
-	It's also possible to run with the racers of the past simulated car racing, meaning that you know when you are ready to a real competition at the next conference.
-	
-	The creation of a state to deal with opponents it's the next step in effort to take a better performance at racing, without this it's necessary to count with some luck at the moment of interaction with some opponent.
-	
-	
-	The high damage received at the tests show us that it need some improvement. A close look show that at the moment of transition from a straight line to a curve the car lost the control and went out of track, and eventually, the car crashes somewhere and get a damage. One possible way to deal with this problem is an insertion of another state, that prepare the car to a curve, adjusting the speed and location above the axis of track. A filter on the brake can be a good solution in order to minimaze the speed without allowing the car to skid on the track.   
-	
-	To summarize there's a vast open way to improvements, maybe using some evolutionary algorithm over the exhaustive search applied here to find a good combination of parameters.A change of paradigm also could be good, for instance, change the PID controller to some fuzzy logic. The advantage of a simulator is that all the questions about performance can be solved with the simulation.
+This work presents the early stages of FSMDriver, a finite state machine approach
+to developing a controller. The goal is to eventually compete in SCR by improving
+the controller's behavior though machine learning techniques. This first version
+considers four states for defining its racing behavior: \textbf{Straight Line}, 
+\textbf{Curve}, \textbf{Out of Track}, and \textbf{Stuck}. Overall, the results
+obtained in this world provided very valuable information to guide future 
+developments of the proposal.
 
+Initial experimental results showed that the approach is feasible, as FSMDriver
+can successfully complete races and even be faster than some of the available
+TORCS controllers. They also showed that adjusting configuration parameters lead 
+to improved behavior, further efforts using machine learning techniques to 
+improve this are being pursued.
+
+Comparison to existing controllers showed that FDSMDriver's first version has 
+average behavior, and there is much work to be done. To this end, future versions
+will consider not only the parameters that define transitions between states, but
+also the states' internal parameters.
+
+Analysis of race conditions indicated an immediate need for a new state to handle 
+between a straight stretch of track and a curve. Because experimental results 
+showed extreme damage to the car due to crashing to the wall, it is likely that 
+a state to \emph{avoid collisions} will be necessary. This could also be used to 
+handle adversary cars.

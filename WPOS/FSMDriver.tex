@@ -1,100 +1,85 @@
-\section{The FSM Driver}
+\section{The FSM Driver}\label{sec:fsm}
 The proposal for controlling the car is a \emph{Finite State Machine}, which
 enables a modular development, ideal for teamwork, and separates behaviors, reducing
 the effort necessary to evolve a complete controller by breaking this problem into
 evolving each state.
 
-FSMs have been one of the favorite instruments f'or AI gaming, and they are present 
-in many digital games~\cite{buckland2005}, due to characteristics as follows:
+From the intuitive perspective of a human driver in a car race competition, there 
+is a clearly defined desirable behavior: to \emph{drive faster than the competitors}.
+The simulation account for different environment conditions, therefore a car's 
+performance is always better, everything else being the same, when it is within 
+track limits than outside. So this rather complex behavior which can be broken into specific behaviors: \emph{drive as fast as possible on the track} and, 
+in case something goes wrong, \emph{get back on the track as fast as possible}.
 
-\begin{itemize}
-	\item \textbf{Readiness}: a FSM is quickly and simply implemented, in almost every one of its forms.
-	
-	\item \textbf{Modularity}: debugging and refactoring a FSM becomes a catalyzed processe due to the abstraction of its
-	structure, that is, its behavior can be divided into smaller, independent parts, which can be treated separately
-	in a way that reduces the effort.
-	
-	\item \textbf{Low computational complexity}: a FSM would hardly ever require great amounts of processor time, and
-	that is because its operation mainly follows but hard-coded rules.
-	
-	\item \textbf{Intuitive behavior}: analyzing a FSM is an easy process because human minds are often used to
-	categorizing situations and conditions of conduct. This characteristic is both a good employment for debugging in
-	real time and for turning the pilot's behavior simple enough so that a common person, i.e. non-programmer, could
-	identify mistakes and spectate a race understanding the development of the pilot.
-	
-	\item \textbf{Flexibility}: a fundamental quirk of a FSM, one which makes the process of expanding the scope of the
-	structure easier in a level hardly other choice of method would provide. If a new situation occurs, one that was
-	not foreseen by the states defined and also one that could not be inserted in any of them, the mere creation of a
-	new state would solve the matter, in about no time and almost without interference in the other parts of the whole.
-\end{itemize}
+Driving as fast as possible on a straight line is simple, but a different behavior
+than doing it in a curve, thus the state can be further divided into \emph{drive
+drive as fast as possible in a straight line} and \emph{make the
+curve as fast as possible}. Finally, because racing usually implies being able to
+move forward, a behavior for handling situations when that is not possible is 
+necessary.
 
-	The division of states for the FSMDriver itself are in agreement with the advantages of a FSM, meaning that the choice of
-	which states to be used relied on the human intuition of the development of a car in operation. The states designed are:
-
-\begin{figure}[!t]
+\begin{figure}
 	\centering
 	\includegraphics[width=3in]{StatesDiagram}
 	\caption{State transition diagram.}
-	\label{fig_sim}
+	\label{fig:fsm}
 \end{figure}
 
+Therefore, FSMDriver's initial configuration has four states, as illustrated in 
+Fig. \ref{fig:fsm}, described as follows: 
+
 \begin{itemize}
-	\item \textbf{Straight line}: The state in which the pilot commands the car to full throttle and maximum 
-	speed/acceleration ahead, and occurs when the car is located in a situation that sees no turning nearby;
+	\item \textbf{Straight Line}: the controller commands the car to full throttle 
+	with maximum acceleration straight ahead, adjusting the steering to stay in 
+	the middle of the track.
 	
-	\item \textbf{Curve}: A curve can be assumed as a critical event in a race once it take the car's controller
-	to act almost abruptaly in order to continue the race, these actions not always are the most appropriate, it
-	may be enough to the car be overtaken by other competitors. The way to handle obliqual tracks was based 
-	on the position of the car and the angle between the direction of the car axis and the track axis direction, 
-	values adquired by two sensors that affect the actuators: steering, gear and clutch. It is focused on the 
-	steering of the car, that is, changing its direction of movement in order to keep it inside the delimitations 
-	of the proper racing space and also to avoid crashing the car into an obstacle;
+	\item \textbf{Curve}: the controller handles curves based on the position of 
+	the car and the angle between the direction of the axes of the car and the 
+	track axis, adjusting the steering, gear, and clutch actuators to keep it 
+	moving as fast as possible within track limits while trying to avoid damage
+	(by crashing into another car or wall).
 	
-	\item \textbf{Out of track}: When the previous states fail to prevent the car from entering an undesired situation
-	such as going outside of the track, where conditions such as friction are much worse for the car than inside the
-	track, this state takes control of the car and tries to return it to the race;
-	\toDo{Complementar o a descrição do estado Out of track com isso: To reach this goal, the function that control the steering of the car turn into the track with some angle of return, this angle, with relation to the axis of track, initially arbitrarily defined. To avoid the car lose the control, due to normally low friction out of track, the acceleration and brake function are defined proportional of the speed in direction of the side of car, this speed can inform how much the car is slipping.}
+	\item \textbf{Out of Track}: the controller tries to return to the 
+	track as fast as possible by steering in an arbitrary angle (with 
+	relation to the track's axis of track). Due to low friction outside of the 
+	track, accelerating and braking are proportional to the sideway speed of the 
+	car to minimize skidding.
 	
-	\item \textbf{Stuck}: In a worst case scenario, when the car is barely moving, drastic measures need to be taken,
-	such as reversing the car and steering it out of an obstacle. The appearence of such events reduce largely the
-	performance of the pilot in the race.
+	\item \textbf{Stuck}: the controller takes drastic measures to try to recover, 
+	using reverse gear and hard steering to try to get back on track in this worst 
+	case scenario.
 \end{itemize}
 
-	In other words, the pilot will encounter four situations in a race, two of them are desired, whereas the other two are 
-	emergency actions. While the car is either on a \emph{straight line} or on a \emph{curve}, the behavior is normal; 
-	but when the criteria defined to manipulate the pilot into entering those states fails to keep it racing, and the car 
-	goes \emph{outside of the track} or gets \emph{stuck}, the car encounters troubles and loses performance. That is why
-	the accurate definition of the requirements the pilot has to fulfill to be in each of these states needs to be thought 
-	thoroughly for good and competitive results.
+There are two states for usual on track regular on track situations and two for
+off track ones. Only one of these states will be in control at a time, but all 
+have to work together to handle the all possible scenarios and each has to be
+properly configured to achieve competitive results.
 
-	Each state of the FSMDriver uses specific parameters for defining its behavior. 
-	There is a transition function that uses specific (\emph{constant}) parameters
-	to decide when the \emph{current state} needs to be changed (and which state to
-	change to). This function mainly uses four constants:
+The complete behavior is achieved by transitioning between states, this is 
+implemented in a \texttt{transition} function that uses specific parameters to decide when 
+the current state needs to be changed (and which state to change to). This function 
+operates on four constant parameters:
 	\begin{itemize}
-		\item \textbf{MSD}, the maximum distance the frontal sensor can reach when in full speed
-		(\textbf{M}aximum \textbf{S}peed \textbf{D}istance);
-		\item \textbf{LE}, track position value that indicates the left boundary of the proper racing
-		space (\textbf{L}eft \textbf{E}dge);
-		\item \textbf{RE}, track position value that indicates the right boundary of the proper racing
-		space (\textbf{R}ight \textbf{E}dge);
-		\item \textbf{ST}, number of ticks required by the controller for it to declare being stuck
-		(\textbf{S}tuck \textbf{T}icks).
+		\item[$MSD$,] the maximum speed distance, which defines the 
+		maximum value for the frontal sensor input while racing at full speed;
+		\item[$LE$,] the track's left edge boundary, which defines the area
+		available for moving the car left;
+		\item[$RE$,] the track's right edge boundary, which defines the area
+		available for moving the car right;
+		\item[$ST$,] the number of stuck ticks, required by the controller 
+		for identifying how long it has not been moving fast enough and, thus,
+		concluding it is stuck.
 	\end{itemize}
-	
-	The procedure of analysis to check the current state of the car in the race is
-	based on the following: to be \emph{outside of track} the car needs to be out of
-	the range defined between \emph{LE} and \emph{RE}, which are modularized values
-	that relate to the edges of the track. If the car is inside those values, than it
-	is correctly inside the track and can be either on a \emph{straight line},
-	when the frontal distance sensor is bigger than the \emph{MSD} or when this same
-	sensor points to a bigger value than the adjacent side sensors, or on a
-	\emph{curve}, when none of these two requirements is fulfilled. Before all of
-	these conditions are checked, which happens at every game tick, the car goes through
-	a procedure of verification on the \emph{stuck} state, that is, if it is at a defined
-	low speed and is not on the beginning of the track where it is acceptable, the game
-	ticks are accumulated until the defined value of maximum ticks in stuck conditions
-	\emph{ST} is reached, indicating that the car went stuck. Given this behavior, the
-	\emph{transition} function was implemented, and as it is the part of the code that
-	has less variables for perfomance-improvement analysis, it was submitted for
-	exaustive testing as a first attempt to evolve parameters inside the controller.
+
+\texttt{transition} analyses the car's inputs to define if there has to be a
+change in state on every simulation tick. The first procedure is to check if the
+car is \textbf{Stuck}, that is, if it is has a very low speed (obviously, ignoring 
+the beginning of the race when all cars ares stopped), then a counter is incremented 
+and its value compared to the $ST$ threshold.
+
+In case the car is not stuck, \texttt{transition} will define the current state
+by analyzing its position in the track. It will be \textbf{Out of Track} if it is
+out of the range defined by $LE$ and $RE$. Otherwise, it is considered 
+on track and can be either on a \textbf{Straight Line}, if the frontal distance 
+sensor's input is larger than $MSD$ or when it is larger than the input of the 
+adjacent side sensors, or on a \textbf{Curve} otherwise. 

@@ -1,7 +1,90 @@
-\section{Background}
+\section{Background}\label{sec:background}
 
-Drive a car is interesting problem, if human component was removed, because it is not a trivial problem and humans can do easily. There are a many visions to solve this puzzle, for example, approach human-human. Thrun et Al~\cite{Thrun06}  show that it is possible to solve this without manual intervention with real car.
+The Simulated Car Racing Championship (SCR) is a well-known event comprising 
+three sequential competitions held in association with \textit{IEEE}, and 
+present in well known conferences such as the \textit{Congress on Evolutionary 
+Computation} (CEC), \textit{ACM Genetic and Evolutionary Computational Conference} 
+(GECCO) and the \textit{Symposium on Computational Intelligence and Games} 
+(CIG)~\cite{scr2009}.  It provides an opportunity for the scientific community 
+to perform a straightforward comparison among different approaches in complex 
+environments containing multiple continuous variables~\cite{caldeira_2013}. For 
+this, it uses \emph{The Open Car Racing Simulator}, a state-of-the art car simulator. 
 
-But the problem show in this paper is less complex which a controller of real car. Here, expose a virtual problem, run and win a racing car game without a player. In the literature, there are works using many types of solution to drive a autonomous car. This solutions comprehended famous artificial intelligence approaches such as Supervised Methods with NEAT, Finite State Machine with Fuzzy Logic or Tracking and Planning ahead in a racing.
+\subsection{The Open Car Racing Simulator}
+TORCS provides a very customizable environment, sophisticated 3D graphics, and -
+most importantly - a powerful physics simulation platform~\cite{manual}. Its 
+physics engine considers static and dynamic aspects, such as fuel usage, damage 
+received, wheel traction, and others, in a very detailed way. Thus, it enables 
+a very complex environment for testing AI techniques.
 
-The literature show that is not a good idea choose supervised method in a game-AI. Nevertheless,~\cite{learn} using high-level information about the current status of the car and the road ahead was a possible around this trouble. Using too NEAT to replace the player, he demonstrated it is possible develop drivers with performances that in some cases are only 15\% lower than the performance of the fastest driver available in TORCS.
+TORCS serves both as a research platform for AI on racing development and as an 
+ordinary car racing game. The main reason why TORCS is widespread in the AI gaming 
+universe is its portability; it runs on all \textit{Linux}'s architectures,
+\textit{FreeBSD}, \textit{OpenSolaris}, \textit{MacOSX} and both 32 and 64 bits 
+\textit{Windows}. TORCS has its own online community, which started its own 
+racing competitions some years ago~\cite{TORCS}, where developers can submit 
+their controllers to compete with each other.
+
+\subsection{The Simulated Car Racing Championship}
+The SCR contest provides a standard measure for TORCS controllers by defining strict
+rules, based on the Formula 1 score system~\cite{scr2009}. It improves on the 
+practical applications aspects by limiting the controller's knowledge of 
+the system to the information provided by its inputs and its actions by its outputs,
+much like an actual autonomous vehicle.
+
+The interface provides with a diversified set of sensors, such as the current 
+position of the car in the track, its acceleration and brake values, and so on~\cite{scr2009}. 
+The information provided by them defines the controllers perception of its environment (track, other controllers, etc.), and the idea is to program a behavior that results
+in the best possible race. 
+
+\subsection{SCR Contestants}
+Works submitted to SCR have a wide range of variety, going from sophisticated 
+heuristic designs to completely mathematical and statistical approaches. The 
+controller that won the 2009 Simulated Car Racing Championship,~\cite{scr2009}
+perhaps one of the most important editions realized so far, was created by 
+Onieva et al.~\cite{onieva_2009}, and it 
+consists of a simple set of controllers in an \emph{modular configuration}. 
+
+Although this controller won the competition, the authors noted that it evolved 
+into a fairly complex model and noted that a modular approach considerably reduce 
+the effort to implement a  controller. Refactoring and debugging such a complex 
+architecture requires changing code that is not directly related to the desired
+change in behavior.
+
+Another interesting controller used  artificial neural networks~\cite{cardamone_2010},
+a more general approach which required little domain knowledge and provided a 
+satisfactory result. Also in this case,  the implementation is quite complex and 
+the final result manages connections between all inputs and outputs.
+
+In order to reduce the effort in developing a controller, a more modular approach,
+such as a \emph{finite state machine}, is desirable.
+
+\subsection{Finite State Machines}\label{sec:fsm}
+
+A \emph{Finite State Machines} (FSM) designates the model of a device, which has 
+a finite number of states it can be in at a given moment, and which and can 
+operate on input to either transition from one state to another or to cause an 
+output to take place~\cite{buckland2005}. The machine can only be in one of these 
+states at a given time.
+
+FSMs have been widely used in AI applications in games~\cite{millington_2009}, due 
+its inherent characteristics:
+
+\begin{itemize}
+	\item \textbf{Simplicity}: this model can be quickly implemented in many ways.
+	
+	\item \textbf{Flexibility}: new states can be easily incorporated into the model.
+	
+	\item \textbf{Modularity}: states can be independently developed in parallel.
+	
+	\item \textbf{Focused debugging}: since FSMs can only be in one state at a time,
+	debugging/testing is limited to the state in question.
+	
+	\item \textbf{Small computational overhead}: states are usually implemented 
+	with hard-coded rules concerning a specific situation, which in turn demands
+	small amounts of processor time.
+	
+	\item \textbf{Intuitive behavior}: analyzing a FSM is an easy process for 
+	humans because we are always intuitively categorizing situations and behaviors,
+	just like a FSM working. 
+\end{itemize}

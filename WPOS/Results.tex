@@ -1,15 +1,16 @@
-\section{Experimental Results}
-For initial improvements the transition parameters have been chosen since they are fewer than the states parameters. Due to time limitations, the initial search for best parameters is done by simple
-iteration over arbitrary values for all parameters. An initial value is set and a delta parameter is added until it reaches the maximum value established.
-
+\section{Experimental Results}\label{sec:results}
+For initial evaluation of FSMDriver, only changes in the transition function's 
+parameters were tested, with a simple iteration over arbitrary values for all. At
+each iteration, only one parameter value was changed. Table \ref{tbl:parameters} shows the parameters, their initial ($V_I$) and final 
+($V_F$) values, and the step ($\Delta$) taken in each iteration. 
 
 \begin{table}[h]
 \renewcommand{\arraystretch}{1.3}
-\caption{Parameters Used for Enhancement}
-\label{parameter_table}
+\caption{Transition Parameters}
+\label{tbl:parameters}
 \centering
 \begin{tabular}{c||c||c||c}
-\hline \bfseries $p$ &\bfseries $p_0$ &\bfseries $ p_{max}$ &\bfseries $\Delta p$ \\
+\hline \bfseries &\bfseries $V_I$ &\bfseries $V_F$ &\bfseries $\Delta$ \\
 \hline
 \hline MSD & $20$ & $200$ & $5$ \\ 
 \hline LE & $-1$ & $-0.8$ & $0.1$ \\ 
@@ -19,35 +20,14 @@ iteration over arbitrary values for all parameters. An initial value is set and 
 \end{tabular} 
 \end{table}
 
-In the end 8658 combinations were generated and properly tested in \textit{CG Speedway 1} and \textit{B-Speedway}. The best result generated used the following parameters: MSD: $20$, LE: $-0.8$, RE: $1$, ST: $110$. This set of values generated the best result for \textit{B-Speedway} as well. An huge amount of parameters combination achieved the same best result in the second track. All of them do not trigger a state transition.
+For each of the over 8500 configurations, experiments consisted of 3 laps, in 
+the B-Speedway and CG-Speedway 1 tracks (see Fig. \ref{fig:tracks}), each race 
+starting with one car fully stopped. B-Speedway provides the simplest track for 
+validation, while CG-Speedway 1 has more characteristics of usual race tracks, 
+such as sharp curves for either side, and provides a more general idea of the 
+FSMDriver's behavior.
 
-
-
-% apenas para GC, na B-speedway não tem alteração de estado
-
-%  MAX\_SPEED\_DIST, the maximum distance for recognizing a curve.
-%  LEFT\_EDGE, track position value that indicate the left boundary of the track.
-%  RIGHT\_EDGE, track position value that indicate the right boundary of the track
-%  STUCK\_TICKS, number of ticks required to leave the stuck state.
-% }
-
-% b-speedway,  tabs 1 e 2
-% MAX\_SPEED\_DIST 70
-%  LEFT\_EDGE, -1 (distancia proporcional do extremo da pista em relação ao meio)
-%  RIGHT\_EDGE 1 (distancia proporcional do extremo da pista em relação ao meio)
-%  STUCK\_TICKS 100
-
-For each configuration, experiments consisted of 3 laps, in the B-Speedway and 
-CG-Speedway 1 tracks (see Fig. \ref{fig:tracks}), each race starting with the car fully stopped. B-Speedway provides the simplest track for validation, while CG-Speedway 1
-has more characteristics of usual race tracks, such as sharp curves for either side,
-and provides a more general idea of the controller's behavior.
-
-The total race time is being taken in account. A good set of parameters is the one that generates a low race time, the best set of parameters generated de lowest race time. Only time is being considerated at this time. Though damage and best lap time have significant impact in the final score.
-
-The very first results emphasize this controller achievements: a better performance in more simple tracks, like oval ones, rather than in those with a higher degree of elaboration, like road or dirty tracks.
-
-
-\begin{figure}[!t] 
+\begin{figure}
 \centering 
 \subfloat[B-Speedway]{\includegraphics[width=1.2in]{B-Speedway}}
 % \label{fig_first_case}} 
@@ -58,15 +38,36 @@ The very first results emphasize this controller achievements: a better performa
 \label{fig:tracks} 
 \end{figure} 
 
-When racing in oval tracks, particularly in B-Speedway, the FSMDriver outperforms 
-some of the controllers provided by the TORCS distribution, specially that considered average drivers like Berniw 10. Pilots ran alone and total time was then reckoned (see Table \ref{table_results_B}).
+Results are evaluated by total race time, smaller being better. The parameter values 
+for the fastest races are presented in Table \ref{tbl:best_config}.
+It is interesting to note that many configurations yielded the same results, and 
+that \textbf{Straigh Line}'s steering control is sufficient for it to run on wide
+curves, there no transitions were triggered in B-Speedway's tests.
 
-For the sake of comparison the pilots provided by the TORCS distribution were used in those experiments. One of the best family of pilots is the Berniw set of drivers, which were chosen for comparison. \toDo{MELHORAR A FRASE}
+\begin{table}[h]
+% \renewcommand{\arraystretch}{1.3}
+\caption{Best Configuration}
+\label{tbl:best_config}
+\centering
+\begin{tabular}{c||c||c||c||c}
+\hline & MSD & LE & RE & ST \\ \hline\hline
+B-Speedway & 20 & -0.8 & 1 & 110 \\\hline
+CG-Speedway 1 & 20 & -0.8 & 1 & 110 \\\hline
+\end{tabular} 
+\end{table}
+
+To further analyze FSMDriver's behavior, it is  
+compared to default controllers provided by the TORCS distribution. One of the 
+maintainers of TORCS, Bernhard Wymann\footnote{www.berniw.org}, has created
+a wide range of controllers with diverse characteristics, from average racing 
+behavior like \emph{berniw3} to one of the best controllers available \emph{berniw1}.
+In this test, controllers had a 3 lap race (by themselves) and total time was 
+evaluated. Results are shown in Tables \ref{tbl:berniw_B} and \ref{tbl:berniw_CG}.
 
 \begin{table}[h]
 \renewcommand{\arraystretch}{1.3}
-\caption{Results After 3 Laps in B-Speedway}
-\label{table_results_B}
+\caption{3 Laps in B-Speedway}
+\label{tbl:berniw_B}
 \centering
 \begin{tabular}{c||c||c||c}
 \hline
@@ -87,13 +88,10 @@ For the sake of comparison the pilots provided by the TORCS distribution were us
 \end{tabular}
 \end{table}
 
-
-Although, when it comes to road tracks, especially the ones filled with critical curves combinations, the controller faces several problems at staying between the track boundaries. These troubles are mainly caused by entering curves with high speed values, fact that reinforces the idea of an approaching curve state, to deal with speed reductions and angle corrections. The damage taken can be significantly reduced by implementing among with the approaching curve state, an enemy avoidance and overtaking behavior. In addition, the constants used in transition process do not represent the optimal values for that role, an evolutionary method needs to be implemented in order to achieve those values instead of the exhaustive search employed here. Moreover, oval tracks barely requires a state transition, in the overwhelming majority of time the car fits in the straight state. This lack of transitions and accentuated curves improves significantly the gain in performance.
-
 \begin{table}[h]
 \renewcommand{\arraystretch}{1.3}
-\caption{Results After 3 Laps in CG Speedway 1}
-\label{table_results_CG}
+\caption{ 3 Laps in CG Speedway 1}
+\label{tbl:berniw_CG}
 \centering
 
 \begin{tabular}{c||c||c||c}
@@ -113,4 +111,20 @@ Although, when it comes to road tracks, especially the ones filled with critical
 \hline 
 \end{tabular}
 \end{table}
-This approach demands a lot of time and space since all combinations are generated and executed. For future evolutions a more robust method, like genetic algorithm or neural networks needs to be applied in order to provide reliable results.
+
+As expected, this initial version of FSMDriver does not have the outstanding 
+behavior of \emph{berniw1}, but its results show that the proposal does have
+acceptable performance, and future tweaking of FSMDriver's states parameters may
+lead to better results. It is also important to note that the TORCS controllers
+have a different implementation, one that has access to the simulator's inner data,
+while FSMDriver's behavior is defined exclusively by its available sensors.
+
+After analyzing FSMDriver's performance in CG-Speedway 1, it was clear from the
+amount of damage that the problem was that the controller was consistently going
+out of the track and hitting the wall. After further inspection, this was found 
+to happen after stretches of straight lines, when FSMDriver would accelerate as 
+much as possible and enter a curve going too fast for proper steering.
+
+This indicates the need for another state, \textbf{Approaching Curve}, in which 
+FSMDriver would adjust between current behaviors and enter the curve in a better
+condition to make it as fast as possible.
