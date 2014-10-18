@@ -1,6 +1,6 @@
 \section{Experimental Results}
 For initial improvements the transition parameters have been chosen since they are fewer than the states parameters. Due to time limitations, the initial search for best parameters is done by simple
-iteration over arbitrary values for all parameters. An initial value is set and a delta parameter is added until it reaches the maximum value.
+iteration over arbitrary values for all parameters. An initial value is set and a delta parameter is added until it reaches the maximum value established.
 
 
 \begin{table}[h]
@@ -19,8 +19,7 @@ iteration over arbitrary values for all parameters. An initial value is set and 
 \end{tabular} 
 \end{table}
 
-In the end 8658 combinations were generated and properly tested in \textit{CG Speedway 1}
-for three laps. The best result generated used the following parameters: MAX\_SPEED\_DIST: $20$, LEFT\_EDGE: $-0.8$, RIGHT\_EDGE: $1$, STUCK\_TICKS: $110$. This set of values generated the best result for \textit{B-Speedway} as well.
+In the end 8658 combinations were generated and properly tested in \textit{CG Speedway 1} and \textit{B-Speedway}. The best result generated used the following parameters: MSD: $20$, LE: $-0.8$, RE: $1$, ST: $110$. This set of values generated the best result for \textit{B-Speedway} as well. An huge amount of parameters combination achieved the same best result in the second track. All of them do not trigger a state transition.
 
 
 
@@ -43,9 +42,7 @@ CG-Speedway 1 tracks (see Fig. \ref{fig:tracks}), each race starting with the ca
 has more characteristics of usual race tracks, such as sharp curves for either side,
 and provides a more general idea of the controller's behavior.
 
-All race results are logged into a file and the best configuration\toDo{CONCLUIR A FRASE}
-When the tests reaches the end and the results are generated, it is locate the 
-parameters that makes the pilot run with the minimum total time. At the time, the total time it's the only demand to make a distinction os results.
+The total race time is being taken in account. A good set of parameters is the one that generates a low race time, the best set of parameters generated de lowest race time. Only time is being considerated at this time. Though damage and best lap time have significant impact in the final score.
 
 The very first results emphasize this controller achievements: a better performance in more simple tracks, like oval ones, rather than in those with a higher degree of elaboration, like road or dirty tracks.
 
@@ -61,13 +58,14 @@ The very first results emphasize this controller achievements: a better performa
 \label{fig:tracks} 
 \end{figure} 
 
-The first track considered is B-Speedway
-When racing in oval tracks, particularly in , the FSMDriver outperforms 
+When racing in oval tracks, particularly in B-Speedway, the FSMDriver outperforms 
 some of the controllers provided by the TORCS distribution, specially that considered average drivers like Berniw 10. Pilots ran alone and total time was then reckoned (see Table \ref{table_results_B}).
+
+For the sake of comparison the pilots provided by the TORCS distribution were used in those experiments. One of the best family of pilots is the Berniw set of drivers, which were chosen for comparison. \toDo{MELHORAR A FRASE}
 
 \begin{table}[h]
 \renewcommand{\arraystretch}{1.3}
-\caption{3 Laps Race in B-Speedway}
+\caption{Results After 3 Laps in B-Speedway}
 \label{table_results_B}
 \centering
 \begin{tabular}{c||c||c||c}
@@ -90,23 +88,28 @@ some of the controllers provided by the TORCS distribution, specially that consi
 \end{table}
 
 
-
-The damage taken can be significantly reduced by implementing an enemy avoidance and overtaking behavior,\toDo{CONCLUIR FRASE}
-
-Although, when it comes to road tracks, especially the ones filled with critical curves combinations, the controller faces several problems at staying between the track boundaries. These troubles are mainly caused by entering curves with high speed values, fact that reinforces the idea of an approaching curve state, to deal with speed reductions and angle corrections. In addition, the constants used in transition process do not represent the optimal values for that role, an evolutionary method needs to be implemented in order to achieve those values instead of the exhaustive search employed here. Moreover, oval tracks barely requires a state transition, in the overwhelming majority of time the car fits in the straight state. This lack of transitions and accentuated curves improves significantly the gain in performance.
+Although, when it comes to road tracks, especially the ones filled with critical curves combinations, the controller faces several problems at staying between the track boundaries. These troubles are mainly caused by entering curves with high speed values, fact that reinforces the idea of an approaching curve state, to deal with speed reductions and angle corrections. The damage taken can be significantly reduced by implementing among with the approaching curve state, an enemy avoidance and overtaking behavior. In addition, the constants used in transition process do not represent the optimal values for that role, an evolutionary method needs to be implemented in order to achieve those values instead of the exhaustive search employed here. Moreover, oval tracks barely requires a state transition, in the overwhelming majority of time the car fits in the straight state. This lack of transitions and accentuated curves improves significantly the gain in performance.
 
 \begin{table}[h]
 \renewcommand{\arraystretch}{1.3}
-\caption{Comparison Among Lupo Bianco, who achieved the best results in CG Speedway 1, Berniw 3 and The FSMDriver}
-\label{results_table}
+\caption{Results After 3 Laps in CG Speedway 1}
+\label{table_results_CG}
 \centering
 
 \begin{tabular}{c||c||c||c}
-\hline \bfseries Driver &\bfseries Total Time &\bfseries Best Lap &\bfseries Top Speed \\
+\hline \bfseries Driver &\bfseries Total Time &\bfseries Damage &\bfseries Top Speed \\
 \hline
-\hline Lupo Bianco & 01:50:12 & 00:35:22 & 262 \\
-\hline Berniw 3 & 02:07:28 & 00:40:97 & 247 \\ 
-\hline FSMDriver & 02:34:49 & 00:50:12 & 242 \\ 
+\hline Berniw 8 & 02:07:17 & 0 & 246 \\
+\hline Berniw 6 & 02:07:18 & 0 & 248 \\
+\hline Berniw 4 & 02:07:18 & 0 & 246 \\
+\hline Berniw 7 & 02:07:20 & 0 & 250 \\
+\hline Berniw 5 & 02:07:28 & 0 & 246 \\
+\hline Berniw 3 & 02:07:28 & 0 & 247 \\
+\hline Berniw 9 & 02:07:58 & 0 & 247 \\
+\hline Berniw 1 & 02:12:80 & 1 & 252 \\
+\hline Berniw 2 & 02:12:80 & 1 & 252 \\
+\hline Berniw 10 & 02:21:54 & 0 & 230 \\
+\hline FSMDriver & 02:34:49 & 3337 & 242 \\ 
 \hline 
 \end{tabular}
 \end{table}
