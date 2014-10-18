@@ -62,12 +62,34 @@ in many digital games~\cite{buckland2005}, due to characteristics as follows:
 	the accurate definition of the requirements the pilot has to fulfill to be in each of these states needs to be thought 
 	thoroughly for good and competitive results.
 
-Each state of the FSMDriver uses specific parameters for defining its behavior. 
-There is a transition function that uses specific (constant) parameters to decide 
-when state must change (and which state to change to). This function mainly uses four constants:
-\begin{itemize}
-\item MAX\_SPEED\_DIST, the maximum distance for recognizing a curve.
-\item LEFT\_EDGE, track position value that indicate the left boundary of the track.
-\item RIGHT\_EDGE, track position value that indicate the right boundary of the track
-\item STUCK\_TICKS, number of ticks required to leave the stuck state.
-\end{itemize}
+	Each state of the FSMDriver uses specific parameters for defining its behavior. 
+	There is a transition function that uses specific (\emph{constant}) parameters
+	to decide when the \emph{current state} needs to be changed (and which state to
+	change to). This function mainly uses four constants:
+	\begin{itemize}
+		\item \textbf{MSD}, the maximum distance the frontal sensor can reach when in full speed
+		(\textbf{M}aximum \textbf{S}peed \textbf{D}istance);
+		\item \textbf{LE}, track position value that indicates the left boundary of the proper racing
+		space (\textbf{L}eft \textbf{E}dge);
+		\item \textbf{RE}, track position value that indicates the right boundary of the proper racing
+		space (\textbf{R}ight \textbf{E}dge);
+		\item \textbf{ST}, number of ticks required by the controller for it to declare being stuck
+		(\textbf{S}tuck \textbf{T}icks).
+	\end{itemize}
+	
+	The procedure of analysis to check the current state of the car in the race is
+	based on the following: to be \emph{outside of track} the car needs to be out of
+	the range defined between \emph{LE} and \emph{RE}, which are modularized values
+	that relate to the edges of the track. If the car is inside those values, than it
+	is correctly inside the track and can be either on a \emph{straight line},
+	when the frontal distance sensor is bigger than the \emph{MSD} or when this same
+	sensor points to a bigger value than the adjacent side sensors, or on a
+	\emph{curve}, when none of these two requirements is fulfilled. Before all of
+	these conditions are checked, which happens at every game tick, the car goes through
+	a procedure of verification on the \emph{stuck} state, that is, if it is at a defined
+	low speed and is not on the beginning of the track where it is acceptable, the game
+	ticks are accumulated until the defined value of maximum ticks in stuck conditions
+	\emph{ST} is reached, indicating that the car went stuck. Given this behavior, the
+	\emph{transition} function was implemented, and as it is the part of the code that
+	has less variables for perfomance-improvement analysis, it was submitted for
+	exaustive testing as a first attempt to evolve parameters inside the controller.
