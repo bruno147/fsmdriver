@@ -6,12 +6,12 @@
 #include "Stuck.h"
 
 //Define constants for transition method:
-const float FSMDriver::LEFT_EDGE        =-1.0;
-const float FSMDriver::RIGHT_EDGE       =1.0;
-const float FSMDriver::MAX_SPEED_DIST   =  70.0;
+const float FSMDriver::LEFT_EDGE        =-0.8;
+const float FSMDriver::RIGHT_EDGE       =1;
+const float FSMDriver::MAX_SPEED_DIST   =  20.0;
 const float FSMDriver::MAX_STR_ANGLE    =0.3;
 const float FSMDriver::MIN_STR_ANGLE    =-0.3;
-const int FSMDriver::STUCK_TICKS        =100;
+const int FSMDriver::STUCK_TICKS        =110;
 //Global variable to count the tics in stuck mode
 int stuck_Counter   =   0;
 int in_Stuck_Counter    =0;
