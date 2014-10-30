@@ -54,7 +54,30 @@ void reset_Stuck_Counters(){
     stuck_Counter = 0;
 }
 
+float variance(CarState &cs) {
+    float sensors[19];
+    float sensors_mean = 0.;
+    float sensorsVariance = 0.;
+
+    for (int i = 0; i < 19; i++) {
+        sensors[i] = cs.getTrack(i);
+        sensors_mean += sensors[i];
+    }
+
+    sensors_mean /= 19.;
+
+    for (int i = 0; i < 19; i++) {
+        sensorsVariance += pow((sensors[i] - sensors_mean), 2);
+    }
+
+    sensorsVariance /= 19.;
+
+    return sensorsVariance;
+}
+
 void FSMDriver::transition(CarState &cs) {
+    float sensorsVariance = variance(cs);
+
     if(stuck_Counter > STUCK_TICKS){
         if (current_state != Stuck::instance()) {
             change_to(Stuck::instance());
@@ -77,19 +100,27 @@ void FSMDriver::transition(CarState &cs) {
         if(++in_Stuck_Counter == 300){
             reset_Stuck_Counters();
         }
-    }else if(cs.getTrackPos() > LEFT_EDGE && cs.getTrackPos() < RIGHT_EDGE) {
+    } else if(sensorsVariance > 0.) {
         // Getting track information from the sensor at +5 degrees towards the car axis
-        float rSensor = cs.getTrack(10);
+        // float rSensor = cs.getTrack(10);
         // Getting track information from the sensor parallel to the car axis
-        float cSensor = cs.getTrack(9);
+        // float cSensor = cs.getTrack(9);
         // Getting track information from the sensor at -5 degrees towards the car axis
-        float lSensor = cs.getTrack(8);
+        // float lSensor = cs.getTrack(8);
         // Characteristics of a 'straight' to the FSM:
-        // 		- If the central sensor is beyond the distance of maximum speed or if it
-        // 		the biggest of {central, right (+5 degrees), left (-5 degrees)} sensors
-        if (cSensor > MAX_SPEED_DIST || (cSensor >= rSensor && cSensor >= lSensor)) {
+        //      - If the central sensor is beyond the distance of maximum speed or if it
+        //      the biggest of {central, right (+5 degrees), left (-5 degrees)} sensors
+        if (sensorsVariance > 1000.) {
             if (current_state != StraightLine::instance()) {
                 change_to(StraightLine::instance());
+            }
+        }
+        
+        // Characteristics of an 'approaching curve' to the FSM
+        // @todo change variable absolute values to exchangeable names
+        else if (sensorsVariance > 500. && sensorsVariance < 1000.) {
+            if (current_state != ApproachingCurve::instance()) {
+                change_to(ApproachingCurve::instance());
             }
         }
         // Characteristics of a 'curve' to the FSM
