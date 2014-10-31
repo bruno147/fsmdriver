@@ -1,5 +1,6 @@
 #include "FSMDriver.h"
 
+#include "ApproachingCurve.h"
 #include "StraightLine.h"
 #include "Curve.h"
 #include "OutOfTrack.h"
@@ -77,6 +78,7 @@ float variance(CarState &cs) {
 
 void FSMDriver::transition(CarState &cs) {
     float sensorsVariance = variance(cs);
+    this->cs = cs;
 
     if(stuck_Counter > STUCK_TICKS){
         if (current_state != Stuck::instance()) {
