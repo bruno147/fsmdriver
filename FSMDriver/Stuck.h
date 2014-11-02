@@ -27,7 +27,12 @@ public:
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
-	    return CarControl(1, 0, -1, this->getSteer(cs), 0, 0, 0);
+        const float accel = 1, brake = 0, clutch = 0;
+        const int gear = -1, focus = 0, meta = 0;
+
+        float steer = getSteer(cs);
+
+        return CarControl(accel, brake, gear, steer, clutch, focus, meta);
 	}
 
     ~Stuck(){}
