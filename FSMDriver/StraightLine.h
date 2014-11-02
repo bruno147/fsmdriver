@@ -4,6 +4,12 @@
 #include <cmath>
 #include "FSM.h"
 
+const int START_GEAR = 1; 
+const int DECREASE_GEAR_RPM = 1500;
+const int AVERAGE_RPM = 4000;
+const int INCREASE_GEAR_RPM = 9500;
+const int LOW_GEAR_LIMIT = 4;
+
 class FSMDriver;
 
 class StraightLine : public DrivingState<FSMDriver> {
@@ -30,44 +36,52 @@ public:
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
-        float brake = 0, clutch = 0;
+        const float accel = 1, brake = 0, clutch = 0;
+        const int focus = 0, meta = 0;
 
         float steer = getSteering(cs);
+        int gear = getGear(cs);
 
-        int gear = getGear(cs), focus = 0, meta = 0;
-
-        CarControl cc(1, brake, gear, steer, clutch, focus, meta);
-
-        return cc;
+        return CarControl(accel, brake, gear, steer, clutch, focus, meta);
     }
 
 private:
-	int getGear(CarState & cs) {
-        int current_gear = cs.getGear();
-        if(!current_gear) return 1;
+    inline bool lowRPM(int rpm) {
+        return (rpm < DECREASE_GEAR_RPM);
+    }
+    inline bool subAverageRPM(int rpm) {
+        return (rpm <= AVERAGE_RPM);
+    }
+    inline bool highRPM(int rpm) {
+        return (rpm > INCREASE_GEAR_RPM);
+    }
+    inline bool lowGear(int gear) {
+        return (gear <= LOW_GEAR_LIMIT);
+    }
+    inline bool upGear(int gear, int rpm) {
+        return highRPM(rpm);
+    }
+    inline bool downGear(int gear, int rpm) {
+        if(lowGear(gear)) return lowRPM(rpm);
+        return subAverageRPM(rpm);
+    }
 
-        if(current_gear > 1 && current_gear < 4 && cs.getRpm() < 1500)
-            return(current_gear - 1);
+	int getGear(CarState &cs) {
+        int gear = cs.getGear();
+        if(!gear) return START_GEAR;
 
-        if(current_gear < 2 && cs.getRpm() > 9500)
-            return(current_gear + 1);
+        int rpm = cs.getRpm();
 
-        if(current_gear >= 2 && cs.getRpm() > 9500)
-            return(current_gear + 1);
+        if(upGear(gear, rpm)) ++gear;
+        else if(downGear(gear, rpm)) --gear;
 
-        if(current_gear >= 4 && cs.getRpm() < 4000)
-            return(current_gear - 1);
-
-        return current_gear;
+        return gear;
     }
 
 	float getSteering(CarState & cs) {
         // based on Loiacono's SimpleDriver
-
-        const float
-          steerLock = 0.366519;
-        float
-          targetAngle = (cs.getAngle() - cs.getTrackPos() * 0.5) / steerLock;
+        const float steerLock = 0.366519;
+        float targetAngle = (cs.getAngle() - cs.getTrackPos() * 0.5) / steerLock;
 
         // normalize steering
         if(targetAngle < -1)
