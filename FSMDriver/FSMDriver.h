@@ -27,7 +27,7 @@ public:
     FSMDriver();
     virtual ~FSMDriver(){}
 
-    //Checks whenever _state need to be changed.
+    // Transitions between states (if appropriate).
     void transition(CarState &);
 
     //Main driving function.

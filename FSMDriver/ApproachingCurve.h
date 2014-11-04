@@ -24,8 +24,9 @@ public:
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
-        CarControl cc(this->getAccel(cs), this->getBrake(cs), this->getGear(cs), this->getSteering(cs), 0, 0, 0);
-        return cc;
+        const int focus = 0, meta = 0;
+        const float clutch = 0;
+        return CarControl(getAccel(cs), getBrake(cs), getGear(cs), getSteering(cs), clutch, focus, meta);
     }
 
 private:

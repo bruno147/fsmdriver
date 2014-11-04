@@ -17,15 +17,89 @@ const int FSMDriver::STUCK_TICKS        =110;
 int stuck_Counter   =   0;
 int in_Stuck_Counter    =0;
 
+const int NUM_SENSORS = 19;
+const int MIN_RACED_DISTANCE = 100;
+const int MAX_STUCK_TICKS = 300;
+const float STUCK_SPEED = 5;
+
+
+
+
+/***********************
+ * Auxiliary functions *
+ ***********************/
+
+inline bool seemsStuck(CarState &cs) {
+    return (abs(cs.getSpeedX()) <= STUCK_SPEED);
+}
+
+inline bool justStartedRace(CarState &cs) {
+    return (cs.getDistRaced() <= MIN_RACED_DISTANCE); 
+}
+
+inline bool isStuck(CarState &cs) {
+    return (seemsStuck(cs) && !justStartedRace(cs));
+}
+
+inline void iterateStuck(CarState &cs) {
+    if(isStuck(cs)) ++stuck_Counter;
+    else stuck_Counter = 0;
+}
+
+inline void resetStuckCounters(){
+    in_Stuck_Counter = 0;
+    stuck_Counter = 0;
+}
+
+float variance(CarState &cs) {
+    float sensors[NUM_SENSORS];
+    float mean = 0;
+    float var = 0;
+
+    for (int i = 0; i < NUM_SENSORS; ++i) {
+        sensors[i] = cs.getTrack(i);
+        mean += sensors[i];
+    }
+
+    mean /= NUM_SENSORS;
+
+    for (int i = 0; i < NUM_SENSORS; ++i)
+        var += (sensors[i] - mean)*(sensors[i] - mean);
+
+    var /= NUM_SENSORS;
+
+    return var;
+}
+
+inline bool outOfTrackLeft(float trackPos, float angle) {
+    return ((trackPos > 1) && (angle > 0));
+}
+
+inline bool outOfTrackRight(float trackPos, float angle) {
+    return ((trackPos < -1) && (angle < 0));
+}
+
+inline bool outOfTrack(float trackPos, float angle) {
+    return (outOfTrackLeft(trackPos, angle) || outOfTrackRight(trackPos, angle));
+}
+
+inline bool onTrack(float trackPos, float angle) {
+    return (((trackPos < 0) && (angle < 0)) ||
+            ((trackPos > -1) && (trackPos < 0) && (angle < 0)) ||
+            ((trackPos > 0) && (trackPos < 1) && (angle > 0)));
+}
+
+
 //-------------------------------------------------------------------------------------------------------------------
 //FSMDriver Class
+
 
 FSMDriver::FSMDriver() : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0),gear(0) {
     change_to(StraightLine::instance());
 }
 
 CarControl FSMDriver::wDrive(CarState cs) {
-    this->transition(cs);
+    transition(cs);
     return update(cs);
 }
 
@@ -38,105 +112,38 @@ void FSMDriver::onShutdown() {
 }
 
 void FSMDriver::init(float *angles){
-    for (int i = 0; i < 19; ++i)
-        angles[i]=-90+i*10;
-}
-
-void iterate_Stuck(CarState & cs){
-    if(abs(cs.getSpeedX()<5)&&(cs.getDistRaced()>100)){
-        stuck_Counter++;
-    }else{
-        stuck_Counter = 0;
-    }
-}
-
-void reset_Stuck_Counters(){
-    in_Stuck_Counter = 0;
-    stuck_Counter = 0;
-}
-
-float variance(CarState &cs) {
-    float sensors[19];
-    float sensors_mean = 0.;
-    float sensorsVariance = 0.;
-
-    for (int i = 0; i < 19; i++) {
-        sensors[i] = cs.getTrack(i);
-        sensors_mean += sensors[i];
-    }
-
-    sensors_mean /= 19.;
-
-    for (int i = 0; i < 19; i++) {
-        sensorsVariance += pow((sensors[i] - sensors_mean), 2);
-    }
-
-    sensorsVariance /= 19.;
-
-    return sensorsVariance;
+    for (int i = 0; i < NUM_SENSORS; ++i)
+        angles[i] = i*10-90; // @todo como assim?
 }
 
 void FSMDriver::transition(CarState &cs) {
-    float sensorsVariance = variance(cs);
     this->cs = cs;
+    DrivingState<FSMDriver> *state = current_state;
 
-    if(stuck_Counter > STUCK_TICKS){
-        if (current_state != Stuck::instance()) {
-            change_to(Stuck::instance());
-        }
+    float sensorsVariance = variance(cs);
+    iterateStuck(cs);
+    if(stuck_Counter > STUCK_TICKS) {
+        state = Stuck::instance();
+
+        float angle = cs.getAngle();
+        float trackPos = cs.getTrackPos();
+
         // @todo global counter to run stuck state for a defined time
-        if((cs.getTrackPos()>1)&&((cs.getAngle()>0))){
-            reset_Stuck_Counters();
-        }
-        if((cs.getTrackPos()<-1)&&((cs.getAngle()<0))){
-            reset_Stuck_Counters();
-        }
-        if(abs(cs.getTrackPos())<1){
-            if((cs.getTrackPos()<0)&&(cs.getAngle()<0)){
-                reset_Stuck_Counters();
-            }
-            if((cs.getTrackPos()>0)&&(cs.getAngle()>0)){
-                reset_Stuck_Counters();
-            }
-        }
-        if(++in_Stuck_Counter == 300){
-            reset_Stuck_Counters();
-        }
-    } else if(sensorsVariance > 0.) {
-        // Getting track information from the sensor at +5 degrees towards the car axis
-        // float rSensor = cs.getTrack(10);
-        // Getting track information from the sensor parallel to the car axis
-        // float cSensor = cs.getTrack(9);
-        // Getting track information from the sensor at -5 degrees towards the car axis
-        // float lSensor = cs.getTrack(8);
-        // Characteristics of a 'straight' to the FSM:
-        //      - If the central sensor is beyond the distance of maximum speed or if it
-        //      the biggest of {central, right (+5 degrees), left (-5 degrees)} sensors
-        if (sensorsVariance > 1000.) {
-            if (current_state != StraightLine::instance()) {
-                change_to(StraightLine::instance());
-            }
-        }
-        
-        // Characteristics of an 'approaching curve' to the FSM
+        if(outOfTrack(trackPos, angle) || onTrack(trackPos, angle))
+            resetStuckCounters();
+
+        ++in_Stuck_Counter;
+
+        if(in_Stuck_Counter >= MAX_STUCK_TICKS) resetStuckCounters();
+    } else if(sensorsVariance > 0) {
+        if (sensorsVariance > 1000) state = StraightLine::instance();
         // @todo change variable absolute values to exchangeable names
-        else if (sensorsVariance > 500. && sensorsVariance < 1000.) {
-            if (current_state != ApproachingCurve::instance()) {
-                change_to(ApproachingCurve::instance());
-            }
-        }
-        // Characteristics of a 'curve' to the FSM
-        else {
-            if (current_state != Curve::instance()) {
-                change_to(Curve::instance());
-            }
-        }
-    }
-    // Characteristics of 'outside of track' states
-    else {
-        if (current_state != OutOfTrack::instance()) {
-            change_to(OutOfTrack::instance());
-        }
-    }
-    iterate_Stuck(cs);
+        else if (sensorsVariance > 500 && sensorsVariance < 1000)
+            state = ApproachingCurve::instance();
+        else
+            state = Curve::instance();
+    } else
+        state = OutOfTrack::instance();
+
+    if (current_state != state) change_to(state);
 }
