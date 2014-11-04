@@ -1,10 +1,11 @@
 #include "FSMDriver.h"
-
 #include "ApproachingCurve.h"
 #include "StraightLine.h"
 #include "Curve.h"
 #include "OutOfTrack.h"
 #include "Stuck.h"
+
+#include <vector>
 
 //Define constants for transition method:
 const float FSMDriver::LEFT_EDGE        =-0.8;
@@ -52,9 +53,8 @@ inline void resetStuckCounters(){
 }
 
 float variance(CarState &cs) {
-    float sensors[NUM_SENSORS];
-    float mean = 0;
-    float var = 0;
+    std::vector<float> sensors(NUM_SENSORS);
+    float mean = 0, var = 0;
 
     for (int i = 0; i < NUM_SENSORS; ++i) {
         sensors[i] = cs.getTrack(i);
@@ -63,8 +63,8 @@ float variance(CarState &cs) {
 
     mean /= NUM_SENSORS;
 
-    for (int i = 0; i < NUM_SENSORS; ++i)
-        var += (sensors[i] - mean)*(sensors[i] - mean);
+    for(auto sensor : sensors)
+        var += (sensor-mean)*(sensor-mean);
 
     var /= NUM_SENSORS;
 
@@ -117,12 +117,12 @@ void FSMDriver::init(float *angles){
 }
 
 void FSMDriver::transition(CarState &cs) {
-    this->cs = cs;
     DrivingState<FSMDriver> *state = current_state;
 
     float sensorsVariance = variance(cs);
     iterateStuck(cs);
     if(stuck_Counter > STUCK_TICKS) {
+        ++in_Stuck_Counter;
         state = Stuck::instance();
 
         float angle = cs.getAngle();
@@ -132,13 +132,11 @@ void FSMDriver::transition(CarState &cs) {
         if(outOfTrack(trackPos, angle) || onTrack(trackPos, angle))
             resetStuckCounters();
 
-        ++in_Stuck_Counter;
-
         if(in_Stuck_Counter >= MAX_STUCK_TICKS) resetStuckCounters();
     } else if(sensorsVariance > 0) {
         if (sensorsVariance > 1000) state = StraightLine::instance();
         // @todo change variable absolute values to exchangeable names
-        else if (sensorsVariance > 500 && sensorsVariance < 1000)
+        else if (sensorsVariance > 500)
             state = ApproachingCurve::instance();
         else
             state = Curve::instance();

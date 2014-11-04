@@ -46,36 +46,24 @@ public:
     }
 
 private:
-    inline bool lowRPM(int rpm) {
+    static inline bool lowRPM(int rpm) {
         return (rpm < DECREASE_GEAR_RPM);
     }
-    inline bool subAverageRPM(int rpm) {
+    static inline bool subAverageRPM(int rpm) {
         return (rpm <= AVERAGE_RPM);
     }
-    inline bool highRPM(int rpm) {
+    static inline bool highRPM(int rpm) {
         return (rpm > INCREASE_GEAR_RPM);
     }
-    inline bool lowGear(int gear) {
+    static inline bool lowGear(int gear) {
         return (gear <= LOW_GEAR_LIMIT);
     }
-    inline bool upGear(int gear, int rpm) {
+    static inline bool upGear(int gear, int rpm) {
         return highRPM(rpm);
     }
-    inline bool downGear(int gear, int rpm) {
+    static inline bool downGear(int gear, int rpm) {
         if(lowGear(gear)) return lowRPM(rpm);
         return subAverageRPM(rpm);
-    }
-
-	int getGear(CarState &cs) {
-        int gear = cs.getGear();
-        if(!gear) return START_GEAR;
-
-        int rpm = cs.getRpm();
-
-        if(upGear(gear, rpm)) ++gear;
-        else if(downGear(gear, rpm)) --gear;
-
-        return gear;
     }
 
 	float getSteering(CarState & cs) {
@@ -99,6 +87,19 @@ private:
 
     float getSpeed(CarState & cs) {
         return sqrt(pow(cs.getSpeedX(), 2) + pow(cs.getSpeedY(), 2));
+    }
+
+public:
+    static int getGear(CarState &cs) {
+        int gear = cs.getGear();
+        if(!gear) return START_GEAR;
+
+        int rpm = cs.getRpm();
+
+        if(upGear(gear, rpm)) ++gear;
+        else if(downGear(gear, rpm)) --gear;
+
+        return gear;
     }
 };
 

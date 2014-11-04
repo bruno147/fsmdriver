@@ -17,7 +17,6 @@ private:
     static const int    STUCK_TICKS;
 
 public:
-    CarState cs;
     virtual void onShutdown();
     virtual void onRestart();
 
