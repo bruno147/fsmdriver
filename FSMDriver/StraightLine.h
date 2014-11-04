@@ -1,14 +1,14 @@
 #ifndef FSMDRIVER_STATE_STRAIGHTLINE_H
 #define FSMDRIVER_STATE_STRAIGHTLINE_H
 
-#include <cmath>
 #include "FSM.h"
 
-const int START_GEAR = 1; 
-const int DECREASE_GEAR_RPM = 1500;
-const int AVERAGE_RPM = 4000;
-const int INCREASE_GEAR_RPM = 9500;
+const int START_GEAR = 1;
 const int LOW_GEAR_LIMIT = 4;
+
+const int LOW_RPM = 1500;
+const int AVERAGE_RPM = 4000;
+const int HIGH_RPM = 9500;
 
 class FSMDriver;
 
@@ -39,34 +39,30 @@ public:
         const float accel = 1, brake = 0, clutch = 0;
         const int focus = 0, meta = 0;
 
-        float steer = getSteering(cs);
-        int gear = getGear(cs);
-
-        return CarControl(accel, brake, gear, steer, clutch, focus, meta);
+        return CarControl(accel, brake, getGear(cs), getSteer(cs), clutch, focus, meta);
     }
 
 private:
-    static inline bool lowRPM(int rpm) {
-        return (rpm < DECREASE_GEAR_RPM);
+    static inline bool runningOnLow(int rpm) {
+        return (rpm < LOW_RPM);
     }
-    static inline bool subAverageRPM(int rpm) {
+    static inline bool runningOnHigh(int rpm) {
+        return (rpm > HIGH_RPM);
+    }
+    static inline bool runningUnderAverage(int rpm) {
         return (rpm <= AVERAGE_RPM);
     }
-    static inline bool highRPM(int rpm) {
-        return (rpm > INCREASE_GEAR_RPM);
-    }
-    static inline bool lowGear(int gear) {
+    static inline bool isLow(int gear) {
         return (gear <= LOW_GEAR_LIMIT);
     }
-    static inline bool upGear(int gear, int rpm) {
-        return highRPM(rpm);
+    static inline bool shouldIncreaseGear(int gear, int rpm) {
+        return runningOnHigh(rpm);
     }
-    static inline bool downGear(int gear, int rpm) {
-        if(lowGear(gear)) return lowRPM(rpm);
-        return subAverageRPM(rpm);
+    static inline bool shouldDecreaseGear(int gear, int rpm) {
+        return (isLow(gear) ? runningOnLow(rpm) : runningUnderAverage(rpm));
     }
 
-	float getSteering(CarState & cs) {
+	float getSteer(CarState & cs) {
         // based on Loiacono's SimpleDriver
         const float steerLock = 0.366519;
         float targetAngle = (cs.getAngle() - cs.getTrackPos() * 0.5) / steerLock;
@@ -80,15 +76,6 @@ private:
         return targetAngle;
     }
 
-
-    float getDistTrackAxis(CarState & cs) {
-        return cs.getTrackPos();
-    }
-
-    float getSpeed(CarState & cs) {
-        return sqrt(pow(cs.getSpeedX(), 2) + pow(cs.getSpeedY(), 2));
-    }
-
 public:
     static int getGear(CarState &cs) {
         int gear = cs.getGear();
@@ -96,8 +83,8 @@ public:
 
         int rpm = cs.getRpm();
 
-        if(upGear(gear, rpm)) ++gear;
-        else if(downGear(gear, rpm)) --gear;
+        if(shouldIncreaseGear(gear, rpm)) ++gear;
+        else if(shouldDecreaseGear(gear, rpm)) --gear;
 
         return gear;
     }
