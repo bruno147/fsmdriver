@@ -3,18 +3,17 @@
 
 #include "FSM.h"
 
+constexpr float OVER_100_GEAR = 2; 
+constexpr int START_GEAR = 1;
+constexpr float STABLE_STEERING = 0.2;
+constexpr float START_GEAR_MAX_SPEED = 75;
+constexpr float SECOND_GEAR_MAX_SPEED = 100;
 
-int gear = 1;
-float SpeedX;
-float accel=1;
-float steer = 0,defined_steer[25]={0,0.02,0.05,0.1,0.12,0.15,0.18,0.20,0.2,0.22,0.25,0.28,0.3,0.32,0.35,0.38,0.40,0.42,0.45,0.48,0.50,0.52};// defined steer to each angle and track limiters
-float clutch=0;
-float brake=0;
-float angle,angle_limiter[10]={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
-float track_axis_distance,track_limiter[15]={0.05,0.1,0.2,0.25,0.30,0.4,0.5,0.55,0.60,0.65,0.7,0.8,0.9,1};
-float direction_angle;
-int size_angle_limiter,size_track_limiter; 
-int contator_angle_limiter,contator_track_limiter;// contator_angle and contator_track 
+int gear = START_GEAR;
+
+float defined_steer[25]={0,0.02,0.05,0.1,0.12,0.15,0.18,0.20,0.2,0.22,0.25,0.28,0.3,0.32,0.35,0.38,0.40,0.42,0.45,0.48,0.50,0.52};// defined steer to each angle and track limiters
+float angle_limiter[10]={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
+float track_limiter[15]={0.05,0.1,0.2,0.25,0.30,0.4,0.5,0.55,0.60,0.65,0.7,0.8,0.9,1};
 
 class FSMDriver;
 
@@ -40,62 +39,50 @@ public:
         std::cout << "Exit Curve" << std::endl;
     }
 	
-    int getgear(float steer, int gear,float SpeedX){
+    int getGear(float steer, int gear, float speedX) {
 		
-		if((steer>0.2)&&(gear>1)){
-			gear=gear -1;
+		if(steer > STABLE_STEERING && gear > START_GEAR){
+			--gear;
 		}
-		else{
-			if(SpeedX < 75){
-				gear = 1;
+		else {
+			if(speedX < START_GEAR_MAX_SPEED) {
+				gear = START_GEAR;
 			}
 			else{
-				if(SpeedX < 100){
-					gear = 2;
+				if(speedX < SECOND_GEAR_MAX_SPEED) {
+					gear = START_GEAR + 1;
 				}
 			}
 		}
 
-    return gear;
+	return gear;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
-
-		clutch=0;
-		brake=0;		
-		size_angle_limiter=sizeof(angle_limiter);
-		size_track_limiter=sizeof(track_limiter);
-		SpeedX = cs.getSpeedX();
-		angle = cs.getAngle();
-		track_axis_distance = cs.getTrackPos();
-		direction_angle = (angle>0?-1:+1);
-
-		for(contator_angle_limiter=0;(contator_angle_limiter<size_angle_limiter);contator_angle_limiter++){//this loop allow to find the angle interval at the race
-
-			if(angle<abs(angle_limiter[size_angle_limiter])){
+		float angle = cs.getAngle();
+		bool is_positive_angle = (angle > 0);
 		
-				for(contator_track_limiter=0;(contator_track_limiter<size_track_limiter);contator_track_limiter++){//this loop allow to find the track distance interval at the race
+		angle = abs(angle);
+		int a = 0; 
+		while(angle < angle_limiter[a]) ++a;
+		/* a value will *not* exceed array size because getAngle() range is 
+		within angle_limiter bounds. */
 
-					if(track_axis_distance<abs(track_limiter[contator_track_limiter])){
-						steer = direction_angle*defined_steer[contator_track_limiter+contator_angle_limiter];		
-						contator_angle_limiter = size_angle_limiter;
-						contator_track_limiter = size_track_limiter;
-					}
-				}	
-			}
-		}
+		float track_axis_distance = abs(cs.getTrackPos());
+		int t = 0;
+		while(track_axis_distance < track_limiter[t]) ++t;
+		/* t value will *not* exceed array size because getTrackPos() range is 
+		within track_limiter bounds. */
 
-		gear=getgear(steer,gear,SpeedX);
+		float steer = (is_positive_angle ? -defined_steer[a+t] : defined_steer[a+t]);
 
-		if(gear>2){// to assure a better performance the curve must be done reducing velocity using clutch and accel = 0
-			accel=0;
-			clutch = 1;				
-		}
+		gear = getGear(steer, gear, cs.getSpeedX());
 
-		CarControl cc(accel,brake,gear,steer,clutch);
+		float accel  = (gear > OVER_100_GEAR ? 0 : 1);
+		constexpr int brake = 0;
+		float clutch = (gear > OVER_100_GEAR ? 1 : 0);
 
-return cc;
-
+		return CarControl(accel, brake, gear, steer, clutch);
 	}
 
     ~Curve(){}
