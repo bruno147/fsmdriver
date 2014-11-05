@@ -20,12 +20,12 @@ public:
     }
 
     void enter(FSMDriver *driver) {
-        std::cout << "Enter ApproachingCurve" << std::endl;
+        cout << "Enter ApproachingCurve" << endl;
         sensorsAreUpdated = false;
     }
 
     void exit(FSMDriver *driver) {
-        std::cout << "Exit ApproachingCurve" << std::endl;
+        cout << "Exit ApproachingCurve" << endl;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
@@ -46,7 +46,7 @@ private:
 
     void updateSensors(CarState &cs) {
         if (cs.getFocus(2) == -1) {                     //Focus sensors are available only once per second
-            std::cout << "FOCUS ERROR!" << std::endl;
+            cout << "FOCUS ERROR!" << endl;
             rSensor = cs.getTrack(10);                  //Use track sensors
             cSensor = cs.getTrack(9);
             lSensor = cs.getTrack(8);

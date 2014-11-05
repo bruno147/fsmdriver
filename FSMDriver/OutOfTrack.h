@@ -29,11 +29,11 @@ public:
     ~OutOfTrack(){}
 
     void enter(FSMDriver *driver) {
-        std::cout << "Enter OutOfTrack" << std::endl;
+        cout << "Enter OutOfTrack" << endl;
     }
 
     void exit(FSMDriver *driver) {
-        std::cout << "Exit OutOfTrack" << std::endl;
+        cout << "Exit OutOfTrack" << endl;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {

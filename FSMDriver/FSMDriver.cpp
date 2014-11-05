@@ -13,47 +13,15 @@ const float FSMDriver::RIGHT_EDGE       =1;
 const float FSMDriver::MAX_SPEED_DIST   =  20.0;
 const float FSMDriver::MAX_STR_ANGLE    =0.3;
 const float FSMDriver::MIN_STR_ANGLE    =-0.3;
-const int FSMDriver::STUCK_TICKS        =110;
-//Global variable to count the tics in stuck mode
-int stuck_Counter   =   0;
-int in_Stuck_Counter    =0;
 
 const int NUM_SENSORS = 19;
-const int MIN_RACED_DISTANCE = 100;
-const int MAX_STUCK_TICKS = 300;
-const float STUCK_SPEED = 5;
-
-
-
 
 /***********************
  * Auxiliary functions *
  ***********************/
 
-inline bool seemsStuck(CarState &cs) {
-    return (abs(cs.getSpeedX()) <= STUCK_SPEED);
-}
-
-inline bool justStartedRace(CarState &cs) {
-    return (cs.getDistRaced() <= MIN_RACED_DISTANCE); 
-}
-
-inline bool isStuck(CarState &cs) {
-    return (seemsStuck(cs) && !justStartedRace(cs));
-}
-
-inline void iterateStuck(CarState &cs) {
-    if(isStuck(cs)) ++stuck_Counter;
-    else stuck_Counter = 0;
-}
-
-inline void resetStuckCounters(){
-    in_Stuck_Counter = 0;
-    stuck_Counter = 0;
-}
-
-float variance(CarState &cs) {
-    std::vector<float> sensors(NUM_SENSORS);
+float trackReadingsVariance(CarState &cs) {
+    vector<float> sensors(NUM_SENSORS);
     float mean = 0, var = 0;
 
     for (int i = 0; i < NUM_SENSORS; ++i) {
@@ -69,24 +37,6 @@ float variance(CarState &cs) {
     var /= NUM_SENSORS;
 
     return var;
-}
-
-inline bool outOfTrackLeft(float trackPos, float angle) {
-    return ((trackPos > 1) && (angle > 0));
-}
-
-inline bool outOfTrackRight(float trackPos, float angle) {
-    return ((trackPos < -1) && (angle < 0));
-}
-
-inline bool outOfTrack(float trackPos, float angle) {
-    return (outOfTrackLeft(trackPos, angle) || outOfTrackRight(trackPos, angle));
-}
-
-inline bool onTrack(float trackPos, float angle) {
-    return (((trackPos < 0) && (angle < 0)) ||
-            ((trackPos > -1) && (trackPos < 0) && (angle < 0)) ||
-            ((trackPos > 0) && (trackPos < 1) && (angle > 0)));
 }
 
 
@@ -119,29 +69,21 @@ void FSMDriver::init(float *angles){
 void FSMDriver::transition(CarState &cs) {
     DrivingState<FSMDriver> *state = current_state;
 
-    float sensorsVariance = variance(cs);
-    iterateStuck(cs);
-    if(stuck_Counter > STUCK_TICKS) {
-        ++in_Stuck_Counter;
+    if(Stuck::isStuck(cs)) {
         state = Stuck::instance();
+    } else {
+		float var = trackReadingsVariance(cs);
 
-        float angle = cs.getAngle();
-        float trackPos = cs.getTrackPos();
-
-        // @todo global counter to run stuck state for a defined time
-        if(outOfTrack(trackPos, angle) || onTrack(trackPos, angle))
-            resetStuckCounters();
-
-        if(in_Stuck_Counter >= MAX_STUCK_TICKS) resetStuckCounters();
-    } else if(sensorsVariance > 0) {
-        if (sensorsVariance > 1000) state = StraightLine::instance();
-        // @todo change variable absolute values to exchangeable names
-        else if (sensorsVariance > 500)
+		/* @todo change numbers to constants with meaningful names. */
+        if (var > 1000) 
+			state = StraightLine::instance();
+        else if (var > 500) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
             state = ApproachingCurve::instance();
-        else
+        else if(var > 0)
             state = Curve::instance();
-    } else
-        state = OutOfTrack::instance();
+	    else
+	        state = OutOfTrack::instance();
+	}
 
     if (current_state != state) change_to(state);
 }

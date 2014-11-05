@@ -28,11 +28,11 @@ public:
     ~StraightLine(){}
 
     void enter(FSMDriver *driver) {
-        std::cout << "Enter StraightLine" << std::endl;
+        cout << "Enter StraightLine" << endl;
     }
 
     void exit(FSMDriver *driver) {
-        std::cout << "Exit StraightLine" << std::endl;
+        cout << "Exit StraightLine" << endl;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
@@ -46,20 +46,25 @@ private:
     static inline bool runningOnLow(int rpm) {
         return (rpm < LOW_RPM);
     }
-    static inline bool runningOnHigh(int rpm) {
-        return (rpm > HIGH_RPM);
-    }
     static inline bool runningUnderAverage(int rpm) {
         return (rpm <= AVERAGE_RPM);
     }
-    static inline bool isLow(int gear) {
-        return (gear <= LOW_GEAR_LIMIT);
+    static inline bool runningOnHigh(int rpm) {
+        return (rpm > HIGH_RPM);
     }
-    static inline bool shouldIncreaseGear(int gear, int rpm) {
+    static inline bool isLowGear(int gear) {
+        return (gear > START_GEAR && gear < LOW_GEAR_LIMIT);
+    }
+    static inline bool isHighGear(int gear) {
+        return (gear >= LOW_GEAR_LIMIT);
+    }
+    static bool shouldDecreaseGear(int currentGear, int rpm) {
+        if(isLowGear(currentGear) && runningOnLow(rpm)) return true;
+        if(isHighGear(currentGear) && runningUnderAverage(rpm)) return true;
+        return false;
+    }
+    static inline bool shouldIncreaseGear(int currentGear, int rpm) {
         return runningOnHigh(rpm);
-    }
-    static inline bool shouldDecreaseGear(int gear, int rpm) {
-        return (isLow(gear) ? runningOnLow(rpm) : runningUnderAverage(rpm));
     }
 
 	float getSteer(CarState & cs) {
