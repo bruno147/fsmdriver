@@ -3,8 +3,8 @@
 
 #include "FSM.h"
 
-class FSMDriver;
 
+/******************************************************************************/
 const float MAX_SKIDDING = 3;
 const float NEGATIVE_ACCEL_PERCENT = 0.1;
 const int VELOCITY_GEAR_4 = 90;
@@ -12,6 +12,9 @@ const int VELOCITY_GEAR_3 = 70;
 const int VELOCITY_GEAR_2 = 40;
 const float MAX_RETURN_ANGLE = 0.7;
 const float MIN_RETURN_ANGLE = 0.5;
+/******************************************************************************/
+
+class FSMDriver;
 
 class OutOfTrack : public DrivingState<FSMDriver> {
 public:

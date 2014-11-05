@@ -3,9 +3,11 @@
 
 #include "FSM.h"
 
+/******************************************************************************/
 const float STUCK_SPEED = 5;
 const int MIN_RACED_DISTANCE = 100;
 const int MAX_STUCK_TICKS = 300;
+/******************************************************************************/
 
 class FSMDriver;
 class Stuck : public DrivingState<FSMDriver> {

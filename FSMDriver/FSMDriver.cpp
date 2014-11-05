@@ -14,11 +14,10 @@ const float FSMDriver::MAX_SPEED_DIST   =  20.0;
 const float FSMDriver::MAX_STR_ANGLE    =0.3;
 const float FSMDriver::MIN_STR_ANGLE    =-0.3;
 
+/******************************************************************************/
 const int NUM_SENSORS = 19;
+/******************************************************************************/
 
-/***********************
- * Auxiliary functions *
- ***********************/
 
 float trackReadingsVariance(CarState &cs) {
     vector<float> sensors(NUM_SENSORS);

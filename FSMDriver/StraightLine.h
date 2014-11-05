@@ -3,12 +3,14 @@
 
 #include "FSM.h"
 
+/******************************************************************************/
 const int START_GEAR = 1;
 const int LOW_GEAR_LIMIT = 4;
 
 const int LOW_RPM = 1500;
 const int AVERAGE_RPM = 4000;
 const int HIGH_RPM = 9500;
+/******************************************************************************/
 
 class FSMDriver;
 
