@@ -68,7 +68,7 @@ private:
 			return START_GEAR;
 
 		if(speedX < SECOND_GEAR_MAX_SPEED)
-			return = START_GEAR + 1;
+			return START_GEAR + 1;
 
 		return currentGear;
     }
