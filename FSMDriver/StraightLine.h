@@ -68,6 +68,9 @@ private:
     static inline bool shouldIncreaseGear(int currentGear, int rpm) {
         return runningOnHigh(rpm);
     }
+    float getBrake(CarState &cs) {
+        return (cs.getSpeedX() < 0 ? 1:0);
+    }
 
 	float getSteer(CarState & cs) {
         // based on Loiacono's SimpleDriver
@@ -86,7 +89,7 @@ private:
 public:
     static int getGear(CarState &cs) {
         int gear = cs.getGear();
-        if(!gear) return START_GEAR;
+        if(gear <= 0) return START_GEAR;
 
         int rpm = cs.getRpm();
 
