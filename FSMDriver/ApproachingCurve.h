@@ -35,7 +35,7 @@ public:
         const int focus = 0, meta = 0;
         const float clutch = 0;
 
-        return CarControl(getAccel(cs), getBrake(cs), getGear(cs), getSteering(cs), clutch, focus, meta);
+        return CarControl(getAccel(cs), getBrake(cs), getGear(cs), cs.getAngle(), clutch, focus, meta);
     }
 
 private:
@@ -79,7 +79,7 @@ private:
         float angle = cs.getAngle();
         bool insideTrack = (fabs(cs.getTrackPos()) <= TARGET_POS);
 
-        if(insideTrack) {
+        if(insideTrack) {   
             if(approachingRightTurn())
                 angle = MAX_STEERING - angle;
             else
@@ -92,6 +92,7 @@ private:
     float getBrake(CarState &cs) {
         float brake = 0;
         float diff = cs.getSpeedX() - targetSpeed;
+        if (cs.getSpeedX() < 0) return 1;
         if (diff > 0) brake = 0.02*diff; /* @todo de onde veio 0.02? */
 
         return brake;
