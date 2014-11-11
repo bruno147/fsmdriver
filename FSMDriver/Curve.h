@@ -6,8 +6,8 @@
 /******************************************************************************/
 extern const int START_GEAR;
 
-const float OVER_100_GEAR = 2;  /* @todo isso depende do carro, não deveria ser assim. */
 const float STABLE_STEERING = 0.2;
+const float OVER_100_GEAR = 2; /* @todo isso depende do carro, não deveria ser assim. */
 const float START_GEAR_MAX_SPEED = 75; /* @todo isso depende do carro, não deveria ser assim. */
 const float SECOND_GEAR_MAX_SPEED = 100; /* @todo isso depende do carro, não deveria ser assim. */
 
@@ -41,14 +41,13 @@ public:
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
-		float steer = getSteer(cs);
+		float steer = getSteer2(cs);
 		currentGear = getGear(steer, cs.getSpeedX());
 
-		float accel  = (currentGear > OVER_100_GEAR ? 0 : 1);
-		const int brake = 0;
-		float clutch = (currentGear > OVER_100_GEAR ? 1 : 0);
+		float accel  = getAccel(cs);
+		float clutch = 0;
 
-		return CarControl(accel, brake, currentGear, steer, clutch);
+		return CarControl(accel, getBrake(cs), StraightLine::getGear(cs), steer, clutch);
 	}
 
     ~Curve(){}
@@ -56,8 +55,6 @@ public:
 private:
 	inline bool shouldDecreaseGear(float steer) {
 		return (steer > STABLE_STEERING && currentGear > START_GEAR);
-	}
-    inline bool shouldIncreaseGear(int currentGear, int rpm) {
 	}
 
     int getGear(float steer, float speedX) {
@@ -71,6 +68,23 @@ private:
 			return START_GEAR + 1;
 
 		return currentGear;
+    }
+    float getAccel(CarState cs) {
+    	return 1-abs(cs.getAngle());
+
+    }
+
+    float getBrake(CarState cs) {
+    	return (cs.getSpeedX() < 0 ? 1:0);
+    }
+
+    float getSteer2(CarState &cs) {
+    	float angle = cs.getAngle();
+    	float pos = cs.getTrackPos();
+    	
+
+    	cout << "angle: " << angle-1.5*pos << endl;
+    	return angle-1.5*pos;
     }
 
     float getSteer(CarState &cs) {
