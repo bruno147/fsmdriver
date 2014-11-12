@@ -7,6 +7,7 @@
 const float STUCK_SPEED = 5;
 const int MIN_RACED_DISTANCE = 100;
 const int MAX_STUCK_TICKS = 300;
+const int MAX_SLOW_SPEED_TICKS=50;
 /******************************************************************************/
 
 class FSMDriver;
@@ -38,13 +39,15 @@ public:
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
 		++elapsedTicks;
-
-        if(notStuckAnymore(cs.getAngle(), cs.getTrackPos()) || hasBeenStuckLongEnough())
+		trackInitialPos = getInitialPos(cs);
+        if(notStuckAnymore(cs.getTrackPos(), cs.getAngle()) || hasBeenStuckLongEnough()){
 			elapsedTicks = 0;
-
+			slowSpeedTicks = 0;
+			trackInitialPos = 0;
+		}
         const float accel = 1, brake = 0, clutch = 0;
         const int gear = -1, focus = 0, meta = 0;
-        float steer = getSteer(cs);
+        float steer = getSteer(trackInitialPos, cs);
 
         return CarControl(accel, brake, gear, steer, clutch, focus, meta);
 	}
@@ -53,44 +56,51 @@ public:
 
 private:
 	static inline bool seemsStuck(CarState &cs) {
-	    return (abs(cs.getSpeedX()) <= STUCK_SPEED);
+		cs.getSpeedX()<STUCK_SPEED?slowSpeedTicks++:slowSpeedTicks=0;
+		if(notStuckAnymore(cs.getTrackPos(), cs.getAngle())){
+			slowSpeedTicks=0;
+		}
+		return (slowSpeedTicks>MAX_SLOW_SPEED_TICKS?1:0);
+	    //return (abs(cs.getSpeedX()) <= STUCK_SPEED);
 	}
 
 	static inline bool justStartedRace(CarState &cs) {
 	    return (cs.getDistRaced() <= MIN_RACED_DISTANCE); 
 	}
 
-	inline bool outOfTrackLeft(float trackPos, float angle) {
-	    return ((trackPos > 1) && (angle > 0));
-	}
-
-	inline bool outOfTrackRight(float trackPos, float angle) {
-	    return ((trackPos < -1) && (angle < 0));
-	}
-
-	inline bool outOfTrack(float trackPos, float angle) {
-	    return (outOfTrackLeft(trackPos, angle) || outOfTrackRight(trackPos, angle));
-	}
-
-	inline bool onTrack(float trackPos, float angle) {
-	    return (((trackPos < 0) && (angle < 0)) ||
-	            ((trackPos > -1) && (trackPos < 0) && (angle < 0)) ||
-	            ((trackPos > 0) && (trackPos < 1) && (angle > 0)));
+	static inline bool onTrack(float trackPos, float angle) {
+	    return (((trackPos < 0) && (angle > -1.57) && (angle < 0)) ||
+	            ((trackPos > 0) && (angle < 1.57 ) && (angle > 0)) ||
+	            ((trackPos > 1) && (angle > 0))						||
+	           	((trackPos < 1) && (angle < 0)));
 	}
 
 	/* @todo give this test (and the previous ones) with a meaningful name... */
-	inline bool notStuckAnymore(float trackPos, float angle) {
-		return (outOfTrack(trackPos, angle) || onTrack(trackPos, angle));
+	static inline bool notStuckAnymore(float trackPos, float angle) {
+		return (onTrack(trackPos, angle));
 	}
 
 	inline bool hasBeenStuckLongEnough() {
 		return (elapsedTicks >= MAX_STUCK_TICKS);
 	}
 
-	float getSteer(CarState & cs){
-        return (cs.getTrackPos() > 0 ? 1 : -1);
+	float getSteer(float trackInitialPos, CarState &cs){
+        //return (trackInitialPos > 0 ? 1 : -1);
+        if(abs(cs.getAngle()) > 3.14/2.0){
+        	return (trackInitialPos > 0 ? -1 : 1);
+        }else{
+        	return (trackInitialPos > 0 ? 1 : -1);
+        }
+        
+	}
+	float getInitialPos(CarState &cs){
+		return (trackInitialPos==0?cs.getTrackPos():trackInitialPos);
 	}
 
     unsigned int elapsedTicks;
+    static unsigned int slowSpeedTicks;
+    static float trackInitialPos;
 };
+unsigned int Stuck::slowSpeedTicks=0;
+float Stuck::trackInitialPos=0;
 #endif // FSMDRIVER_STATE_STUCK_H
