@@ -1,0 +1,13 @@
+\section{Curve State Description}
+
+A curve can be assumed as a critical event in a race once it take the car's controller to act almost abruptaly in order to continue the race, these actions not always are the most appropriete, it may even enough to let the car be overtaken by other competitors. The way to handle obliqual 
+tracks was based on the position of the car and the angle between the direction of the car axis and the track axis direction, values adquired by two sensors that affect the actuators: steering, gear and clutch. 
+
+The information was treated using several ways, including correlate sensors to the effectors with polynomial expressions, nevertheless the one which show the best results was the approach that described a curve by angle and distance to the track of the intervals. Each couple of sensor's values are put in a range of angle and track's distance, creating abstraction the obliqual track concept in the algorithm, assigning values in the considered curve.
+
+Comparing this approach to others competitors, this especifically implementation use less sensors with a relativaly simple treatment that imply less computational cost, completing many types of curves.
+However the recent code does not succeed at some sharp bends and even when it manage to continue the race the performance is impaired. The worst cenario can be overcome with a new state that indicate the car is near to curve,it enable the controller to minimaze the speed or turn the steering if it needed.          
+
+ 
+
+      
