@@ -9,12 +9,10 @@ private:
     float accel, brake, steer; //Actuators values
     int gear;
 
-    static const float  LEFT_EDGE;
-    static const float  RIGHT_EDGE;
-    static const float  MAX_SPEED_DIST;
-    static const float  MAX_STR_ANGLE;
-    static const float  MIN_STR_ANGLE;
-    static const int    STUCK_TICKS;
+    static const int MAX_STRAIGHT_LINE_VAR;
+    static const int MIN_STRAIGHT_LINE_VAR;
+    static const int MAX_APPROACHING_CURVE_VAR;
+    static const int MIN_APPROACHING_CURVE_VAR;
 
 public:
     virtual void onShutdown();

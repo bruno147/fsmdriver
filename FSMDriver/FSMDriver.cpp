@@ -8,11 +8,11 @@
 #include <vector>
 
 //Define constants for transition method:
-const float FSMDriver::LEFT_EDGE        =-0.8;
-const float FSMDriver::RIGHT_EDGE       =1;
-const float FSMDriver::MAX_SPEED_DIST   =  20.0;
-const float FSMDriver::MAX_STR_ANGLE    =0.3;
-const float FSMDriver::MIN_STR_ANGLE    =-0.3;
+
+const int   FSMDriver::MAX_STRAIGHT_LINE_VAR     = 1000;
+const int   FSMDriver::MIN_STRAIGHT_LINE_VAR     =  500;
+const int   FSMDriver::MAX_APPROACHING_CURVE_VAR =  400;
+const int   FSMDriver::MIN_APPROACHING_CURVE_VAR =  300;
 
 /******************************************************************************/
 const int NUM_SENSORS = 19;
@@ -71,18 +71,18 @@ void FSMDriver::transition(CarState &cs) {
     if(Stuck::isStuck(cs)) {
         state = Stuck::instance();
     } else {
-		float var = trackReadingsVariance(cs);
-
-		/* @todo change numbers to constants with meaningful names. */
-        if (var > 1000) 
-			state = StraightLine::instance();
-        else if (var > 500) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
+        float var = trackReadingsVariance(cs);
+        
+        /* @todo change numbers to constants with meaningful names. */
+        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state==StraightLine::instance())) 
+            state = StraightLine::instance();
+        else if (var > MAX_APPROACHING_CURVE_VAR || ((var > MIN_APPROACHING_CURVE_VAR) && current_state==ApproachingCurve::instance())) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
             state = ApproachingCurve::instance();
         else if(var > 0)
             state = Curve::instance();
-	    else
-	        state = OutOfTrack::instance();
-	}
+        else
+            state = OutOfTrack::instance();
+    }
 
     if (current_state != state) change_to(state);
 }
