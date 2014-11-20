@@ -34,30 +34,35 @@ public:
 
         const int focus = 0, meta = 0;
         const float clutch = 0;
-
-        return CarControl(getAccel(cs), getBrake(cs), getGear(cs), cs.getAngle(), clutch, focus, meta);
+		
+		return CarControl(getAccel(cs), getBrake(cs), getGear(cs), cs.getAngle(), clutch, focus, meta);
+		//Use the line below if the behavior of adjusting the car to the curve ahead is desired (not fully functional):
+        //return CarControl(getAccel(cs), getBrake(cs), getGear(cs), getSteering(cs), clutch, focus, meta);
     }
 
 private:
-    const float MAX_STEERING, TARGET_POS, BASE_SPEED;
+    const float MAXSTEERING, TARGETPOS, BASESPEED;
     float rSensor, cSensor, lSensor, targetSpeed;
     ApproachingCurve() :
-        MAX_STEERING(0.12), TARGET_POS(0.6), BASE_SPEED(80) {}
+        MAXSTEERING(0.12), TARGETPOS(0.7), BASESPEED(80) {}
 
     void updateSensors(CarState &cs) {
+        float speedFactor = 5000;                       //The target speed is obtained through a constant factor
+
         if (cs.getFocus(2) == -1) {                     //Focus sensors are available only once per second
-            cout << "FOCUS ERROR!" << endl;
+            cout << "FOCUS MISS!" << endl;
             rSensor = cs.getTrack(10);                  //Use track sensors
             cSensor = cs.getTrack(9);
             lSensor = cs.getTrack(8);
         }
         else {
+            cout << "FOCUS HIT!" << endl;
             rSensor = cs.getFocus(3);                   //Use focus sensors
             cSensor = cs.getFocus(2);
             lSensor = cs.getFocus(1);
         }
-        targetSpeed = BASE_SPEED + 5000/fabs(lSensor - rSensor);
-        
+        targetSpeed = BASESPEED + speedFactor / fabs(lSensor - rSensor);
+
         sensorsAreUpdated = true;
     }
 
@@ -77,13 +82,17 @@ private:
         if(rSensor == lSensor) return 0;
         
         float angle = cs.getAngle();
-        bool insideTrack = (fabs(cs.getTrackPos()) <= TARGET_POS);
+        //If the controller is not in a pre-defined region amongst the inside limits of the track (between 0.7 and 0.9 with the current
+        //set of values, normalized), than it will be adjusted to do so
+        bool adjustedToCurve = ((fabs(cs.getTrackPos()) - TARGETPOS >= 0) && (fabs(cs.getTrackPos()) - TARGETPOS < 0.2));
+        //Previous conditions:																// 0.2 is an arbitrary margin
+        //bool adjustedToCurve = (cs.getTrackPos() <= TARGETPOS);
 
-        if(insideTrack) {   
+        if(!adjustedToCurve) {   
             if(approachingRightTurn())
-                angle = MAX_STEERING - angle;
+                angle = MAXSTEERING - angle;
             else
-                angle -= MAX_STEERING;
+                angle -= MAXSTEERING;
         }
         
         return angle;
@@ -91,9 +100,12 @@ private:
 
     float getBrake(CarState &cs) {
         float brake = 0;
+        float brakeFactor = 0.02;
         float diff = cs.getSpeedX() - targetSpeed;
+
+        //if (fabs(cs.getSpeedX()) < 2) return 1;
         if (cs.getSpeedX() < 0) return 1;
-        if (diff > 0) brake = 0.02*diff; /* @todo de onde veio 0.02? */
+        if (diff > 0) brake = brakeFactor * diff;
 
         return brake;
     }
