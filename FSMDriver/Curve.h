@@ -68,7 +68,8 @@ private:
     }
 
     float getSteer(CarState &cs) {
-        if (cs.getAngle() < -M_PI || cs.getAngle() > M_PI) {
+        cout << "angle: " << cs.getAngle() << endl;
+        if (cs.getAngle() < -M_PI/2 || cs.getAngle() > M_PI/2) {
             return cs.getAngle();
         }
         else {
