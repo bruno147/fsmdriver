@@ -76,7 +76,8 @@ void FSMDriver::transition(CarState &cs) {
         /* @todo change numbers to constants with meaningful names. */
         if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state==StraightLine::instance())) 
             state = StraightLine::instance();
-        else if (var > MAX_APPROACHING_CURVE_VAR || ((var > MIN_APPROACHING_CURVE_VAR) && current_state==ApproachingCurve::instance())) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
+        else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != Curve::instance())
+         || ((var > MIN_APPROACHING_CURVE_VAR) && current_state==ApproachingCurve::instance())) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
             state = ApproachingCurve::instance();
         else if(var > 0)
             state = Curve::instance();
