@@ -44,7 +44,9 @@ private:
     float getAccel(CarState &cs) { //@todo Change accelaration logic.
     	return 0.6;
     }
-
+    bool isFacingWrongWay(CarState &cs) {
+        return cs.getAngle() < -M_PI/2 || cs.getAngle() > M_PI/2;
+    }
     float getBrake(CarState cs) {
     	return (cs.getSpeedX() < 0 ? 1:0);
     }
@@ -59,7 +61,7 @@ private:
             }
         }
         farthestDirection = -M_PI/2 + farthestDirection*M_PI/18;
-        return -farthestDirection;
+        return normalizeSteer(-farthestDirection);
     }
 
     float normalizeSteer(float angle) {
@@ -68,14 +70,7 @@ private:
     }
 
     float getSteer(CarState &cs) {
-        cout << "angle: " << cs.getAngle() << endl;
-        if (cs.getAngle() < -M_PI/2 || cs.getAngle() > M_PI/2) {
-            return cs.getAngle();
-        }
-        else {
-        	float angle = findFarthestDirection(cs);   	
-        	return normalizeSteer(angle);
-        }
+        return isFacingWrongWay(cs) ? cs.getAngle() : findFarthestDirection(cs);
     }
 
 };
