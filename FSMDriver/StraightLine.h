@@ -40,8 +40,9 @@ public:
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
         const float accel = 1, brake = 0, clutch = 0;
         const int focus = 0, meta = 0;
+        float steer = cs.getAngle();
 
-        return CarControl(accel, brake, getGear(cs), getSteer(cs), clutch, focus, meta);
+        return CarControl(accel, brake, getGear(cs), steer, clutch, focus, meta);
     }
 
 private:
@@ -70,20 +71,6 @@ private:
     }
     float getBrake(CarState &cs) {
         return (cs.getSpeedX() < 0 ? 1:0);
-    }
-
-	float getSteer(CarState & cs) {
-        // based on Loiacono's SimpleDriver
-        const float steerLock = 0.366519;
-        float targetAngle = (cs.getAngle() - cs.getTrackPos() * 0.5) / steerLock;
-
-        // normalize steering
-        if(targetAngle < -1)
-            targetAngle = -1;
-        else if(targetAngle > 1)
-            targetAngle = 1;
-
-        return targetAngle;
     }
 
 public:
