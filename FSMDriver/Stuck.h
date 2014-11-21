@@ -5,9 +5,9 @@
 
 /******************************************************************************/
 const float STUCK_SPEED = 5;
-const int MIN_RACED_DISTANCE = 100;
-const int MAX_STUCK_TICKS = 300;
-const int MAX_SLOW_SPEED_TICKS=50;
+const unsigned int MIN_RACED_DISTANCE = 100;
+const unsigned int MAX_STUCK_TICKS = 300;
+const unsigned int MAX_SLOW_SPEED_TICKS=50;
 /******************************************************************************/
 
 class FSMDriver;
@@ -28,12 +28,14 @@ public:
 	    return (seemsStuck(cs) && !justStartedRace(cs));
 	}
 
-    void enter(FSMDriver *driver) {
+    void enter(FSMDriver *driver, CarState &cs) {
         cout << "Enter Stuck" << endl;
         elapsedTicks = 0;
+
     }
 
     void exit(FSMDriver *driver) {
+
         cout << "Exit Stuck" << endl;
     }
 
@@ -68,16 +70,16 @@ private:
 	    return (cs.getDistRaced() <= MIN_RACED_DISTANCE); 
 	}
 
-	static inline bool onTrack(float trackPos, float angle) {
+	static inline bool onRightWay(float trackPos, float angle) {
 	    return (((trackPos < 0) && (angle > -1.57) && (angle < 0)) ||
 	            ((trackPos > 0) && (angle < 1.57 ) && (angle > 0)) ||
-	            ((trackPos > 1) && (angle > 0))						||
-	           	((trackPos < 1) && (angle < 0)));
+	            ((trackPos > 1) && (angle > 0))||
+	            ((trackPos < -1) && (angle < 0)));
 	}
 
 	/* @todo give this test (and the previous ones) with a meaningful name... */
 	static inline bool notStuckAnymore(float trackPos, float angle) {
-		return (onTrack(trackPos, angle));
+		return (onRightWay(trackPos, angle));
 	}
 
 	inline bool hasBeenStuckLongEnough() {
@@ -86,7 +88,7 @@ private:
 
 	float getSteer(float trackInitialPos, CarState &cs){
         //return (trackInitialPos > 0 ? 1 : -1);
-        if(abs(cs.getAngle()) > 3.14/2.0){
+        if(abs(cs.getAngle()) > 1.557){// around 180 graus
         	return (trackInitialPos > 0 ? -1 : 1);
         }else{
         	return (trackInitialPos > 0 ? 1 : -1);
