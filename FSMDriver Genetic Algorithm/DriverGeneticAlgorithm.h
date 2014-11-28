@@ -45,6 +45,7 @@ public:
 	void    PrintGeneSymbol(int val);
 	string  GetRandomBits(int length);
 	int     BinToDec(string bits);
+	string 	DecToBin(int decimal);
 	float   AssignFitness(string bits, int target_value);
 	void    PrintChromosome(string bits);
 	void    PrintGeneSymbol(int val);

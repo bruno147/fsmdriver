@@ -9,6 +9,7 @@
 
 #include "DriverGeneticAlgorithm.h"
 
+#include <fstream>
 #include <string>
 #include <cstdlib>
 #include <iostream>
@@ -87,9 +88,10 @@ string	GetRandomBits(int length) {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-// BinToDec (Auxiliary Method)
+// BinToDec and DecToBin(Auxiliary Method)
 //
-// * This method converts a given binary string into the correspondent decimal integer
+// * This method converts a given binary string into the correspondent decimal 
+//	 integer and vice versa
 //
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 int	BinToDec(string bits) {
@@ -103,6 +105,35 @@ int	BinToDec(string bits) {
 	}
 	return decimalValue;
 }
+
+string DecToBin(int decimal) {
+	if (decimal > 65535) {
+		cout << "Decimal is out of conversion range." << endl;
+		return;
+	}
+
+	string bits("0000000000000000");
+	for (int i = 15; i >= 0; i--) {
+		if (a%2)
+			s[i] = '1';
+		else
+			s[i] = '0';
+		decimal /= 2;
+	}
+	return bits;
+}
+
+void setChromossome(string filename) {
+	string chromosome, aux;
+	fstream fs;
+	fs.open(filename);
+	for (int i = 0; i < PARAMETER_COUNT; i++) {
+		fs >> aux;
+		chromosome += DecToBin(stoi(aux));
+	}
+	fs.close();
+}
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
