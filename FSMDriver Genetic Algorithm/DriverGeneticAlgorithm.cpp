@@ -94,46 +94,46 @@ string	GetRandomBits(int length) {
 //	 integer and vice versa
 //
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-int	BinToDec(string bits) {
-	int decimalValue	= 0;
-	int valueToAdd	= 1;
-
-	for (int i = bits.length(); i > 0; i--) {
-		if (bits.at(i-1) == '1')
-			decimalValue += valueToAdd;
-		valueToAdd *= 2;
-	}
-	return decimalValue;
+float BinToFloat(string bits) {
+	bitset<32> a(bits);
+	float *value = reinterpret_cast<float*>(&a);
+	return *value;
 }
 
-string DecToBin(int decimal) {
-	if (decimal > 65535) {
-		cout << "Decimal is out of conversion range." << endl;
-		return;
-	}
 
-	string bits("0000000000000000");
-	for (int i = 15; i >= 0; i--) {
-		if (a%2)
-			s[i] = '1';
-		else
-			s[i] = '0';
-		decimal /= 2;
+string FloatToBin(float value) {
+	int bit = 0;
+	string bits;
+	int *b = reinterpret_cast<int*>(&value);
+	for (int k = 31; k >=0; k--) {
+		bit = ((*b >> k)&1);
+		bits += to_string(bit);
 	}
 	return bits;
 }
 
-void setChromossome(string filename) {
+string getChromossome(string filename) {
 	string chromosome, aux;
 	fstream fs;
 	fs.open(filename);
 	for (int i = 0; i < PARAMETER_COUNT; i++) {
 		fs >> aux;
-		chromosome += DecToBin(stoi(aux));
+		chromosome += FloatToBin(stof(aux));
+	}
+	fs.close();
+	return chromosome;
+}
+
+void setChromossome(string chromossome, string filename) {
+	string aux;
+	fstream fs;
+	fs.open(filename,fstream::out);
+	for (int i = 0; i < PARAMETER_COUNT; i++) {
+		fs << BinToFloat(chromossome.substr(0,32)) << endl;
+		chromossome.erase(0,32);
 	}
 	fs.close();
 }
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
