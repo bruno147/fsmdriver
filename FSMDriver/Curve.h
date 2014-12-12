@@ -42,7 +42,7 @@ public:
 
 private:
     float getAccel(CarState &cs) { //@todo Change accelaration logic.
-    	return 0.6;
+    	return 0.3;
     }
     bool isFacingWrongWay(CarState &cs) {
         return cs.getAngle() < -M_PI/2 || cs.getAngle() > M_PI/2;

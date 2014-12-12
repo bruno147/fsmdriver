@@ -3,19 +3,17 @@
 
 #include "FSM.h"
 
-/******************************************************************************/
-const int START_GEAR = 1;
-const int LOW_GEAR_LIMIT = 4;
-
-const int LOW_RPM = 1500;
-const int AVERAGE_RPM = 4000;
-const int HIGH_RPM = 9500;
-/******************************************************************************/
+static const int START_GEAR = 1;
 
 class FSMDriver;
-
 class StraightLine : public DrivingState<FSMDriver> {
 public:
+    
+    static float LOW_GEAR_LIMIT;
+    static float LOW_RPM;
+    static float AVERAGE_RPM;
+    static float HIGH_RPM;
+
     static StraightLine *instance() {
         static StraightLine instance;
         return &instance;
@@ -70,7 +68,7 @@ private:
         return runningOnHigh(rpm);
     }
     float getBrake(CarState &cs) {
-        return (cs.getSpeedX() < 0 ? 1:0);
+        return (cs.getSpeedX() < -2 ? 1:0);
     }
 
 public:
@@ -86,5 +84,6 @@ public:
         return gear;
     }
 };
+
 
 #endif // FSMDRIVER_STATE_STRAIGHTLINE_H

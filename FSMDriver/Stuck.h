@@ -3,16 +3,16 @@
 
 #include "FSM.h"
 
-/******************************************************************************/
-const float STUCK_SPEED = 5;
-const unsigned int MIN_RACED_DISTANCE = 100;
-const unsigned int MAX_STUCK_TICKS = 300;
-const unsigned int MAX_SLOW_SPEED_TICKS=50;
-/******************************************************************************/
 
 class FSMDriver;
 class Stuck : public DrivingState<FSMDriver> {
 public:
+	//****************************************************
+	static float STUCK_SPEED;
+	static float MIN_RACED_DISTANCE;
+	static float MAX_STUCK_TICKS;
+	static float MAX_SLOW_SPEED_TICKS;
+	//****************************************************
     static Stuck *instance() {
         static Stuck instance;
         return &instance;

@@ -9,10 +9,10 @@ private:
     float accel, brake, steer; //Actuators values
     int gear;
 
-    static const int MAX_STRAIGHT_LINE_VAR;
-    static const int MIN_STRAIGHT_LINE_VAR;
-    static const int MAX_APPROACHING_CURVE_VAR;
-    static const int MIN_APPROACHING_CURVE_VAR;
+    static float MAX_STRAIGHT_LINE_VAR;
+    static float MIN_STRAIGHT_LINE_VAR;
+    static float MAX_APPROACHING_CURVE_VAR;
+    static float MIN_APPROACHING_CURVE_VAR;
 
 public:
     virtual void onShutdown();
@@ -26,6 +26,8 @@ public:
 
     // Transitions between states (if appropriate).
     void transition(CarState &);
+
+    bool loadParameters(float*, string);
 
     //Main driving function.
     virtual CarControl wDrive(CarState cs);

@@ -10,9 +10,10 @@
 class FSMDriver;
 
 class ApproachingCurve : public DrivingState<FSMDriver> {
-private:
-    bool sensorsAreUpdated;
 public:
+    //***************************************************** 
+    static float MAX_STEERING, TARGET_POS, BASE_SPEED;
+    //*****************************************************
     ~ApproachingCurve(){}
     static ApproachingCurve* instance() {
         static ApproachingCurve instance;
@@ -41,10 +42,9 @@ public:
     }
 
 private:
-    const float MAXSTEERING, TARGETPOS, BASESPEED;
+    bool sensorsAreUpdated;
     float rSensor, cSensor, lSensor, targetSpeed;
-    ApproachingCurve() :
-        MAXSTEERING(0.12), TARGETPOS(0.7), BASESPEED(80) {}
+    ApproachingCurve() {}
 
     void updateSensors(CarState &cs) {
         float speedFactor = 5000;                       //The target speed is obtained through a constant factor
@@ -61,7 +61,7 @@ private:
             cSensor = cs.getFocus(2);
             lSensor = cs.getFocus(1);
         }
-        targetSpeed = BASESPEED + speedFactor / fabs(lSensor - rSensor);
+        targetSpeed = BASE_SPEED + speedFactor / fabs(lSensor - rSensor);
 
         sensorsAreUpdated = true;
     }
@@ -84,15 +84,15 @@ private:
         float angle = cs.getAngle();
         //If the controller is not in a pre-defined region amongst the inside limits of the track (between 0.7 and 0.9 with the current
         //set of values, normalized), than it will be adjusted to do so
-        bool adjustedToCurve = ((fabs(cs.getTrackPos()) - TARGETPOS >= 0) && (fabs(cs.getTrackPos()) - TARGETPOS < 0.2));
+        bool adjustedToCurve = ((fabs(cs.getTrackPos()) - TARGET_POS >= 0) && (fabs(cs.getTrackPos()) - TARGET_POS < 0.2));
         //Previous conditions:																// 0.2 is an arbitrary margin
         //bool adjustedToCurve = (cs.getTrackPos() <= TARGETPOS);
 
         if(!adjustedToCurve) {   
             if(approachingRightTurn())
-                angle = MAXSTEERING - angle;
+                angle = MAX_STEERING - angle;
             else
-                angle -= MAXSTEERING;
+                angle -= MAX_STEERING;
         }
         
         return angle;
