@@ -10,6 +10,7 @@ set(SOURCES
 	FSMDriver/FSMDriver.cpp
 	FSMDriver/StraightLine.cpp
 	FSMDriver/Curve.cpp
+	FSMDriver/OutOfTrack.cpp
 	src/CarControl.cpp
 	src/CarState.cpp
 	src/client.cpp
