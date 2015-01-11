@@ -8,6 +8,7 @@ set(SOURCES
 	FSMDriver/FSM.h
 	FSMDriver/FSMDriver.h
 	FSMDriver/FSMDriver.cpp
+	FSMDriver/StraightLine.cpp
 	src/CarControl.cpp
 	src/CarState.cpp
 	src/client.cpp
