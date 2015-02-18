@@ -20,13 +20,13 @@
 using 	std::string;
 using	namespace std;
 
-static const float	CROSSOVER_RATE				0.7;
-static const float	MUTATION_RATE				0.001;
-static const int 	POPULATION_SIZE				100;	// Must be an even number (according to AI junkie)
-static const int 	CHROMOSOME_LENGTH			300;
-static const int 	GENE_LENGTH					4;
+static const float	CROSSOVER_RATE				0.7;	// Rate defined by AI-junkie
+static const float	MUTATION_RATE				0.001; 	// Rate defined by AI-junkie
+static const int 	POPULATION_SIZE				100;	// Must be an even number
+static const int 	GENE_LENGTH					32;
 static const int 	MAX_ALLOWABLE_GENERATIONS	400;
 static const int 	NUMBER_OF_PARAMETERS		22;		// Adjust to problem needs
+static const int 	CHROMOSOME_LENGTH			GENE_LENGTH * NUMBER_OF_PARAMETERS;
 
 // Returns a float between 0 & 1
 #define RANDOM_NUMBER ((float)rand()/(RAND_MAX+1))
@@ -37,6 +37,10 @@ static const int 	NUMBER_OF_PARAMETERS		22;		// Adjust to problem needs
 int main (int argc, char* argv[]) {
 	// Random number generator's seeder
 	srand ((int)time(NULL));
+
+	// Defines the best chromosome in the evolved population
+	float 			bestFitness;
+	chromosomeType	bestChromosome;
 
 	while (true) {
 		chromosomeType Population[POPULATION_SIZE];
@@ -61,6 +65,16 @@ int main (int argc, char* argv[]) {
 				totalFitness += Population[i].fitness;
 			}
 
+			// Tests the best chromosome in the old population
+			for (int i = 0; i < POPULATION_SIZE; i++) {
+				if (Population[i].fitness > bestFitness) {
+					bestFitness		= Population[i].fitness;
+					bestChromosome 	= Population[i];
+				}
+			}
+
+			// @toDo Include Log Method to keep every generation archived
+
 			// Creates new population members through crossover and/or mutation (by chance)
 			chromosomeType	newPopulation[POPULATION_SIZE];
 			int 			populationCounter;
@@ -78,28 +92,18 @@ int main (int argc, char* argv[]) {
 				newPopulation[populationCounter++] = chromosomeType (offspring1, 0.0f);
 				newPopulation[populationCounter++] = chromosomeType (offspring2, 0.0f);
 
+				
+
 				for (int i = 0; i < POPULATION_SIZE; i++) {
 					Population[i] = newPopulation[i];
 				}
-
-				++generationsRequired;
-
-				// If the maximum number of generations is reached, ends program
-				if (generationsRequired > MAX_ALLOWABLE_GENERATIONS) {
-					cout << "Maximum allowable generations reached! Chromosome evolved." << endl;
-					evolved = true;
-				}
 			}
+			++generationsRequired;
 
-			// Defines the best chromosome in the evolved population
-			float 			bestFitness;
-			chromosomeType	bestChromosome;
-
-			for (int i = 0; i < POPULATION_SIZE; i++) {
-				if (Population[i].fitness > bestFitness) {
-					bestFitness		= Population[i].fitness;
-					bestChromosome 	= Population[i];
-				}
+			// If the maximum number of generations is reached, ends program
+			if (generationsRequired > MAX_ALLOWABLE_GENERATIONS) {
+				cout << "Maximum allowable generations reached! Chromosome evolved." << endl;
+				evolved = true;
 			}
 		}
 
