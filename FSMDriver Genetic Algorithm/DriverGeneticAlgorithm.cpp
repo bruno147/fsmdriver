@@ -34,51 +34,31 @@ static const int 	NUMBER_OF_PARAMETERS		22;		// Adjust to problem needs
 // @toDo Initialize class DriverGeneticAlgorithm
 
 // Chromosome generation process (Main Method)
-int main(int argc, char* argv[]) {
+int main (int argc, char* argv[]) {
 	// Random number generator's seeder
-	srand((int)time(NULL));
+	srand ((int)time(NULL));
 
-	while(true) {
-		// Memory allocation for the population
+	while (true) {
 		chromosomeType Population[POPULATION_SIZE];
-
-		// Definition of a target Fitness Score by the user
-		float target;
-		cout 	<< "\nInput a target time: "; //Target time for comparation
-		cin 	>> target;
-		cout 	<< endl << endl;
 
 		// Creation of an initial population (randomic, entirely with zero fitness)
 		for (int i = 0; i < POPULATION_SIZE; i++) {
-			Population[i].bits	  = getRandomBits(CHROMOSOME_LENGTH);
+			Population[i].bits	  = getRandomBits (CHROMOSOME_LENGTH);
 			Population[i].fitness = 0.0f;
 		}
 
 		int 	generationsRequired = 0;
-		bool	foundValid			= false;
+		bool	evolved			= false;
 
 		// Genetic Algorithm actual loop
-		while (!foundValid) {
+		while (!evolved) {
 			// Defines the size of the sorting sample for roulette Wheel
 			float 	totalFitness = 0.0;
 
 			// Assigns a fitness score to every chromosome through testing in race
 			for (int i = 0; i < POPULATION_SIZE; i++) {
-				Population[i].fitness = assignFitness(Population[i].bits, Target);
+				Population[i].fitness = assignFitness (Population[i].bits);
 				totalFitness += Population[i].fitness;
-			}
-
-			// Checks the fitness numbers to find if a valid solution was found
-			for (int i = 0; i < POPULATION_SIZE, i++) {
-				if (Population[i].fitness == 999.0f) {
-					cout << "Valid solution found in" << generationsRequired << "generations." << endl << endl;
-
-					printChromosome(Population[i].bits);
-
-					foundValid = true;
-
-					break;
-				}
 			}
 
 			// Creates new population members through crossover and/or mutation (by chance)
@@ -87,16 +67,16 @@ int main(int argc, char* argv[]) {
 
 			while (populationCounter < POPULATION_SIZE) {
 				// Selects 2 new members to apply crossover and mutation
-				string offspring1 = roulette(totalFitness, Population);
-				string offspring2 = roulette(totalFitness, Population);
+				string offspring1 = roulette (totalFitness, Population);
+				string offspring2 = roulette (totalFitness, Population);
 
-				crossover(offspring1, offspring2)
-				mutate(offspring1);
-				mutate(offspring2);
+				crossover 	(offspring1, offspring2)
+				mutate 		(offspring1);
+				mutate 		(offspring2);
 				
 				// Replaces the old members for the new ones
-				newPopulation[populationCounter++] = chromosomeType(offspring1, 0.0f);
-				newPopulation[populationCounter++] = chromosomeType(offspring2, 0.0f);
+				newPopulation[populationCounter++] = chromosomeType (offspring1, 0.0f);
+				newPopulation[populationCounter++] = chromosomeType (offspring2, 0.0f);
 
 				for (int i = 0; i < POPULATION_SIZE; i++) {
 					Population[i] = newPopulation[i];
@@ -104,10 +84,21 @@ int main(int argc, char* argv[]) {
 
 				++generationsRequired;
 
-				// Ends the program if a valid solution is not found in the given run time
+				// If the maximum number of generations is reached, ends program
 				if (generationsRequired > MAX_ALLOWABLE_GENERATIONS) {
-					cout << "No valid solution found this run!";
-					foundValid = true;
+					cout << "Maximum allowable generations reached! Chromosome evolved." << endl;
+					evolved = true;
+				}
+			}
+
+			// Defines the best chromosome in the evolved population
+			float 			bestFitness;
+			chromosomeType	bestChromosome;
+
+			for (int i = 0; i < POPULATION_SIZE; i++) {
+				if (Population[i].fitness > bestFitness) {
+					bestFitness		= Population[i].fitness;
+					bestChromosome 	= Population[i];
 				}
 			}
 		}
@@ -119,8 +110,7 @@ int main(int argc, char* argv[]) {
 
 // Auxiliary Methods (Implementations)
 
-// getRandomBits (Auxiliary Method)
-string	getRandomBits(int length) {
+string	getRandomBits (int length) {
 	string bits;
 
 	for (int i = 0; i < length; i++) {
@@ -133,76 +123,72 @@ string	getRandomBits(int length) {
 	return bits;
 }
 
-// binToFloat and floatToBin (Auxiliary Methods)
-float binToFloat(string bits) {
-	bitset<32> a(bits);
+float binToFloat (string bits) {
+	bitset<32> a (bits);
 	float *value = reinterpret_cast<float*>(&a);
 
 	return *value;
 }
 
 
-string floatToBin(float value) {
+string floatToBin (float value) {
 	int bit = 0;
 	string bits;
 	int *b = reinterpret_cast<int*>(&value);
 
 	for (int k = 31; k >=0; k--) {
 		bit = ((*b >> k)&1);
-		bits += to_string(bit);
+		bits += to_string (bit);
 	}
 
 	return bits;
 }
 
-// getChromossome (Auxiliary Method)
-string getChromosome(string filename) {
+string getChromosome (string filename) {
 	string chromosome, aux;
 	fstream fs;
 	fs.open(filename);
 
 	for (int i = 0; i < PARAMETER_COUNT; i++) {
 		fs >> aux;
-		chromosome += floatToBin(stof(aux));
+		chromosome += floatToBin (stof(aux));
 	}
 
 	fs.close();
 	return chromosome;
 }
 
-// setChromossome (Auxiliary Method)
-void setChromosome(string chromosome, string filename) {
+void setChromosome (string chromosome, string filename) {
 	string aux;
 	fstream fs;
-	fs.open(filename,fstream::out);
+	fs.open (filename,fstream::out);
 
 	for (int i = 0; i < PARAMETER_COUNT; i++) {
-		fs << binToFloat(chromosome.substr(0,32)) << endl;
-		chromosome.erase(0,32);
+		fs << binToFloat (chromosome.substr(0,32)) << endl;
+		chromosome.erase (0,32);
 	}
 
 	fs.close();
 }
 
-// assignFitness (Auxiliary Method)
-float assignFitness(string bits, int targetValue) {
+float assignFitness (string bits) {
 	// @toDo Define a metric to evaluate a chromosome (through running on TORCS)
 }
 
-// printChromosome (Auxiliary Method)
 // @toDo create communication to send the choromosome to a file to be read on TORCS
-void printChromosome(string bits) {
+void printChromosome (string bits) {
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		cout << Population[i].bits;
 	}
 	cout << endl;
 }
 
-// printParameters (Auxiliary Method)
 // @toDo implement a method that shows the actual values to be used on TORCS
+void printParameters () {
 
-// mutate (Auxiliary Method)
-void mutate(string &bits) {
+}
+
+void mutate (string &bits) {
 	for (int i = 0; i < bits.length(); i++) {
 		if (RANDOM_NUMBER < MUTATION_RATE) {
 			if (bits.at(i) == '1')
@@ -214,22 +200,20 @@ void mutate(string &bits) {
 	return;
 }
 
-// crossover (Auxiliary Method)
-void crossover(string &offspring1, string &offspring2) {
+void crossover (string &offspring1, string &offspring2) {
 	if (RANDOM_NUMBER < CROSSOVER_RATE) {
     // Randomic choice of the crossover point
     int crossover 	= (int) (RANDOM_NUMBER * CHROMOSOME_LENGTH);
 
-    string new1		= offspring1.substr(0, crossover) + offspring2.substr(crossover, CHROMOSOME_LENGTH);
-    string new2		= offspring2.substr(0, crossover) + offspring1.substr(crossover, CHROMOSOME_LENGTH);
+    string new1		= offspring1.substr (0, crossover) + offspring2.substr (crossover, CHROMOSOME_LENGTH);
+    string new2		= offspring2.substr (0, crossover) + offspring1.substr (crossover, CHROMOSOME_LENGTH);
 
     offspring1		= new1;
     offspring2		= new2;				  
 	}
 }
 
-// roulette (Auxiliary Method)
-string roulette(int totalFitness, chromosomeType* Population) {
+string roulette (int totalFitness, chromosomeType* Population) {
 	// Generation of a random number between 0 & total fitness count
 	float slice = (float)(RANDOM_NUMBER * totalFitness);
 	
@@ -238,7 +222,7 @@ string roulette(int totalFitness, chromosomeType* Population) {
 	
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		fitnessSoFar += Population[i].fitness;
-		// If the fitness so far >  random number generated, the current chromosome is returned
+		// If the fitness so far > random number generated, the current chromosome is returned
 		if (fitnessSoFar >= slice)
 			return Population[i].bits;
 	}

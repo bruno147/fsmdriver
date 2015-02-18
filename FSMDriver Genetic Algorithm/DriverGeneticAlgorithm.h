@@ -22,14 +22,14 @@ private:
 
 // Definition of the Chromosome's Data Structure: In this case, a binary std::string
 	struct chromosomeType {
- 	// binary std::string for the Data Structure
- 	string	bits;  
+	 	// binary std::string for the Data Structure
+	 	string	bits;  
 
- 	// float number for the Fitness Score (metric analysis)
-	float	fitness;
+	 	// float number for the Fitness Score (metric analysis)
+		float	fitness;
 
-	chromosomeType(): bits(""), fitness(0.0f){};
-	chromosomeType(string in_bits, float in_fitness): bits(in_bits), fitness(in_fitness){};
+		chromosomeType(): bits(""), fitness(0.0f){};
+		chromosomeType(string in_bits, float in_fitness): bits(in_bits), fitness(in_fitness){};
 	};
 
 public:
