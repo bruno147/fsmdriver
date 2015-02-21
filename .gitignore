@@ -37,3 +37,6 @@ Makefile*
 
 # Windows
 Thumbs.db
+
+# Files
+*.txt
