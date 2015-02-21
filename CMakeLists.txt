@@ -24,7 +24,7 @@ set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 add_executable(${DRIVER} ${SOURCES})
 
 # GA Flag
-set(GA ON)
+# set(GA ON)
 
 # GA
 if(GA)
