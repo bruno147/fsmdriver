@@ -19,7 +19,7 @@ public:
         assert(s);
         damage=cs.getDamage();
         distRaced=cs.getDistRaced();
-
+        /*
         if(curveComplete(cs)){
             lap++;
             totalTime+=cs.getLastLapTime();
@@ -32,6 +32,7 @@ public:
             myfile << ";";
             myfile.close();
         }
+        */
     }
 
     void saveLog(){
