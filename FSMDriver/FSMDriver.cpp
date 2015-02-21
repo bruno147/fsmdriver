@@ -4,6 +4,7 @@
 #include "Curve.h"
 #include "OutOfTrack.h"
 #include "Stuck.h"
+#include "Log.h"
 
 #include <vector>
 
@@ -49,6 +50,7 @@ FSMDriver::FSMDriver() : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0)
 
 CarControl FSMDriver::wDrive(CarState cs) {
     transition(cs);
+    Log::instance()->updateLog(current_state, cs);
     return update(cs);
 }
 
@@ -57,6 +59,7 @@ void FSMDriver::onRestart() {
 }
 
 void FSMDriver::onShutdown() {
+    Log::instance()->saveTotalTime();
     cout << "End of race!" << endl;
 }
 
