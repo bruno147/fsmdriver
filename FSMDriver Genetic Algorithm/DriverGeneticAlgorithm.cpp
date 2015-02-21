@@ -9,27 +9,20 @@
 
 #include "DriverGeneticAlgorithm.h"
 
-#include <fstream>
-#include <string>
-#include <cstdlib>
-#include <iostream>
-#include <ctime>
-#include <cmath>
-#include <bitset>
-
-using 	std::string;
+// using 	std::string;
 using	namespace std;
+using	namespace DriverGeneticAlgorithm;
 
-static const float	CROSSOVER_RATE				0.7;	// Rate defined by AI-junkie
-static const float	MUTATION_RATE				0.001; 	// Rate defined by AI-junkie
-static const int 	POPULATION_SIZE				100;	// Must be an even number
-static const int 	GENE_LENGTH					32;
-static const int 	MAX_ALLOWABLE_GENERATIONS	400;
-static const int 	NUMBER_OF_PARAMETERS		22;		// Adjust to problem needs
-static const int 	CHROMOSOME_LENGTH			GENE_LENGTH * NUMBER_OF_PARAMETERS;
+/*const float	CROSSOVER_RATE	=			0.7;	// Rate defined by AI-junkie
+const float	MUTATION_RATE	=			0.001; 	// Rate defined by AI-junkie
+const int 	POPULATION_SIZE	=			100;	// Must be an even number
+const int 	GENE_LENGTH		=			32;
+const int 	MAX_ALLOWABLE_GENERATIONS =	400;
+const int 	NUMBER_OF_PARAMETERS	=	22;		// Adjust to problem needs
+const int 	CHROMOSOME_LENGTH		=	GENE_LENGTH * NUMBER_OF_PARAMETERS;*/
 
 // Returns a float between 0 & 1
-#define RANDOM_NUMBER ((float)rand()/(RAND_MAX+1))
+#define RANDOM_NUMBER ((float)rand()/(RAND_MAX))
 
 // @toDo Initialize class DriverGeneticAlgorithm
 
@@ -84,7 +77,7 @@ int main (int argc, char* argv[]) {
 				string offspring1 = roulette (totalFitness, Population);
 				string offspring2 = roulette (totalFitness, Population);
 
-				crossover 	(offspring1, offspring2)
+				crossover 	(offspring1, offspring2);
 				mutate 		(offspring1);
 				mutate 		(offspring2);
 				
@@ -114,7 +107,7 @@ int main (int argc, char* argv[]) {
 
 // Auxiliary Methods (Implementations)
 
-string	getRandomBits (int length) {
+string	DriverGeneticAlgorithm::getRandomBits (int length) {
 	string bits;
 
 	for (int i = 0; i < length; i++) {
@@ -127,7 +120,7 @@ string	getRandomBits (int length) {
 	return bits;
 }
 
-float binToFloat (string bits) {
+float DriverGeneticAlgorithm::binToFloat (string bits) {
 	bitset<32> a (bits);
 	float *value = reinterpret_cast<float*>(&a);
 
@@ -135,7 +128,7 @@ float binToFloat (string bits) {
 }
 
 
-string floatToBin (float value) {
+string DriverGeneticAlgorithm::floatToBin (float value) {
 	int bit = 0;
 	string bits;
 	int *b = reinterpret_cast<int*>(&value);
@@ -148,7 +141,7 @@ string floatToBin (float value) {
 	return bits;
 }
 
-string getChromosome (string filename) {
+string DriverGeneticAlgorithm::getChromosome (string filename) {
 	string chromosome, aux;
 	fstream fs;
 	fs.open(filename);
@@ -162,7 +155,7 @@ string getChromosome (string filename) {
 	return chromosome;
 }
 
-void setChromosome (string chromosome, string filename) {
+void DriverGeneticAlgorithm::setChromosome (string chromosome, string filename) {
 	string aux;
 	fstream fs;
 	fs.open (filename,fstream::out);
@@ -175,12 +168,12 @@ void setChromosome (string chromosome, string filename) {
 	fs.close();
 }
 
-float assignFitness (string bits) {
+float DriverGeneticAlgorithm::assignFitness (string bits) {
 	// @toDo Define a metric to evaluate a chromosome (through running on TORCS)
 }
 
 // @toDo create communication to send the choromosome to a file to be read on TORCS
-void printChromosome (string bits) {
+void DriverGeneticAlgorithm::printChromosome (string bits) {
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		cout << Population[i].bits;
 	}
@@ -188,11 +181,11 @@ void printChromosome (string bits) {
 }
 
 // @toDo implement a method that shows the actual values to be used on TORCS
-void printParameters () {
+void DriverGeneticAlgorithm::printParameters () {
 
 }
 
-void mutate (string &bits) {
+void DriverGeneticAlgorithm::mutate (string &bits) {
 	for (int i = 0; i < bits.length(); i++) {
 		if (RANDOM_NUMBER < MUTATION_RATE) {
 			if (bits.at(i) == '1')
@@ -204,8 +197,8 @@ void mutate (string &bits) {
 	return;
 }
 
-void crossover (string &offspring1, string &offspring2) {
-	if (RANDOM_NUMBER < CROSSOVER_RATE) {
+void DriverGeneticAlgorithm::crossover (string &offspring1, string &offspring2) {
+	if (RANDOM_NUMBER < DriverGeneticAlgorithm::CROSSOVER_RATE) {
     // Randomic choice of the crossover point
     int crossover 	= (int) (RANDOM_NUMBER * CHROMOSOME_LENGTH);
 
@@ -217,7 +210,7 @@ void crossover (string &offspring1, string &offspring2) {
 	}
 }
 
-string roulette (int totalFitness, chromosomeType* Population) {
+string DriverGeneticAlgorithm::roulette (int totalFitness, chromosomeType* Population) {
 	// Generation of a random number between 0 & total fitness count
 	float slice = (float)(RANDOM_NUMBER * totalFitness);
 	
