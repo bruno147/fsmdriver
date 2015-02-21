@@ -19,10 +19,11 @@ public:
         assert(s);
         damage=cs.getDamage();
         distRaced=cs.getDistRaced();
-        /*
+        
         if(curveComplete(cs)){
-            lap++;
+            //lap++;
             totalTime+=cs.getLastLapTime();
+            /*
             ofstream myfile;
             myfile.open("results.txt", std::ios_base::app);
             myfile << "Lap";
@@ -31,8 +32,9 @@ public:
             myfile << cs.getLastLapTime();
             myfile << ";";
             myfile.close();
+            */
         }
-        */
+
     }
 
     void saveLog(){
