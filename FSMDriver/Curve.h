@@ -21,11 +21,11 @@ private:
 
 public:
     void enter(FSMDriver *driver) {
-        cout << "Enter Curve" << endl;
+        //cout << "Enter Curve" << endl;
     }
 
     void exit(FSMDriver *driver) {
-        cout << "Exit Curve" << endl;
+        //cout << "Exit Curve" << endl;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {

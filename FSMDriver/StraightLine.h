@@ -4,12 +4,12 @@
 #include "FSM.h"
 
 /******************************************************************************/
-const int START_GEAR = 1;
-const int LOW_GEAR_LIMIT = 4;
+int START_GEAR = 1;
+int LOW_GEAR_LIMIT = 4;
 
-const int LOW_RPM = 1500;
-const int AVERAGE_RPM = 4000;
-const int HIGH_RPM = 9500;
+int LOW_RPM = 1500;
+int AVERAGE_RPM = 4000;
+int HIGH_RPM = 9500;
 /******************************************************************************/
 
 class FSMDriver;
@@ -30,11 +30,11 @@ public:
     ~StraightLine(){}
 
     void enter(FSMDriver *driver) {
-        cout << "Enter StraightLine" << endl;
+        //cout << "Enter StraightLine" << endl;
     }
 
     void exit(FSMDriver *driver) {
-        cout << "Exit StraightLine" << endl;
+        //cout << "Exit StraightLine" << endl;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {

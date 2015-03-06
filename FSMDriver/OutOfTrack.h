@@ -5,13 +5,13 @@
 
 
 /******************************************************************************/
-const float MAX_SKIDDING = 3;
-const float NEGATIVE_ACCEL_PERCENT = 0.1;
-const int VELOCITY_GEAR_4 = 90;
-const int VELOCITY_GEAR_3 = 70;
-const int VELOCITY_GEAR_2 = 40;
-const float MAX_RETURN_ANGLE = 0.7;
-const float MIN_RETURN_ANGLE = 0.5;
+float MAX_SKIDDING = 3;
+float NEGATIVE_ACCEL_PERCENT = 0.1;
+int VELOCITY_GEAR_4 = 90;
+int VELOCITY_GEAR_3 = 70;
+int VELOCITY_GEAR_2 = 40;
+float MAX_RETURN_ANGLE = 0.7;
+float MIN_RETURN_ANGLE = 0.5;
 /******************************************************************************/
 
 class FSMDriver;
@@ -32,11 +32,11 @@ public:
     ~OutOfTrack(){}
 
     void enter(FSMDriver *driver) {
-        cout << "Enter OutOfTrack" << endl;
+        //cout << "Enter OutOfTrack" << endl;
     }
 
     void exit(FSMDriver *driver) {
-        cout << "Exit OutOfTrack" << endl;
+        //cout << "Exit OutOfTrack" << endl;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {

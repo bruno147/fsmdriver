@@ -3,16 +3,22 @@
 
 #include "WrapperBaseDriver.h"
 #include "FSM.h"
+#include <bitset>
+
 
 class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
 private:
     float accel, brake, steer; //Actuators values
     int gear;
+    int segment_id;
 
-    static const int MAX_STRAIGHT_LINE_VAR;
-    static const int MIN_STRAIGHT_LINE_VAR;
-    static const int MAX_APPROACHING_CURVE_VAR;
-    static const int MIN_APPROACHING_CURVE_VAR;
+    int MAX_STRAIGHT_LINE_VAR;
+    int MIN_STRAIGHT_LINE_VAR;
+    int MAX_APPROACHING_CURVE_VAR;
+    int MIN_APPROACHING_CURVE_VAR;
+
+    float    binToFloat (string bits);
+    float    parameters[22];
 
 public:
     virtual void onShutdown();
@@ -22,6 +28,7 @@ public:
     virtual void init(float *angles);
 
     FSMDriver();
+    FSMDriver(int, char**);
     virtual ~FSMDriver(){}
 
     // Transitions between states (if appropriate).

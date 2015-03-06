@@ -6,6 +6,7 @@
 #include "StraightLine.h"
 
 // extern const int INCREASE_GEAR_RPM;
+    float MAX_STEERING, TARGET_POS, BASE_SPEED;
 
 class FSMDriver;
 
@@ -20,12 +21,12 @@ public:
     }
 
     void enter(FSMDriver *driver) {
-        cout << "Enter ApproachingCurve" << endl;
+        //cout << "Enter ApproachingCurve" << endl;
         sensorsAreUpdated = false;
     }
 
     void exit(FSMDriver *driver) {
-        cout << "Exit ApproachingCurve" << endl;
+        //cout << "Exit ApproachingCurve" << endl;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
@@ -34,17 +35,16 @@ public:
 
         const int focus = 0, meta = 0;
         const float clutch = 0;
-		
-		return CarControl(getAccel(cs), getBrake(cs), getGear(cs), cs.getAngle(), clutch, focus, meta);
-		//Use the line below if the behavior of adjusting the car to the curve ahead is desired (not fully functional):
+        
+        return CarControl(getAccel(cs), getBrake(cs), getGear(cs), cs.getAngle(), clutch, focus, meta);
+        //Use the line below if the behavior of adjusting the car to the curve ahead is desired (not fully functional):
         //return CarControl(getAccel(cs), getBrake(cs), getGear(cs), getSteering(cs), clutch, focus, meta);
     }
 
 private:
-    const float MAXSTEERING, TARGETPOS, BASESPEED;
     float rSensor, cSensor, lSensor, targetSpeed;
-    ApproachingCurve() :
-        MAXSTEERING(0.12), TARGETPOS(0.7), BASESPEED(80) {}
+    ApproachingCurve(){}
+        //MAX_STEERING(0.12), TARGET_POS(0.7), BASE_SPEED(80) {}
 
     void updateSensors(CarState &cs) {
         float speedFactor = 5000;                       //The target speed is obtained through a constant factor
@@ -61,7 +61,7 @@ private:
             cSensor = cs.getFocus(2);
             lSensor = cs.getFocus(1);
         }
-        targetSpeed = BASESPEED + speedFactor / fabs(lSensor - rSensor);
+        targetSpeed = BASE_SPEED + speedFactor / fabs(lSensor - rSensor);
 
         sensorsAreUpdated = true;
     }
@@ -84,15 +84,15 @@ private:
         float angle = cs.getAngle();
         //If the controller is not in a pre-defined region amongst the inside limits of the track (between 0.7 and 0.9 with the current
         //set of values, normalized), than it will be adjusted to do so
-        bool adjustedToCurve = ((fabs(cs.getTrackPos()) - TARGETPOS >= 0) && (fabs(cs.getTrackPos()) - TARGETPOS < 0.2));
+        bool adjustedToCurve = ((fabs(cs.getTrackPos()) - TARGET_POS >= 0) && (fabs(cs.getTrackPos()) - TARGET_POS < 0.2));
         //Previous conditions:																// 0.2 is an arbitrary margin
-        //bool adjustedToCurve = (cs.getTrackPos() <= TARGETPOS);
+        //bool adjustedToCurve = (cs.getTrackPos() <= TARGET_POS);
 
         if(!adjustedToCurve) {   
             if(approachingRightTurn())
-                angle = MAXSTEERING - angle;
+                angle = MAX_STEERING - angle;
             else
-                angle -= MAXSTEERING;
+                angle -= MAX_STEERING;
         }
         
         return angle;

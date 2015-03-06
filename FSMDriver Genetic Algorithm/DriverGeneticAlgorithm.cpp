@@ -7,6 +7,11 @@
 /* 																								*/
 /* * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *	*/
 
+//For shared memory
+#include <sys/shm.h>
+#include <sys/stat.h>
+#include <cstdlib>
+
 #include "DriverGeneticAlgorithm.h"
 
 // using 	std::string;
@@ -32,10 +37,13 @@ int main (int argc, char* argv[]) {
 	srand ((int)time(NULL));
 
 	// Defines the best chromosome in the evolved population
-	float 			bestFitness;
+	float 			bestFitness = 0;
 	chromosomeType	bestChromosome;
 
-	while (true) {
+	//flag
+	bool	evolved			= false;
+
+	while (!evolved) {
 		chromosomeType Population[POPULATION_SIZE];
 
 		// Creation of an initial population (randomic, entirely with zero fitness)
@@ -45,7 +53,6 @@ int main (int argc, char* argv[]) {
 		}
 
 		int 	generationsRequired = 0;
-		bool	evolved			= false;
 
 		// Genetic Algorithm actual loop
 		while (!evolved) {
@@ -92,9 +99,9 @@ int main (int argc, char* argv[]) {
 				}
 			}
 			++generationsRequired;
-
+			cout << generationsRequired << endl; 
 			// If the maximum number of generations is reached, ends program
-			if (generationsRequired > MAX_ALLOWABLE_GENERATIONS) {
+			if (generationsRequired >= MAX_ALLOWABLE_GENERATIONS) {
 				cout << "Maximum allowable generations reached! Chromosome evolved." << endl;
 				evolved = true;
 			}
@@ -140,7 +147,7 @@ string DriverGeneticAlgorithm::floatToBin (float value) {
 
 	return bits;
 }
-
+/*
 string DriverGeneticAlgorithm::getChromosome (string filename) {
 	string chromosome, aux;
 	fstream fs;
@@ -167,26 +174,94 @@ void DriverGeneticAlgorithm::setChromosome (string chromosome, string filename) 
 
 	fs.close();
 }
-
+*/
 float DriverGeneticAlgorithm::assignFitness (string bits) {
 	// @toDo Define a metric to evaluate a chromosome (through running on TORCS)
+	float result1, result2, result3;
+	string track1("forza");
+	string track2("cg1");
+	string track3("cs");
+
+	result1 = runTest(track1, bits);
+	result2 = runTest(track2, bits);
+	result3 = runTest(track3, bits);
+
+	float mean = totalMean(result1, result2, result3);	
+	cout << "mean: " << mean << endl;
+	cout << "resultado: " << result1 << endl;
+
+	return 1;
+}
+
+float DriverGeneticAlgorithm::runTest (string track1, string bits) {
+	float result;
+	string track, command, aux("");
+	track = "~/" + track1;
+
+	char* shared_memory;	//for communication between TORCS and GA
+	string strID = SharedMemory();
+	int myID = stoi(strID);
+	command = "torcs -r " + track + ".xml & ./FSMDriver " + bits + " " + strID; 
+	
+	//cout << command << endl << endl;
+
+
+	system("fuser -k 3001/udp"); 
+	if(system(command.c_str()) == -1)	cout << "DEU PALA" << endl;
+
+
+
+	/* Reattach the shared memory segment, at a different address. */
+	shared_memory = (char*) shmat (myID, (void*) 0x5000000, 0);
+	result = atof(shared_memory);
+	/* Detach the shared memory segment. */
+	shmdt (shared_memory);
+
+	
+
+	/* Deallocate the shared memory segment. */
+	shmctl (myID, IPC_RMID, 0);
+
+	return result;
+}
+
+string DriverGeneticAlgorithm::SharedMemory(){
+	int segment_id;
+	const int shared_segment_size = 0x6400;
+
+	/* Allocate a shared memory segment. */
+	segment_id = shmget (IPC_PRIVATE, shared_segment_size,IPC_CREAT|IPC_EXCL|S_IRUSR|S_IWUSR);
+
+
+	return(to_string(segment_id));
+}
+
+float DriverGeneticAlgorithm::totalMean (float result1, float result2, float result3) {
+	float weight1=1, weight2=1, weight3=1;
+	float mean;
+	// @toDo Define which mean to calculate using the results and the weights
+	mean = ((result1 * weight1) + (result2 * weight2) + (result3 * weight3)) / (weight1 + weight2 + weight3);
+
+	return mean;
 }
 
 // @toDo create communication to send the choromosome to a file to be read on TORCS
+/*
 void DriverGeneticAlgorithm::printChromosome (string bits) {
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		cout << Population[i].bits;
 	}
 	cout << endl;
 }
-
+*/
 // @toDo implement a method that shows the actual values to be used on TORCS
+/*
 void DriverGeneticAlgorithm::printParameters () {
 
 }
-
+*/
 void DriverGeneticAlgorithm::mutate (string &bits) {
-	for (int i = 0; i < bits.length(); i++) {
+	for (unsigned int i = 0; i < bits.length(); i++) {
 		if (RANDOM_NUMBER < MUTATION_RATE) {
 			if (bits.at(i) == '1')
 				bits.at(i) = '0';

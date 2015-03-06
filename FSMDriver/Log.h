@@ -6,6 +6,10 @@
 #include <iostream>
 #include <fstream>
 
+//For shared memory
+#include <sys/shm.h>
+#include <sys/stat.h>
+
 class FSMDriver;
 
 class Log {
@@ -48,13 +52,31 @@ public:
         myfile.close();
     }
 
+    /*
     void saveTotalTime(){
         ofstream myfile;
         myfile.open("results.txt");
         myfile << totalTime;
         myfile.close();
     }
+    */
 
+
+    //send totalTime to shared memory
+    void saveTotalTime(int segment_id){
+        char* shared_memory;
+
+        /* Attach the shared memory segment. */
+        shared_memory = (char*) shmat (segment_id, 0, 0);
+
+        //Assigned shared memory
+        sprintf (shared_memory, "%f", totalTime);
+
+
+        /* Detach the shared memory segment. */
+        shmdt (shared_memory);
+
+    }
     int curveComplete(CarState cs){
         if(cs.getDistFromStart()>20){
             flag=1;

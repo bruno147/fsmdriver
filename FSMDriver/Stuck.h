@@ -4,10 +4,10 @@
 #include "FSM.h"
 
 /******************************************************************************/
-const float STUCK_SPEED = 5;
-const unsigned int MIN_RACED_DISTANCE = 100;
-const unsigned int MAX_STUCK_TICKS = 300;
-const unsigned int MAX_SLOW_SPEED_TICKS=50;
+float STUCK_SPEED = 5;
+unsigned int MIN_RACED_DISTANCE = 100;
+unsigned int MAX_STUCK_TICKS = 300;
+unsigned int MAX_SLOW_SPEED_TICKS=50;
 /******************************************************************************/
 
 class FSMDriver;
@@ -29,14 +29,14 @@ public:
 	}
 
     void enter(FSMDriver *driver, CarState &cs) {
-        cout << "Enter Stuck" << endl;
+        //cout << "Enter Stuck" << endl;
         elapsedTicks = 0;
 
     }
 
     void exit(FSMDriver *driver) {
 
-        cout << "Exit Stuck" << endl;
+        // cout << "Exit Stuck" << endl;
     }
 
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs) {
