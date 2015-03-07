@@ -37,6 +37,7 @@ public:
             myfile << ";";
             myfile.close();
             */
+            lapCounter++;
         }
 
     }
@@ -64,6 +65,9 @@ public:
 
     //send totalTime to shared memory
     void saveTotalTime(int segment_id){
+        if(lapCounter!=3) totalTime=0;
+
+
         char* shared_memory;
 
         /* Attach the shared memory segment. */
@@ -99,6 +103,7 @@ private:
     int damage=0;
     int distRaced=0;
     float totalTime=0;
+    int lapCounter=0;
 
 
 };
