@@ -61,7 +61,6 @@ int main (int argc, char* argv[]) {
 
 			// Assigns a fitness score to every chromosome through testing in race
 			for (int i = 0; i < POPULATION_SIZE; i++) {
-				cout << endl << "i " << i << " population " << binToHex(Population[i].bits) << endl;
 				Population[i].fitness = assignFitness (Population[i].bits);
 				totalFitness += Population[i].fitness;
 			}
@@ -86,8 +85,7 @@ int main (int argc, char* argv[]) {
 				string offspring1 = roulette (totalFitness, Population);
 				string offspring2 = roulette (totalFitness, Population);
 
-				//string offspring1 = Population[0].bits;
-				//string offspring2 = Population[1].bits;
+			
 
 				crossover 	(offspring1, offspring2);
 
@@ -187,15 +185,15 @@ float DriverGeneticAlgorithm::assignFitness (string bits) {
 	string track2("cg1");
 	string track3("cs");
 
-//	result1 = runTest(track1, bits);
-//	result2 = runTest(track2, bits);
-//	result3 = runTest(track3, bits);
+	result1 = runTest(track1, bits);
+	result2 = runTest(track2, bits);
+	result3 = runTest(track3, bits);
 
 	float mean = totalMean(result1, result2, result3);	
 	//cout << "mean: " << mean << endl;
 	//cout << "resultado: " << result1 << endl;
 
-	return RANDOM_NUMBER;
+	return mean;
 }
 
 float DriverGeneticAlgorithm::runTest (string track1, string bits) {
@@ -246,21 +244,7 @@ float DriverGeneticAlgorithm::totalMean (float result1, float result2, float res
 	else	return (1/mean);
 }
 
-// @toDo create communication to send the choromosome to a file to be read on TORCS
-/*
-void DriverGeneticAlgorithm::printChromosome (string bits) {
-	for (int i = 0; i < POPULATION_SIZE; i++) {
-		cout << Population[i].bits;
-	}
-	cout << endl;
-}
-*/
-// @toDo implement a method that shows the actual values to be used on TORCS
-/*
-void DriverGeneticAlgorithm::printParameters () {
 
-}
-*/
 void DriverGeneticAlgorithm::mutate (string &bits) {
 	for (unsigned int i = 0; i < bits.length(); i++) {
 		if (RANDOM_NUMBER < MUTATION_RATE) {
@@ -319,88 +303,57 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
     for(int i = 0; i < POPULATION_SIZE; i++)	sortPopulation.push_back(population[i]);
 
 	sortPopulation = merge_sort(sortPopulation);
-    for(int i = 0; i < POPULATION_SIZE; i++){
-    	//logFile << binToHex(population[i].bits) << "\t" << population[i].fitness << endl;
-    	bitset<64> set1(sortPopulation[i].bits.substr(0,64));
-    	bitset<64> set2(sortPopulation[i].bits.substr(64,128));
-    	bitset<64> set3(sortPopulation[i].bits.substr(128,192));
-    	bitset<64> set4(sortPopulation[i].bits.substr(192,256));
-    	bitset<64> set5(sortPopulation[i].bits.substr(256,320));
-    	bitset<64> set6(sortPopulation[i].bits.substr(320,384));
-    	bitset<64> set7(sortPopulation[i].bits.substr(384,448));
-    	bitset<64> set8(sortPopulation[i].bits.substr(448,512));
-    	bitset<64> set9(sortPopulation[i].bits.substr(512,576));
-    	bitset<64> set10(sortPopulation[i].bits.substr(576,640));
-    	bitset<64> set11(sortPopulation[i].bits.substr(640,704));
 
-    	stringstream ss;
-    	string aux;
-    	for(int k = 0; k < 11; k++)
-    	{
-    		ss << hex << sortPopulation[i].bits.substr(k*64 , (k + 1)* 64);
-    	}
-    	//cout << "string " << sortPopulation[i].bits << endl;
-    	//cout << "hex " << hex << set1.to_ulong() << set2.to_ulong() << set3.to_ulong() << set4.to_ulong() << endl;
-    	cout << endl;
-    	ss << hex << set1.to_ullong();
-    	ss << hex << set2.to_ullong();
-    	ss << hex << set3.to_ullong();
-    	ss << hex << set4.to_ullong();
-    	ss << hex << set5.to_ullong();
-    	ss << hex << set6.to_ullong();
 
-    	// cout << hex << set1.to_ullong();
-    	// cout << hex << set2.to_ullong();
-    	// cout << hex << set3.to_ullong();
-    	// cout << hex << set4.to_ullong();
-    	// cout << hex << set5.to_ullong();
-    	// cout << hex << set6.to_ullong();
-
-    	cout << endl << hex << ss.str() << endl;
-
-    	logFile << hex << set1.to_ullong(); // << "  ";
-    	logFile << hex << set2.to_ullong(); // << "  ";
-    	logFile << hex << set3.to_ullong(); // << "  ";
-    	logFile << hex << set4.to_ullong(); // << "  ";
-    	logFile << hex << set5.to_ullong(); // << "  ";
-    	logFile << hex << set6.to_ullong(); // << "  ";
-    	logFile << hex << set7.to_ullong(); // << "  ";
-    	logFile << hex << set8.to_ullong(); // << "  ";
-    	logFile << hex << set9.to_ullong(); // << "  ";
-    	logFile << hex << set10.to_ullong(); // << "  ";
-    	logFile << hex << set11.to_ullong(); // << "  ";
-    	logFile << "\t    " << sortPopulation[i].fitness << endl;
-    	logFile << ss.str() << endl;
-    }
-
-    logFile << endl << endl;
-    //logFile << sortPopulation.size() << endl;
-    //logFile << f << endl;
-    logFile.close();
+	for(int i=0; i < sortPopulation.size(); i++){
+		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].fitness << endl;
+	}
+	logFile.close();
 }
 
-//string DriverGeneticAlgorithm::binToHex(string Chromosome){
-char* DriverGeneticAlgorithm::binToHex(string Chromosome){
-	// char* Chromosome.c_str() = Chromosome.c_str();
-	char hexstr[176];
-	char four[4];
-	int hexnum;
 
+char DriverGeneticAlgorithm::getHexCharacter(std::string str)
+{
+	if(str.compare("1111") == 0) return 'F';
+	else if(str.compare("1110") == 0) return 'E';
+	else if(str.compare("1101")== 0) return 'D';
+	else if(str.compare("1100")== 0) return 'C';
+	else if(str.compare("1011")== 0) return 'B';
+	else if(str.compare("1010")== 0) return 'A';
+	else if(str.compare("1001")== 0) return '9';
+	else if(str.compare("1000")== 0) return '8';
+	else if(str.compare("0111")== 0) return '7';
+	else if(str.compare("0110")== 0) return '6';
+	else if(str.compare("0101")== 0) return '5';
+	else if(str.compare("0100")== 0) return '4';
+	else if(str.compare("0011")== 0) return '3';
+	else if(str.compare("0010")== 0) return '2';
+	else if(str.compare("0001")== 0) return '1';
+	else if(str.compare("0000")== 0) return '0';
+	else if(str.compare("111")== 0) return '7';
+	else if(str.compare("110")== 0) return '6';
+	else if(str.compare("101")== 0) return '5';
+	else if(str.compare("100")== 0) return '4';
+	else if(str.compare("011")== 0) return '3';
+	else if(str.compare("010")== 0) return '2';
+	else if(str.compare("001")== 0) return '1';
+	else if(str.compare("000")== 0) return '0';
+	else if(str.compare("11")== 0) return '3';
+	else if(str.compare("10")== 0) return '2';
+	else if(str.compare("01")== 0) return '1';
+	else if(str.compare("00")== 0) return '0';
+	else if(str.compare("1")== 0) return '1';
+	else if(str.compare("0")== 0) return '0';
+}
 
-	for(int i = 0;i < 176;++i)
+std::string DriverGeneticAlgorithm::binToHex(string rowresult)
+{
+	std::string endresult = "";
+	for(int i = 0; i < rowresult.length(); i = i+4)
 	{
-    	hexnum = 0;
-	 
-	    strncpy(four, Chromosome.c_str() + (i * 4), 4);
-	    for(int j = 0;j < 4;++j)	hexnum += (four[j] - '0') << (3 - j);
-	 
-	    sprintf(hexstr + i, "%X", hexnum);
-  	}
-
-  	string ret(hexstr);
-
- 	return (char*)ret.c_str();
-//  	return ret;
+		endresult += getHexCharacter(rowresult.substr(i,4));
+	}
+	return endresult;
 }
 
 std::vector<chromosomeType> DriverGeneticAlgorithm::merge_sort(const std::vector<chromosomeType> &data)
