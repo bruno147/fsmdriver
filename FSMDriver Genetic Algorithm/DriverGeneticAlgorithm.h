@@ -18,6 +18,10 @@
 #include <ctime>
 #include <cmath>
 #include <bitset>
+#include <cstring>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
 
 namespace DriverGeneticAlgorithm {
 /*
@@ -29,10 +33,10 @@ namespace DriverGeneticAlgorithm {
 	static const int	MAX_ALLOWABLE_GENERATIONS;
 */
 	static const float	CROSSOVER_RATE	=			1;	// Rate defined by AI-junkie
-	static const float	MUTATION_RATE	=			0.5; 	// Rate defined by AI-junkie
-	static const int 	POPULATION_SIZE	=			2;	// Must be an even number
+	static const float	MUTATION_RATE	=			0.3; 	// Rate defined by AI-junkie
+	static const int 	POPULATION_SIZE	=			4;	// Must be an even number
 	static const int 	GENE_LENGTH		=			32;
-	static const int 	MAX_ALLOWABLE_GENERATIONS =	400;
+	static const int 	MAX_ALLOWABLE_GENERATIONS =	3;
 	static const int 	NUMBER_OF_PARAMETERS	=	22;		// Adjust to problem needs
 	static const int 	CHROMOSOME_LENGTH		=	GENE_LENGTH * NUMBER_OF_PARAMETERS;
 
@@ -46,6 +50,21 @@ namespace DriverGeneticAlgorithm {
 
 		chromosomeType(): bits(""), fitness(0.0f){};
 		chromosomeType(std::string in_bits, float in_fitness): bits(in_bits), fitness(in_fitness){};
+//		inline bool operator<(const chromosomeType& lhs, const chromosomeType& rhs)
+//		{
+//			return left.fitness < right.fitness? true : false;
+//		}
+		inline bool operator<(const chromosomeType& rhs)
+		{
+			if (fitness < rhs.fitness)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 	};
 
 
@@ -68,6 +87,13 @@ namespace DriverGeneticAlgorithm {
 	//int 	SharedMemory();
 	std::string SharedMemory();
 	float totalMean (float result1, float result2, float result3);
+	void log(int generation, chromosomeType population[], chromosomeType bestChromosome);
+	std::vector<chromosomeType> merge_sort(const std::vector<chromosomeType> &data);
+	std::string binToHex(std::string rowresult);
+	char getHexCharacter(std::string str);
+
+
+
 
 }
 
