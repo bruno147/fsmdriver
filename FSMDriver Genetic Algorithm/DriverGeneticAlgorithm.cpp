@@ -33,6 +33,11 @@ const int 	CHROMOSOME_LENGTH		=	GENE_LENGTH * NUMBER_OF_PARAMETERS;*/
 
 // Chromosome generation process (Main Method)
 int main (int argc, char* argv[]) {
+	if(POPULATION_SIZE%2){
+		cout << "ERROR\nPOPULATION_SIZE must be an even number\n";
+		return 0;
+	}
+
 	// Random number generator's seeder
 	srand ((int)time(NULL));
 
@@ -45,6 +50,15 @@ int main (int argc, char* argv[]) {
 
 	while (!evolved) {
 		chromosomeType Population[POPULATION_SIZE];
+
+		/*Population[0].bits = floatToBin(4.0) + floatToBin(1500) + floatToBin(4000) + floatToBin(9500) + floatToBin(5)
+						   + floatToBin(100) + floatToBin(300) + floatToBin(50) + floatToBin(0.12) + floatToBin(0.7)
+						   + floatToBin(80) + floatToBin(3) + floatToBin(0.1) + floatToBin(90) + floatToBin(70)
+						   + floatToBin(40) + floatToBin(0.7) + floatToBin(0.5) + floatToBin(1000) + floatToBin(500)
+						   + floatToBin(400) + floatToBin(300);
+		Population[0].fitness = 0.0f;*/
+
+		//cout << "Population i = 0 => length = " << Population[0].bits.length() << endl;
 
 		// Creation of an initial population (randomic, entirely with zero fitness)
 		for (int i = 0; i < POPULATION_SIZE; i++) {
@@ -286,7 +300,7 @@ string DriverGeneticAlgorithm::roulette (int totalFitness, chromosomeType* Popul
 	for (int i = 0; i < POPULATION_SIZE; i++) {
 		fitnessSoFar += Population[i].fitness;
 		// If the fitness so far > random number generated, the current chromosome is returned
-		if (fitnessSoFar >= slice)
+		if (fitnessSoFar >= slice || !slice)
 			return Population[i].bits;
 	}
 	return "";

@@ -27,16 +27,23 @@ public:
         if(curveComplete(cs)){
             //lap++;
             totalTime+=cs.getLastLapTime();
-            /*
+            
             ofstream myfile;
             myfile.open("results.txt", std::ios_base::app);
+
+            if(lapCounter==0){
+                myfile<<endl;
+            }
+
             myfile << "Lap";
-            myfile << lap;
+            myfile << lapCounter;
             myfile << " ";
             myfile << cs.getLastLapTime();
             myfile << ";";
+            myfile << " Damage " << damage << "; ";
+
             myfile.close();
-            */
+            
             lapCounter++;
         }
 
@@ -98,12 +105,11 @@ public:
     }
 private:
     Log(){}
-    int lap=0;
+    int lapCounter=0;
     int flag=0;
     int damage=0;
     int distRaced=0;
     float totalTime=0;
-    int lapCounter=0;
 
 
 };
