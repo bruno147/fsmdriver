@@ -102,7 +102,10 @@ int main (int argc, char* argv[]) {
 				Population[i] = newPopulation[i];
 			}
 			++generationsRequired;
-			cout << generationsRequired << endl; 
+			cout << endl << endl;
+			cout << "Generation: " << generationsRequired << "  Generation: " << generationsRequired << "  Generation: " << generationsRequired << "  Generation: " << generationsRequired << endl;
+			cout << endl << endl;
+
 			// If the maximum number of generations is reached, ends program
 			if (generationsRequired >= MAX_ALLOWABLE_GENERATIONS) {
 				cout << "Maximum allowable generations reached! Chromosome evolved." << endl;
@@ -206,7 +209,7 @@ float DriverGeneticAlgorithm::runTest (string track1, string bits) {
 	int myID = stoi(strID);
 	command = "torcs -r " + track + ".xml & ./FSMDriver " + bits + " " + strID; 
 	
-	system("fuser -k 3001/udp"); 
+	if(system("fuser -k 3001/udp")); 
 	if(system(command.c_str()) == -1)	cout << "DEU PALA" << endl;
 
 	/* Reattach the shared memory segment, at a different address. */
@@ -300,12 +303,12 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 
     std::vector<chromosomeType> sortPopulation;
 
-    for(int i = 0; i < POPULATION_SIZE; i++)	sortPopulation.push_back(population[i]);
+    for(unsigned int i = 0; i < POPULATION_SIZE; i++)	sortPopulation.push_back(population[i]);
 
 	sortPopulation = merge_sort(sortPopulation);
 
 
-	for(int i=0; i < sortPopulation.size(); i++){
+	for(unsigned int i=0; i < sortPopulation.size(); i++){
 		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].fitness << endl;
 	}
 	logFile.close();
@@ -344,12 +347,13 @@ char DriverGeneticAlgorithm::getHexCharacter(std::string str)
 	else if(str.compare("00")== 0) return '0';
 	else if(str.compare("1")== 0) return '1';
 	else if(str.compare("0")== 0) return '0';
+	return '0';
 }
 
 std::string DriverGeneticAlgorithm::binToHex(string rowresult)
 {
 	std::string endresult = "";
-	for(int i = 0; i < rowresult.length(); i = i+4)
+	for(unsigned int i = 0; i < rowresult.length(); i = i+4)
 	{
 		endresult += getHexCharacter(rowresult.substr(i,4));
 	}
