@@ -51,17 +51,17 @@ int main (int argc, char* argv[]) {
 	while (!evolved) {
 		chromosomeType Population[POPULATION_SIZE];
 
-		Population[0].bits = floatToBin(4.0) + floatToBin(1500) + floatToBin(4000) + floatToBin(9500) + floatToBin(5)
+		/*Population[0].bits = floatToBin(4.0) + floatToBin(1500) + floatToBin(4000) + floatToBin(9500) + floatToBin(5)
 						   + floatToBin(100) + floatToBin(300) + floatToBin(50) + floatToBin(0.12) + floatToBin(0.7)
 						   + floatToBin(80) + floatToBin(3) + floatToBin(0.1) + floatToBin(90) + floatToBin(70)
 						   + floatToBin(40) + floatToBin(0.7) + floatToBin(0.5) + floatToBin(1000) + floatToBin(500)
 						   + floatToBin(400) + floatToBin(300);
-		Population[0].fitness = 0.0f;
+		Population[0].fitness = 0.0f;*/
 
 		//cout << "Population i = 0 => length = " << Population[0].bits.length() << endl;
 
 		// Creation of an initial population (randomic, entirely with zero fitness)
-		for (int i = 1; i < POPULATION_SIZE; i++) {
+		for (int i = 0; i < POPULATION_SIZE; i++) {
 			Population[i].bits	  = getRandomBits (CHROMOSOME_LENGTH);
 			Population[i].fitness = 0.0f;
 		}
@@ -198,15 +198,20 @@ void DriverGeneticAlgorithm::setChromosome (string chromosome, string filename) 
 */
 float DriverGeneticAlgorithm::assignFitness (string bits) {
 	
-	float result1, result2, result3;
+	std::vector<float> result1, result2, result3;
 	string track1("forza");
 	string track2("cg1");
 	string track3("cs");
 
-/*	result1 = runTest(track1, bits);
+	cout << "Track: " << track1 << endl;
+	result1 = runTest(track1, bits);
+
+	cout << "Track: " << track2 << endl;
 	result2 = runTest(track2, bits);
-	result3 = runTest(track3, bits);*/
-runTest(track1, bits);
+
+	cout << "Track: " << track3 << endl;
+	result3 = runTest(track3, bits);
+
 	float mean = totalMean(result1, result2, result3);	
 	//cout << "mean: " << mean << endl;
 	//cout << "resultado: " << result1 << endl;
@@ -215,7 +220,6 @@ runTest(track1, bits);
 }
 
 std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) {
-	float result;
 	string bin_path(boost::filesystem::current_path().native());
 	unsigned pos = bin_path.find("bin");
 	string str1 = bin_path.substr(0,pos);
@@ -270,14 +274,10 @@ string DriverGeneticAlgorithm::SharedMemory(){
 	return(to_string(segment_id));
 }
 
-float DriverGeneticAlgorithm::totalMean (float result1, float result2, float result3) {
-	float weight1=1, weight2=1, weight3=1;
-	float mean;
-	// @toDo Define which mean to calculate using the results and the weights
-	mean = ((result1 * weight1) + (result2 * weight2) + (result3 * weight3)) / (weight1 + weight2 + weight3);
+float DriverGeneticAlgorithm::totalMean (std::vector<float> result1, std::vector<float> result2, std::vector<float> result3) {
+	
+	return result1.at(2)+result2.at(2)+result3.at(2);
 
-	if(mean == 0)	return 0;
-	else	return (1/mean);
 }
 
 
