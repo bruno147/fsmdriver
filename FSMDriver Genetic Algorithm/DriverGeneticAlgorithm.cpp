@@ -226,7 +226,7 @@ std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) 
 	char* shared_memory;	//for communication between TORCS and GA
 	string strID = SharedMemory();
 	int myID = stoi(strID);
-	command1 = "torcs -r " + track_path + ".xml &"
+	command1 = "torcs -r " + track_path + ".xml &";
 	command2 = "./FSMDriver " + bits + " " + strID;
 	
 	if(system("fuser -k 3001/udp")); 
