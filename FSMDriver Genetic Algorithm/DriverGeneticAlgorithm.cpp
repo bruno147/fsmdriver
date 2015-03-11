@@ -206,7 +206,7 @@ float DriverGeneticAlgorithm::assignFitness (string bits) {
 /*	result1 = runTest(track1, bits);
 	result2 = runTest(track2, bits);
 	result3 = runTest(track3, bits);*/
-
+runTest(track1, bits);
 	float mean = totalMean(result1, result2, result3);	
 	//cout << "mean: " << mean << endl;
 	//cout << "resultado: " << result1 << endl;
@@ -235,13 +235,16 @@ std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) 
 	shared_memory = (char*) shmat (myID, (void*) 0x5000000, 0);
 	//result = atof(shared_memory);
 	string temp(shared_memory);
+	cout << "shared_memory: "<< shared_memory << endl;
 	unsigned pos2=temp.find(' ');
+	unsigned pos3=temp.substr(pos2+1).find(' ');
 	float result1=stof(temp.substr(0, pos2));
-	float result2=stof(temp.substr(pos2+1));
+	float result2=stof(temp.substr(pos2+1,pos3));
+	float result3=stof(temp.substr(pos2+pos3+1));
 	cout << "result1: " << result1 << endl;
 	cout << "result2: " << result2 << endl;
-
-	std::vector<float> results = { result1, result2 };
+	cout << "result3: " << result3 << endl;
+	std::vector<float> results = { result1, result2, result3 };
 
 	/* Detach the shared memory segment. */
 	shmdt (shared_memory);
@@ -256,7 +259,7 @@ std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) 
 
 string DriverGeneticAlgorithm::SharedMemory(){
 	int segment_id;
-	const int shared_segment_size = 0x8;//0x6400;
+	const int shared_segment_size = 0xC;//0x6400;
 
 	/* Allocate a shared memory segment. */
 	segment_id = shmget (IPC_PRIVATE, shared_segment_size,IPC_CREAT|IPC_EXCL|S_IRUSR|S_IWUSR);

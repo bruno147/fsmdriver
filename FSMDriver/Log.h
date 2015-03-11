@@ -22,12 +22,13 @@ public:
     void updateLog(DrivingState<FSMDriver> *s, CarState cs) {
         assert(s);
         damage=cs.getDamage();
-        distRaced=cs.getDistRaced();
+
+        if(distRaced<cs.getDistFromStart()) distRaced=cs.getDistFromStart();
         
         if(curveComplete(cs)){
-            //lap++;
             totalTime+=cs.getLastLapTime();
-            
+            totalDistRaced+=distRaced;
+            distRaced=0;
             ofstream myfile;
             myfile.open("results.txt", std::ios_base::app);
 
@@ -49,7 +50,7 @@ public:
 
     }
 
-    void saveLog(){
+    /*void saveLog(){
         ofstream myfile;
         myfile.open("results.txt");
         myfile << "Damage " << damage;
@@ -58,7 +59,7 @@ public:
         myfile << ";";
         myfile << endl;
         myfile.close();
-    }
+    }*/
 
     /*
     void saveTotalTime(){
@@ -80,8 +81,13 @@ public:
         /* Attach the shared memory segment. */
         shared_memory = (char*) shmat (segment_id, 0, 0);
 
+
+        cout << "totalTime: " << totalTime << endl;
+        cout << "damage: " << damage << endl;
+        cout << "totalDistRaced: " << totalDistRaced << endl;
+        cout << "distRaced: " << distRaced << endl;
         //Assigned shared memory
-        sprintf (shared_memory, "%f", totalTime);
+        sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced+distRaced);
 
 
         /* Detach the shared memory segment. */
@@ -103,13 +109,15 @@ public:
             }
         }
     }
+
 private:
     Log(){}
     int lapCounter=0;
     int flag=0;
-    int damage=0;
-    int distRaced=0;
+    float damage=0;
+    float distRaced=0;
     float totalTime=0;
+    float totalDistRaced=0;
 
 
 };
