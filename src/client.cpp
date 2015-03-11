@@ -221,6 +221,7 @@ int main(int argc, char *argv[])
             timeVal.tv_sec = 0;
             timeVal.tv_usec = UDP_CLIENT_TIMEUOT;
 
+            static int cont = 0;
             if (select(socketDescriptor+1, &readSet, NULL, NULL, &timeVal))
             {
                 // Read data sent by the solorace server
@@ -262,7 +263,7 @@ int main(int argc, char *argv[])
 			sprintf(buf,"%s",action.c_str());
 		}
 		else
-			sprintf (buf, "(meta 1)");
+	                sprintf (buf, "(meta 1)");
 
                 if (sendto(socketDescriptor, buf, strlen(buf)+1, 0,
                            (struct sockaddr *) &serverAddress,
@@ -279,7 +280,13 @@ int main(int argc, char *argv[])
             }
             else
             {
-                cout << "** Server did not respond in 1 second.\n";
+                cont++;
+                cout << "** Server did not respond in " << cont << " second.\n";
+                if(cont == 10)
+                {
+                    shutdownClient = true;
+                    break;
+                }
             }
         }
     } while(shutdownClient==false && ( (++curEpisode) != maxEpisodes) );
