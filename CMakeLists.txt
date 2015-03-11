@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(FSMDriver)
+find_package(Boost COMPONENTS filesystem system)
 
 # Source files:
 include_directories(include FSMDriver)
@@ -23,6 +24,7 @@ add_definitions(-g -O3 -Wall -std=c++0x ${EXTFLAGS})
 set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 add_executable(${DRIVER} ${SOURCES})
 
+
 # GA Flag
  set(GA ON)
 
@@ -36,4 +38,5 @@ if(GA)
 		FSMDriver\ Genetic\ Algorithm/DriverGeneticAlgorithm.cpp)
 
 	add_executable(DriverGeneticAlgorithm ${GA_SOURCES})
+	target_link_libraries(DriverGeneticAlgorithm ${Boost_LIBRARIES})
 endif()

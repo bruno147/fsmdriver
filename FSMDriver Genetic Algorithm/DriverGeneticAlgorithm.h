@@ -22,6 +22,7 @@
 #include <iomanip>
 #include <vector>
 #include <algorithm>
+#include <boost/filesystem.hpp>
 
 namespace DriverGeneticAlgorithm {
 /*
