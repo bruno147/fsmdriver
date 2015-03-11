@@ -235,9 +235,9 @@ std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) 
 	shared_memory = (char*) shmat (myID, (void*) 0x5000000, 0);
 	//result = atof(shared_memory);
 	string temp(shared_memory);
-	unsigned pos=temp.find(' ');
-	float result1=stof(temp.substr(0, pos));
-	float result2=stof(temp.substr(pos+1));
+	unsigned pos2=temp.find(' ');
+	float result1=stof(temp.substr(0, pos2));
+	float result2=stof(temp.substr(pos2+1));
 	cout << "result1: " << result1 << endl;
 	cout << "result2: " << result2 << endl;
 
