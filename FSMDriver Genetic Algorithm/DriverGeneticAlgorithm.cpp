@@ -220,16 +220,18 @@ std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) 
 	unsigned pos = bin_path.find("bin");
 	string str1 = bin_path.substr(0,pos);
 	string track_path( bin_path.substr(0,pos) + "configs/" );
-	string command;
+	string command1, command2;
 	track_path += track1;
 
 	char* shared_memory;	//for communication between TORCS and GA
 	string strID = SharedMemory();
 	int myID = stoi(strID);
-	command = "torcs -r " + track_path + ".xml & ./FSMDriver " + bits + " " + strID;
+	command1 = "torcs -r " + track_path + ".xml &"
+	command2 = "./FSMDriver " + bits + " " + strID;
 	
 	if(system("fuser -k 3001/udp")); 
-	if(system(command.c_str()) == -1)	cout << "ERROR" << endl;
+	if(system(command1.c_str()) == -1)	cout << "ERROR" << endl;
+	if(system(command2.c_str()) == -1)	cout << "ERROR" << endl;
 
 	/* Reattach the shared memory segment, at a different address. */
 	shared_memory = (char*) shmat (myID, (void*) 0x5000000, 0);

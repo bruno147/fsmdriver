@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(FSMDriver)
-find_package(Boost COMPONENTS filesystem system)
+find_package(Boost REQUIRED COMPONENTS filesystem system)
 
 # Source files:
 include_directories(include FSMDriver)
