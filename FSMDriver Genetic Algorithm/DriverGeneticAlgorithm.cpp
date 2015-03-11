@@ -51,17 +51,17 @@ int main (int argc, char* argv[]) {
 	while (!evolved) {
 		chromosomeType Population[POPULATION_SIZE];
 
-		/*Population[0].bits = floatToBin(4.0) + floatToBin(1500) + floatToBin(4000) + floatToBin(9500) + floatToBin(5)
+		Population[0].bits = floatToBin(4.0) + floatToBin(1500) + floatToBin(4000) + floatToBin(9500) + floatToBin(5)
 						   + floatToBin(100) + floatToBin(300) + floatToBin(50) + floatToBin(0.12) + floatToBin(0.7)
 						   + floatToBin(80) + floatToBin(3) + floatToBin(0.1) + floatToBin(90) + floatToBin(70)
 						   + floatToBin(40) + floatToBin(0.7) + floatToBin(0.5) + floatToBin(1000) + floatToBin(500)
 						   + floatToBin(400) + floatToBin(300);
-		Population[0].fitness = 0.0f;*/
+		Population[0].fitness = 0.0f;
 
 		//cout << "Population i = 0 => length = " << Population[0].bits.length() << endl;
 
 		// Creation of an initial population (randomic, entirely with zero fitness)
-		for (int i = 0; i < POPULATION_SIZE; i++) {
+		for (int i = 1; i < POPULATION_SIZE; i++) {
 			Population[i].bits	  = getRandomBits (CHROMOSOME_LENGTH);
 			Population[i].fitness = 0.0f;
 		}
@@ -202,9 +202,9 @@ float DriverGeneticAlgorithm::assignFitness (string bits) {
 	string track2("cg1");
 	string track3("cs");
 
-	result1 = runTest(track1, bits);
+/*	result1 = runTest(track1, bits);
 	result2 = runTest(track2, bits);
-	result3 = runTest(track3, bits);
+	result3 = runTest(track3, bits);*/
 
 	float mean = totalMean(result1, result2, result3);	
 	//cout << "mean: " << mean << endl;
@@ -213,7 +213,7 @@ float DriverGeneticAlgorithm::assignFitness (string bits) {
 	return mean;
 }
 
-float DriverGeneticAlgorithm::runTest (string track1, string bits) {
+std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) {
 	float result;
 	string track, command, aux("");
 	track = "~/" + track1;
@@ -224,11 +224,20 @@ float DriverGeneticAlgorithm::runTest (string track1, string bits) {
 	command = "torcs -r " + track + ".xml & ./FSMDriver " + bits + " " + strID; 
 	
 	if(system("fuser -k 3001/udp")); 
-	if(system(command.c_str()) == -1)	cout << "DEU PALA" << endl;
+	if(system(command.c_str()) == -1)	cout << "ERROR" << endl;
 
 	/* Reattach the shared memory segment, at a different address. */
 	shared_memory = (char*) shmat (myID, (void*) 0x5000000, 0);
-	result = atof(shared_memory);
+	//result = atof(shared_memory);
+	string temp(shared_memory);
+	unsigned pos=temp.find(' ');
+	float result1=stof(temp.substr(0, pos));
+	float result2=stof(temp.substr(pos+1));
+	cout << "result1: " << result1 << endl;
+	cout << "result2: " << result2 << endl;
+
+	std::vector<float> results = { result1, result2 };
+
 	/* Detach the shared memory segment. */
 	shmdt (shared_memory);
 
@@ -237,12 +246,12 @@ float DriverGeneticAlgorithm::runTest (string track1, string bits) {
 	/* Deallocate the shared memory segment. */
 	shmctl (myID, IPC_RMID, 0);
 
-	return result;
+	return results;
 }
 
 string DriverGeneticAlgorithm::SharedMemory(){
 	int segment_id;
-	const int shared_segment_size = 0x6400;
+	const int shared_segment_size = 0x8;//0x6400;
 
 	/* Allocate a shared memory segment. */
 	segment_id = shmget (IPC_PRIVATE, shared_segment_size,IPC_CREAT|IPC_EXCL|S_IRUSR|S_IWUSR);
