@@ -32,10 +32,20 @@ add_executable(${DRIVER} ${SOURCES})
 if(GA)
 	include_directories(include FSMDriver Genetic Algorithm)
 
+	# set(ROULLETE ON)
+	set(ELITISM ON)
 	# GA source
 	set(GA_SOURCES
 		FSMDriver\ Genetic\ Algorithm/DriverGeneticAlgorithm.h
 		FSMDriver\ Genetic\ Algorithm/DriverGeneticAlgorithm.cpp)
+
+	if(ROULLETE)
+  		set(CMAKE_CXX_FLAGS "-g -Wall -O3 -std=c++11 -D ROULLETE")
+	endif()
+
+	if(ELITISM)
+  		set(CMAKE_CXX_FLAGS "-g -Wall -O3 -std=c++11 -D ELITISM")
+	endif()
 
 	add_executable(DriverGeneticAlgorithm ${GA_SOURCES})
 	target_link_libraries(DriverGeneticAlgorithm ${Boost_LIBRARIES})

@@ -94,12 +94,38 @@ int main (int argc, char* argv[]) {
 			chromosomeType	newPopulation[POPULATION_SIZE];
 			int 			populationCounter=0;
 
+			#ifdef ELITISM
+
+			std::vector<chromosomeType> sortPopulation;
+
+			for (int i = 0; i < POPULATION_SIZE; ++i)	sortPopulation.push_back(Population[i]);
+
+			sortPopulation = merge_sort(sortPopulation);
+
+			for (int i = 0; i < 6; ++i) newPopulation[i] = sortPopulation.at(i);
+
+			populationCounter = 6;
+
+			#endif //ELITISM
+
 			while (populationCounter < POPULATION_SIZE) {
 				// Selects 2 new members to apply crossover and mutation
-				string offspring1 = roulette (totalFitness, Population);
-				string offspring2 = roulette (totalFitness, Population);
+				string offspring1;
+				string offspring2;
 
+				#ifdef ROULLETE
 			
+				offspring1 = roulette (totalFitness, Population);
+				offspring2 = roulette (totalFitness, Population);
+
+				#endif //ROULLETE
+
+				#ifdef ELITISM
+
+				offspring1 = pool(sortPopulation);
+				offspring2 = pool(sortPopulation);
+
+				#endif //ELITISM
 
 				crossover 	(offspring1, offspring2);
 
@@ -330,7 +356,12 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
     logFile.open("log.txt", std::ios_base::app);
     logFile << endl << endl;
     logFile << endl << "Generation " << generation << endl;
+#ifdef ROULLETE
     logFile << endl << "Best Chromosome so far: " << setw(164) << "\tFitness:" << endl;
+#endif //ROULLETE
+#ifdef ELITISM
+    logFile << endl << "Best Chromosome so far: " << setw(164) << "\tTime:\t" << "\tDamage:\t" << "\tDistRaced:\t" << endl;
+#endif //ELITISM
     logFile << binToHex(bestChromosome.bits) << "\t" << bestChromosome.fitness << endl;
     logFile << endl << "Population: " << endl;
 
@@ -340,10 +371,22 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 
 	sortPopulation = merge_sort(sortPopulation);
 
+	#ifdef ROULLETE
 
 	for(unsigned int i=0; i < sortPopulation.size(); i++){
 		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].fitness << endl;
 	}
+
+	#endif //ROULLETE
+
+	#ifdef ELITISM
+
+	for(unsigned int i=0; i < sortPopulation.size(); i++){
+		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].track1.at(0) << "\t" << sortPopulation[i].track1.at(1) << "\t" << sortPopulation[i].track1.at(2) << endl;
+	}
+
+	#endif //ELITISM
+
 	logFile.close();
 }
 
@@ -412,4 +455,9 @@ std::vector<chromosomeType> DriverGeneticAlgorithm::merge_sort(const std::vector
 	           result.begin());
  
 	return result;
+}
+
+string DriverGeneticAlgorithm::pool(const std::vector<chromosomeType> &population)
+{
+	return population.at( rand()%10 ).bits;
 }
