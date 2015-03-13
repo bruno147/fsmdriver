@@ -356,7 +356,12 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
     logFile.open("log.txt", std::ios_base::app);
     logFile << endl << endl;
     logFile << endl << "Generation " << generation << endl;
+#ifdef ROULLETE
     logFile << endl << "Best Chromosome so far: " << setw(164) << "\tFitness:" << endl;
+#endif //ROULLETE
+#ifdef ELITISM
+    logFile << endl << "Best Chromosome so far: " << setw(164) << "\tTime:\t" << "\tDamage:\t" << "\tDistRaced:\t" << endl;
+#endif //ELITISM
     logFile << binToHex(bestChromosome.bits) << "\t" << bestChromosome.fitness << endl;
     logFile << endl << "Population: " << endl;
 
@@ -366,10 +371,22 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 
 	sortPopulation = merge_sort(sortPopulation);
 
+	#ifdef ROULLETE
 
 	for(unsigned int i=0; i < sortPopulation.size(); i++){
 		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].fitness << endl;
 	}
+
+	#endif //ROULLETE
+
+	#ifdef ELITISM
+
+	for(unsigned int i=0; i < sortPopulation.size(); i++){
+		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].track1.at(0) << "\t" << sortPopulation[i].track1.at(1) << "\t" << sortPopulation[i].track1.at(2) << endl;
+	}
+
+	#endif //ELITISM
+
 	logFile.close();
 }
 

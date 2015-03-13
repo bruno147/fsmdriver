@@ -71,6 +71,7 @@ namespace DriverGeneticAlgorithm {
 
 		std::vector<float> track1;
 
+		// Here the best is the minor
 		inline bool operator<(const chromosomeType& rhs)
 		{
 			// abaout track1's results
