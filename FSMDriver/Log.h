@@ -86,8 +86,14 @@ public:
         cout << "damage: " << damage << endl;
         cout << "totalDistRaced: " << totalDistRaced << endl;
         cout << "distRaced: " << distRaced << endl;
+        
         //Assigned shared memory
-        sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced+distRaced);
+        if(lapCounter==3){
+            sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced+distRaced);
+        }else{
+            sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced);
+        }
+
 
 
         /* Detach the shared memory segment. */
