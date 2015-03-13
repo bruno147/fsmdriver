@@ -35,7 +35,7 @@ namespace DriverGeneticAlgorithm {
 */
 	static const float	CROSSOVER_RATE	=			0.7;	// Rate defined by AI-junkie
 	static const float	MUTATION_RATE	=			0.01; 	// Rate defined by AI-junkie
-	static const int 	POPULATION_SIZE	=			10;	// Must be an EVEN number
+	static const int 	POPULATION_SIZE	=			30;	// Must be an EVEN number
 	static const int 	GENE_LENGTH		=			32;
 	static const int 	MAX_ALLOWABLE_GENERATIONS =	8;
 	static const int 	NUMBER_OF_PARAMETERS	=	22;		// Adjust to problem needs

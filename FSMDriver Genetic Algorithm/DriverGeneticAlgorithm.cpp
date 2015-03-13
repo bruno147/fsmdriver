@@ -356,6 +356,13 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
     logFile.open("log.txt", std::ios_base::app);
     logFile << endl << endl;
     logFile << endl << "Generation " << generation << endl;
+    time_t rawtime;
+    struct tm * timeinfo;
+
+    time (&rawtime);
+    timeinfo = localtime (&rawtime);
+    logFile << asctime(timeinfo);
+
 #ifdef ROULLETE
     logFile << endl << "Best Chromosome so far: " << setw(164) << "\tFitness:" << endl;
 #endif //ROULLETE
