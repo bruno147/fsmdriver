@@ -43,6 +43,7 @@ int main (int argc, char* argv[]) {
 
 	// Defines the best chromosome in the evolved population
 	float 			bestFitness = 0;
+	std::vector<float> bestRace;
 	chromosomeType	bestChromosome;
 
 	//flag
@@ -70,6 +71,8 @@ int main (int argc, char* argv[]) {
 
 		// Genetic Algorithm actual loop
 		while (!evolved) {
+
+#ifdef ROULLETE
 			// Defines the size of the sorting sample for roulette Wheel
 			float 	totalFitness = 0.0;
 
@@ -86,6 +89,22 @@ int main (int argc, char* argv[]) {
 					bestChromosome 	= Population[i];
 				}
 			}
+#endif //ROULLETE
+
+#ifdef ELITISM
+			for (int i = 0; i < POPULATION_SIZE; ++i)	Population[i].track1 = getDataTrack(Population[i]);
+
+			std::vector<chromosomeType> sortPopulation;
+
+			for (int i = 0; i < POPULATION_SIZE; ++i)	sortPopulation.push_back(Population[i]);
+
+			sortPopulation = merge_sort(sortPopulation);
+
+			bestRace = sortPopulation.at(0).track1;
+			bestChromosome = sortPopulation.at(0);
+
+
+#endif //ELITISM
 
 			// @toDo Include Log Method to keep every generation archived
 			log(generationsRequired, Population, bestChromosome);
@@ -94,38 +113,29 @@ int main (int argc, char* argv[]) {
 			chromosomeType	newPopulation[POPULATION_SIZE];
 			int 			populationCounter=0;
 
-			#ifdef ELITISM
-
-			std::vector<chromosomeType> sortPopulation;
-
-			for (int i = 0; i < POPULATION_SIZE; ++i)	sortPopulation.push_back(Population[i]);
-
-			sortPopulation = merge_sort(sortPopulation);
-
+#ifdef ELITISM
 			for (int i = 0; i < 6; ++i) newPopulation[i] = sortPopulation.at(i);
 
 			populationCounter = 6;
-
-			#endif //ELITISM
-
+#endif //ELITISM
 			while (populationCounter < POPULATION_SIZE) {
 				// Selects 2 new members to apply crossover and mutation
 				string offspring1;
 				string offspring2;
 
-				#ifdef ROULLETE
+#ifdef ROULLETE
 			
 				offspring1 = roulette (totalFitness, Population);
 				offspring2 = roulette (totalFitness, Population);
 
-				#endif //ROULLETE
+#endif //ROULLETE
 
-				#ifdef ELITISM
+#ifdef ELITISM
 
 				offspring1 = pool(sortPopulation);
 				offspring2 = pool(sortPopulation);
 
-				#endif //ELITISM
+#endif //ELITISM
 
 				crossover 	(offspring1, offspring2);
 
@@ -243,6 +253,34 @@ float DriverGeneticAlgorithm::assignFitness (string bits) {
 	//cout << "resultado: " << result1 << endl;
 
 	return mean;
+}
+
+std::vector<float> DriverGeneticAlgorithm::getDataTrack (chromosomeType specimen)
+{
+	std::vector<float> result1;
+	string track1("forza");
+	// string track2("cg1");
+	// string track3("cs");
+
+	cout << "Size " << specimen.track1.size() << endl;
+	if(!specimen.track1.size())
+	{
+		cout << "Track: " << track1 << endl;
+		result1 = runTest(track1, specimen.bits);
+	}
+	else	result1 = specimen.track1;
+/*
+	cout << "Track: " << track2 << endl;
+	result2 = runTest(track2, bits);
+
+	cout << "Track: " << track3 << endl;
+	result3 = runTest(track3, bits);
+
+	float mean = totalMean(result1, result2, result3);
+	//cout << "mean: " << mean << endl;
+	//cout << "resultado: " << result1 << endl;
+*/
+	return result1;
 }
 
 std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) {
@@ -366,10 +404,11 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 #ifdef ROULLETE
     logFile << endl << "Best Chromosome so far: " << setw(164) << "\tFitness:" << endl;
 #endif //ROULLETE
+
 #ifdef ELITISM
     logFile << endl << "Best Chromosome so far: " << setw(164) << "\tTime:\t" << "\tDamage:\t" << "\tDistRaced:\t" << endl;
+    logFile << binToHex(bestChromosome.bits) << "\t\t" << bestChromosome.track1.at(0) << "\t\t" << bestChromosome.track1.at(1) << "\t\t" << bestChromosome.track1.at(2) << endl;
 #endif //ELITISM
-    logFile << binToHex(bestChromosome.bits) << "\t" << bestChromosome.fitness << endl;
     logFile << endl << "Population: " << endl;
 
     std::vector<chromosomeType> sortPopulation;
@@ -378,21 +417,17 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 
 	sortPopulation = merge_sort(sortPopulation);
 
-	#ifdef ROULLETE
-
+#ifdef ROULLETE
 	for(unsigned int i=0; i < sortPopulation.size(); i++){
 		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].fitness << endl;
 	}
+#endif //ROULLETE
 
-	#endif //ROULLETE
-
-	#ifdef ELITISM
-
+#ifdef ELITISM
 	for(unsigned int i=0; i < sortPopulation.size(); i++){
-		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].track1.at(0) << "\t" << sortPopulation[i].track1.at(1) << "\t" << sortPopulation[i].track1.at(2) << endl;
+		logFile << binToHex(sortPopulation[i].bits) << "\t\t" << sortPopulation[i].track1.at(0) << "\t\t" << sortPopulation[i].track1.at(1) << "\t\t" << sortPopulation[i].track1.at(2) << endl;
 	}
-
-	#endif //ELITISM
+#endif //ELITISM
 
 	logFile.close();
 }
