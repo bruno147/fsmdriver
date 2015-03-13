@@ -46,15 +46,14 @@ namespace DriverGeneticAlgorithm {
 	 	// binary std::string for the Data Structure
 		std::string	bits;
 
+		chromosomeType(): bits(""), fitness(0.0f){};
+		chromosomeType(std::string in_bits, float in_fitness): bits(in_bits), fitness(in_fitness){};
+
 	 	// float number for the Fitness Score (metric analysis)
 		float	fitness;
 
-		chromosomeType(): bits(""), fitness(0.0f){};
-		chromosomeType(std::string in_bits, float in_fitness): bits(in_bits), fitness(in_fitness){};
-//		inline bool operator<(const chromosomeType& lhs, const chromosomeType& rhs)
-//		{
-//			return left.fitness < right.fitness? true : false;
-//		}
+		#ifdef ROULLETE
+
 		inline bool operator<(const chromosomeType& rhs)
 		{
 			if (fitness < rhs.fitness)
@@ -66,6 +65,35 @@ namespace DriverGeneticAlgorithm {
 				return false;
 			}
 		}
+		#endif //ROULLETE
+
+		#ifdef ELITISM
+
+		std::vector<float> track1;
+
+		inline bool operator<(const chromosomeType& rhs)
+		{
+			// abaout track1's results
+			if(track1.at(0) && rhs.track1.at(0))
+			{
+				if(track1.at(0) < rhs.track1.at(0))			return true;
+				else if(track1.at(0) > rhs.track1.at(0))	return false;
+				else
+				{
+					if(track1.at(1) < rhs.track1.at(1))		return true;
+					else									return false;
+				}
+			}
+			else if(!track1.at(0) && rhs.track1.at(0))			return false;
+			else if(track1.at(0) && !rhs.track1.at(0))		return true;
+			else
+			{
+				if(track1.at(2) < rhs.track1.at(2))			return false;
+				else										return true;
+			}
+		}
+
+		#endif //ELITISM
 	};
 
 
@@ -92,10 +120,7 @@ namespace DriverGeneticAlgorithm {
 	std::vector<chromosomeType> merge_sort(const std::vector<chromosomeType> &data);
 	std::string binToHex(std::string rowresult);
 	char getHexCharacter(std::string str);
-
-
-
-
+	std::string pool(const std::vector<chromosomeType> &population);
 }
 
 #endif // DRIVERGENETICALGORITHM_H
