@@ -306,11 +306,18 @@ std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) 
 	//result = atof(shared_memory);
 	string temp(shared_memory);
 	cout << "shared_memory: "<< shared_memory << endl;
-	unsigned pos2=temp.find(' ');
-	unsigned pos3=temp.substr(pos2+1).find(' ');
-	float result1=stof(temp.substr(0, pos2));
-	float result2=stof(temp.substr(pos2+1,pos3));
-	float result3=stof(temp.substr(pos2+pos3+1));
+
+	float result1 = 0;
+	float result2 = 0;
+	float result3 = 0;
+	if(temp.length() > 0)
+	{
+		unsigned pos2 = temp.find(' ');
+		unsigned pos3 = temp.substr(pos2+1).find(' ');
+		result1 = stof(temp.substr(0, pos2));
+		result2 = stof(temp.substr(pos2+1,pos3));
+		result3 = stof(temp.substr(pos2+pos3+1));
+	}
 	cout << "result1: " << result1 << endl;
 	cout << "result2: " << result2 << endl;
 	cout << "result3: " << result3 << endl;
