@@ -123,6 +123,8 @@ namespace DriverGeneticAlgorithm {
 	char getHexCharacter(std::string str);
 	std::string pool(const std::vector<chromosomeType> &population);
 	std::vector<float> getDataTrack(chromosomeType specimen);
+	std::string hexToBin (std::string sHex);
+
 }
 
 #endif // DRIVERGENETICALGORITHM_H
