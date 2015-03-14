@@ -255,6 +255,7 @@ float DriverGeneticAlgorithm::assignFitness (string bits) {
 	return mean;
 }
 
+#ifdef ELITISM
 std::vector<float> DriverGeneticAlgorithm::getDataTrack (chromosomeType specimen)
 {
 	std::vector<float> result1;
@@ -282,6 +283,7 @@ std::vector<float> DriverGeneticAlgorithm::getDataTrack (chromosomeType specimen
 */
 	return result1;
 }
+#endif //ELITISM
 
 std::vector<float> DriverGeneticAlgorithm::runTest (string track1, string bits) {
 	string bin_path(boost::filesystem::current_path().native());
