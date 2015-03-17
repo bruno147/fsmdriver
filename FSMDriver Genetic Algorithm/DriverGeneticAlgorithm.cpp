@@ -445,6 +445,24 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 #endif //ELITISM
 
 	logFile.close();
+
+
+
+
+
+	//log for an easy parser creation
+	logFile.open("logAnalisys.txt", std::ios_base::app);
+	logFile << endl << "Generation " << generation << endl;
+    
+    logFile << asctime(timeinfo) << endl;
+#ifdef ELITISM
+	for(unsigned int i=0; i < sortPopulation.size(); i++){
+		logFile << i << " " << sortPopulation[i].track1.at(0) << " " << sortPopulation[i].track1.at(1) << " " << sortPopulation[i].track1.at(2) << endl;
+	}
+
+#endif //ELITISM
+	logFile.close();
+
 }
 
 
