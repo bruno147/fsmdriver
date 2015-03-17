@@ -78,6 +78,7 @@ int main (int argc, char* argv[]) {
 
 			// Assigns a fitness score to every chromosome through testing in race
 			for (int i = 0; i < POPULATION_SIZE; i++) {
+				status(generationsRequired, i);
 				Population[i].fitness = assignFitness (Population[i].bits);
 				totalFitness += Population[i].fitness;
 			}
@@ -92,7 +93,11 @@ int main (int argc, char* argv[]) {
 #endif //ROULLETE
 
 #ifdef ELITISM
-			for (int i = 0; i < POPULATION_SIZE; ++i)	Population[i].track1 = getDataTrack(Population[i]);
+			for (int i = 0; i < POPULATION_SIZE; ++i){
+				status(generationsRequired, i);
+				Population[i].track1 = getDataTrack(Population[i]);
+			}
+				
 
 			std::vector<chromosomeType> sortPopulation;
 
@@ -114,9 +119,9 @@ int main (int argc, char* argv[]) {
 			int 			populationCounter=0;
 
 #ifdef ELITISM
-			for (int i = 0; i < 6; ++i) newPopulation[i] = sortPopulation.at(i);
+			for (int i = 0; i < 4; ++i) newPopulation[i] = sortPopulation.at(i);
 
-			populationCounter = 6;
+			populationCounter = 4;
 #endif //ELITISM
 			while (populationCounter < POPULATION_SIZE) {
 				// Selects 2 new members to apply crossover and mutation
@@ -151,11 +156,10 @@ int main (int argc, char* argv[]) {
 			for (int i = 0; i < POPULATION_SIZE; i++) {
 				Population[i] = newPopulation[i];
 			}
-			++generationsRequired;
 			cout << endl << endl;
-			cout << "Generation: " << generationsRequired << "  Generation: " << generationsRequired 
-				 << "  Generation: " << generationsRequired << "  Generation: " << generationsRequired;
-			cout << endl << endl << endl;
+			cout << "Generation " << generationsRequired+1 << " complete." << "  || " <<"Generation " << generationsRequired+1 << " complete." << "  || " <<"Generation " << generationsRequired+1 << " complete." << endl;
+
+			++generationsRequired;
 
 			// If the maximum number of generations is reached, ends program
 			if (generationsRequired >= MAX_ALLOWABLE_GENERATIONS) {
@@ -263,7 +267,7 @@ std::vector<float> DriverGeneticAlgorithm::getDataTrack (chromosomeType specimen
 	// string track2("cg1");
 	// string track3("cs");
 
-	cout << "Size " << specimen.track1.size() << endl;
+	//cout << "Size " << specimen.track1.size() << endl;
 	if(!specimen.track1.size())
 	{
 		cout << "Track: " << track1 << endl;
@@ -543,4 +547,8 @@ std::vector<chromosomeType> DriverGeneticAlgorithm::merge_sort(const std::vector
 string DriverGeneticAlgorithm::pool(const std::vector<chromosomeType> &population)
 {
 	return population.at( rand()%10 ).bits;
+}
+
+void DriverGeneticAlgorithm::status(int generation, int indivualNumber){
+	cout << endl << "Generation n: " << generation+1 << " of " << MAX_ALLOWABLE_GENERATIONS << endl << "Individual: " << indivualNumber+1 << " of " << POPULATION_SIZE << endl;
 }
