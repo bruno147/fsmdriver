@@ -101,8 +101,8 @@ int main (int argc, char* argv[]) {
 
 #ifdef ELITISM
 			for (int i = 0; i < POPULATION_SIZE; ++i){
-				Population[i].track1 = getDataTrack(Population[i]);
 				status(generationsRequired, i);
+				Population[i].track1 = getDataTrack(Population[i]);
 			}
 				
 
@@ -449,8 +449,8 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 #endif //ROULLETE
 
 #ifdef ELITISM
-    logFile << endl << "Best Chromosome so far: " << setw(164) << "\tTime:\t" << "\tDamage:\t" << "\tDistRaced:\t" << endl;
-    logFile << binToHex(bestChromosome.bits) << "\t\t" << bestChromosome.track1.at(0) << "\t\t" << bestChromosome.track1.at(1) << "\t\t" << bestChromosome.track1.at(2) << endl;
+    logFile << endl << "Best Chromosome so far: " << setw(164) << "Time:\t" << "Damage:\t" << "DistRaced:\t" <<  "V_Mean" <<endl;
+    logFile << binToHex(bestChromosome.bits) << "\t" << bestChromosome.track1.at(0) << "\t" << bestChromosome.track1.at(1) << "\t" << bestChromosome.track1.at(2) << "\t" << bestChromosome.track1.at(2)/bestChromosome.track1.at(0) << endl;
 #endif //ELITISM
     logFile << endl << "Population: " << endl;
 
@@ -468,7 +468,7 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 
 #ifdef ELITISM
 	for(unsigned int i=0; i < sortPopulation.size(); i++){
-		logFile << binToHex(sortPopulation[i].bits) << "\t\t" << sortPopulation[i].track1.at(0) << "\t\t" << sortPopulation[i].track1.at(1) << "\t\t" << sortPopulation[i].track1.at(2) << endl;
+		logFile << binToHex(sortPopulation[i].bits) << "\t" << sortPopulation[i].track1.at(0) << "\t" << sortPopulation[i].track1.at(1) << "\t" << sortPopulation[i].track1.at(2) << "\t" << sortPopulation[i].track1.at(2)/sortPopulation[i].track1.at(0) << endl;
 	}
 #endif //ELITISM
 

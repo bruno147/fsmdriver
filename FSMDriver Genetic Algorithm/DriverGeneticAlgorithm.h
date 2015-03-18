@@ -35,14 +35,14 @@ namespace DriverGeneticAlgorithm {
 */
 	static const float	CROSSOVER_RATE	=			0.7;	// Rate defined by AI-junkie
 	static const float	MUTATION_RATE	=			0.15; 	// Rate defined by AI-junkie
-	static const int 	POPULATION_SIZE	=			30;	// Must be an EVEN number
+	static const int 	POPULATION_SIZE	=			8;	// Must be an EVEN number
 	static const int 	GENE_LENGTH		=			32;
 	static const int 	MAX_ALLOWABLE_GENERATIONS =	500;
 	static const int 	NUMBER_OF_PARAMETERS	=	22;		// Adjust to problem needs
 	static const int 	CHROMOSOME_LENGTH		=	GENE_LENGTH * NUMBER_OF_PARAMETERS;
 
 	static const int 	CHROMOSOME_TO_PRESERVE  =	4;		//Must be an EVEN number
-	static const int 	PARENTS_TO_BE_CHOSEN	=	10;		
+	static const int 	PARENTS_TO_BE_CHOSEN	=	7;		
 
 // Definition of the Chromosome's Data Structure: In this case, a binary std::string
 	struct chromosomeType {

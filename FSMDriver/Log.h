@@ -73,7 +73,7 @@ public:
 
     //send totalTime to shared memory
     void saveTotalTime(int segment_id){
-        if(lapCounter!=3) totalTime=0;
+        //if(lapCounter!=3) totalTime=0;
 
 
         char* shared_memory;
