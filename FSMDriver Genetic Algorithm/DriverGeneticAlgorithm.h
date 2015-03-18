@@ -75,7 +75,7 @@ namespace DriverGeneticAlgorithm {
 		std::vector<float> track1;
 
 		// Here the best is the minor
-		inline bool operator<(const chromosomeType& rhs)
+		/*inline bool operator<(const chromosomeType& rhs)
 		{
 			// abaout track1's results
 			if(track1.at(0) && rhs.track1.at(0))
@@ -95,7 +95,17 @@ namespace DriverGeneticAlgorithm {
 				if(track1.at(2) < rhs.track1.at(2))			return false;
 				else										return true;
 			}
+		}*/
+		inline bool operator<(const chromosomeType& rhs)
+		{
+			float vel1 = track1.at(2)/track1.at(0);
+			float vel2 = rhs.track1.at(2)/rhs.track1.at(0);
+
+			if(vel1 > vel2)	return true;
+			else false
+
 		}
+
 
 		#endif //ELITISM
 	};
