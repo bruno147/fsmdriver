@@ -433,7 +433,7 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 #ifdef  ELITISM
     	logFile << "CHROMOSOME_TO_PRESERVE: " << CHROMOSOME_TO_PRESERVE << endl;
     	logFile << "PARENTS_TO_BE_CHOSEN: " << PARENTS_TO_BE_CHOSEN << endl;
-#endif	ELITISM
+#endif	//ELITISM
 
     	logFile << endl << endl;
     }
