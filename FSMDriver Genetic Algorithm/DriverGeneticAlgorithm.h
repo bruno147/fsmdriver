@@ -98,11 +98,16 @@ namespace DriverGeneticAlgorithm {
 		}*/
 		inline bool operator<(const chromosomeType& rhs)
 		{
-			float vel1 = track1.at(2)/track1.at(0);
-			float vel2 = rhs.track1.at(2)/rhs.track1.at(0);
+			if(!track1.at(0))	return false;
+			else if(!rhs.track1.at(0))	return true; //arbitrary return
+			else
+			{
+				float vel1 = track1.at(2)/track1.at(0);
+				float vel2 = rhs.track1.at(2)/rhs.track1.at(0);
 
-			if(vel1 > vel2)	return true;
-			else return false;
+				if(vel1 > vel2)	return true;
+				else return false;
+			}
 		}
 
 
