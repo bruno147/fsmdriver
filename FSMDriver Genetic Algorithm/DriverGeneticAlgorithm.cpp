@@ -72,15 +72,22 @@ int main (int argc, char* argv[]) {
 		// Genetic Algorithm actual loop
 		while (!evolved) {
 
+			//just for debugging process
+            ofstream myfile;
+            myfile.open("results.txt", std::ios_base::app);
+            myfile << endl << endl <<"Generation: " << generationsRequired+1 << endl;
+            myfile.close();
+
+
 #ifdef ROULLETE
 			// Defines the size of the sorting sample for roulette Wheel
 			float 	totalFitness = 0.0;
 
 			// Assigns a fitness score to every chromosome through testing in race
 			for (int i = 0; i < POPULATION_SIZE; i++) {
-				status(generationsRequired, i);
 				Population[i].fitness = assignFitness (Population[i].bits);
 				totalFitness += Population[i].fitness;
+				status(generationsRequired, i);
 			}
 
 			// Tests the best chromosome in the old population
@@ -94,8 +101,8 @@ int main (int argc, char* argv[]) {
 
 #ifdef ELITISM
 			for (int i = 0; i < POPULATION_SIZE; ++i){
-				status(generationsRequired, i);
 				Population[i].track1 = getDataTrack(Population[i]);
+				status(generationsRequired, i);
 			}
 				
 
@@ -119,9 +126,9 @@ int main (int argc, char* argv[]) {
 			int 			populationCounter=0;
 
 #ifdef ELITISM
-			for (int i = 0; i < 4; ++i) newPopulation[i] = sortPopulation.at(i);
+			for (int i = 0; i < CHROMOSOME_TO_PRESERVE; ++i) newPopulation[i] = sortPopulation.at(i);
 
-			populationCounter = 4;
+			populationCounter = CHROMOSOME_TO_PRESERVE;
 #endif //ELITISM
 			while (populationCounter < POPULATION_SIZE) {
 				// Selects 2 new members to apply crossover and mutation
@@ -406,14 +413,35 @@ string DriverGeneticAlgorithm::roulette (int totalFitness, chromosomeType* Popul
 
 void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], chromosomeType bestChromosome){
 	ofstream logFile;
-    logFile.open("log.txt", std::ios_base::app);
-    logFile << endl << endl;
-    logFile << endl << "Generation " << generation << endl;
     time_t rawtime;
     struct tm * timeinfo;
 
     time (&rawtime);
     timeinfo = localtime (&rawtime);
+    logFile.open("log.txt", std::ios_base::app);
+
+
+    //only for generation 0
+    if(generation==0){
+    	logFile << "Begin of Genetic Algorithm at " << asctime(timeinfo) << endl;
+    	logFile << "Parameters:" << endl;
+    	logFile << "CROSSOVER_RATE: " << CROSSOVER_RATE << endl;
+    	logFile << "MUTATION_RATE: " << MUTATION_RATE << endl;
+    	logFile << "POPULATION_SIZE: " << POPULATION_SIZE << endl;
+    	logFile << "MAX_ALLOWABLE_GENERATIONS: " << MAX_ALLOWABLE_GENERATIONS << endl;
+
+#ifdef  ELITISM
+    	logFile << "CHROMOSOME_TO_PRESERVE: " << CHROMOSOME_TO_PRESERVE << endl;
+    	logFile << "PARENTS_TO_BE_CHOSEN: " << PARENTS_TO_BE_CHOSEN << endl;
+#endif	ELITISM
+
+    	logFile << endl << endl;
+    }
+
+
+
+    logFile << endl << endl;
+    logFile << endl << "Generation " << generation << endl;
     logFile << asctime(timeinfo);
 
 #ifdef ROULLETE
@@ -564,7 +592,7 @@ std::vector<chromosomeType> DriverGeneticAlgorithm::merge_sort(const std::vector
 
 string DriverGeneticAlgorithm::pool(const std::vector<chromosomeType> &population)
 {
-	return population.at( rand()%10 ).bits;
+	return population.at( rand()%PARENTS_TO_BE_CHOSEN ).bits;
 }
 
 void DriverGeneticAlgorithm::status(int generation, int indivualNumber){

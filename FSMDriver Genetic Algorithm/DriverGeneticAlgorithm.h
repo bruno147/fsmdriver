@@ -41,6 +41,9 @@ namespace DriverGeneticAlgorithm {
 	static const int 	NUMBER_OF_PARAMETERS	=	22;		// Adjust to problem needs
 	static const int 	CHROMOSOME_LENGTH		=	GENE_LENGTH * NUMBER_OF_PARAMETERS;
 
+	static const int 	CHROMOSOME_TO_PRESERVE  =	4;		//Must be an EVEN number
+	static const int 	PARENTS_TO_BE_CHOSEN	=	10;		
+
 // Definition of the Chromosome's Data Structure: In this case, a binary std::string
 	struct chromosomeType {
 	 	// binary std::string for the Data Structure
