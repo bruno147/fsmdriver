@@ -102,8 +102,7 @@ namespace DriverGeneticAlgorithm {
 			float vel2 = rhs.track1.at(2)/rhs.track1.at(0);
 
 			if(vel1 > vel2)	return true;
-			else false
-
+			else return false;
 		}
 
 
