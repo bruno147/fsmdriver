@@ -423,7 +423,7 @@ void DriverGeneticAlgorithm::log(int generation, chromosomeType population[], ch
 
     //only for generation 0
     if(generation==0){
-    	logFile << "Begin of Genetic Algorithm at " << asctime(timeinfo) << endl;
+    	logFile << "Genetic Algorithm at " << asctime(timeinfo) << endl;
     	logFile << "Parameters:" << endl;
     	logFile << "CROSSOVER_RATE: " << CROSSOVER_RATE << endl;
     	logFile << "MUTATION_RATE: " << MUTATION_RATE << endl;
