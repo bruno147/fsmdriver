@@ -19,6 +19,8 @@ private:
 
     float    binToFloat (string bits);
     unsigned int binToUsignedInt (string bits);
+    float normalization(unsigned int number);
+
 
     std::string getArgument(int i, char** argv);
 
