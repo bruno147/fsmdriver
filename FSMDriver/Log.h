@@ -76,10 +76,10 @@ public:
         //if(lapCounter!=3) totalTime=0;
 
 
-        char* shared_memory;
+        // char* shared_memory;
 
         /* Attach the shared memory segment. */
-        shared_memory = (char*) shmat (segment_id, 0, 0);
+        // shared_memory = (char*) shmat (segment_id, 0, 0);
 
 
         cout << "totalTime: " << totalTime << endl;
@@ -88,16 +88,16 @@ public:
         cout << "distRaced: " << distRaced << endl;
         
         //Assigned shared memory
-        if(lapCounter==3){
+        /*if(lapCounter==3){
             sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced+distRaced);
         }else{
             sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced);
-        }
+        }*/
 
 
 
         /* Detach the shared memory segment. */
-        shmdt (shared_memory);
+        // shmdt (shared_memory);
 
     }
     int curveComplete(CarState cs){
