@@ -31,7 +31,7 @@ add_executable(${DRIVER} ${SOURCES})
 
 
 # GA Flag
- set(GA ON)
+ # set(GA ON)
 
 # GA
 if(GA)
