@@ -36,8 +36,8 @@ if(GA)
 	set(ELITISM ON)
 	# GA source
 	set(GA_SOURCES
-		FSMDriver\ Genetic\ Algorithm/DriverGeneticAlgorithm.h
-		FSMDriver\ Genetic\ Algorithm/DriverGeneticAlgorithm.cpp)
+		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.h
+		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.cpp)
 
 	if(ROULLETE)
   		set(CMAKE_CXX_FLAGS "-g -Wall -O3 -std=c++11 -D ROULLETE")
