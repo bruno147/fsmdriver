@@ -54,36 +54,33 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
     change_to(StraightLine::instance());
     
 
-    for (int i = 0; i < 22; i++) {
-        parameters[i] = binToFloat (string(argv[1]).substr((i*32), ((i+1)*32)));
-        //cout << "Parameter #" << i << ":" << parameters[i] << endl; // Optional output command
-    }
-    LOW_GEAR_LIMIT = parameters[0];
-    LOW_RPM = parameters[1];
-    AVERAGE_RPM = parameters[2];
-    HIGH_RPM = parameters[3];
 
-    STUCK_SPEED = parameters[4];
-    MIN_RACED_DISTANCE = parameters[5];
-    MAX_STUCK_TICKS = parameters[6];
-    MAX_SLOW_SPEED_TICKS = parameters[7];
+    LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
+    LOW_RPM = binToFloat(getArgument(1, argv));
+    AVERAGE_RPM = binToFloat(getArgument(2, argv));
+    HIGH_RPM = binToFloat(getArgument(3, argv));
 
-    MAX_STEERING = parameters[8];
-    TARGET_POS = parameters[9];
-    BASE_SPEED = parameters[10];
+    STUCK_SPEED = binToFloat(getArgument(4, argv));
+    MIN_RACED_DISTANCE = binToFloat(getArgument(5, argv));
+    MAX_STUCK_TICKS = binToFloat(getArgument(6, argv));
+    MAX_SLOW_SPEED_TICKS = binToFloat(getArgument(7, argv));
 
-    MAX_SKIDDING = parameters[11];
-    NEGATIVE_ACCEL_PERCENT = parameters[12];
-    VELOCITY_GEAR_4 = parameters[13];
-    VELOCITY_GEAR_3 = parameters[14];
-    VELOCITY_GEAR_2 = parameters[15];
-    MAX_RETURN_ANGLE =parameters[16];
-    MIN_RETURN_ANGLE = parameters[17];
+    MAX_STEERING = binToFloat(getArgument(8, argv));
+    TARGET_POS = binToFloat(getArgument(9, argv));
+    BASE_SPEED =  binToFloat(getArgument(10, argv));
 
-    MAX_STRAIGHT_LINE_VAR = parameters[18];
-    MIN_STRAIGHT_LINE_VAR = parameters[19];
-    MAX_APPROACHING_CURVE_VAR = parameters[20];
-    MIN_APPROACHING_CURVE_VAR = parameters[21];
+    MAX_SKIDDING =  binToFloat(getArgument(11, argv));
+    NEGATIVE_ACCEL_PERCENT =  binToFloat(getArgument(12, argv));
+    VELOCITY_GEAR_4 =  binToFloat(getArgument(13, argv));
+    VELOCITY_GEAR_3 =  binToFloat(getArgument(14, argv));
+    VELOCITY_GEAR_2 =  binToFloat(getArgument(15, argv));
+    MAX_RETURN_ANGLE = binToFloat(getArgument(16, argv));
+    MIN_RETURN_ANGLE =  binToFloat(getArgument(17, argv));
+
+    MAX_STRAIGHT_LINE_VAR =  binToFloat(getArgument(18, argv));
+    MIN_STRAIGHT_LINE_VAR =  binToFloat(getArgument(19, argv));
+    MAX_APPROACHING_CURVE_VAR =  binToFloat(getArgument(20, argv));
+    MIN_APPROACHING_CURVE_VAR =  binToFloat(getArgument(21, argv));
 
     //cout << argc << endl << "kill " << argv[2] << endl;
     segment_id = stoi(argv[2]);
@@ -100,6 +97,9 @@ void FSMDriver::onRestart() {
     cout << "Restarting the race!" << endl;
 }
 
+string FSMDriver::getArgument(int i, char** argv){
+    return string(argv[1]).substr((i*32), ((i+1)*32));
+}
 void FSMDriver::onShutdown() {
     Log::instance()->saveTotalTime(segment_id);
     cout << "End of race!" << endl;
@@ -136,6 +136,13 @@ void FSMDriver::transition(CarState &cs) {
 float FSMDriver::binToFloat (string bits) {
     bitset<32> a (bits);
     float *value = reinterpret_cast<float*>(&a);
+
+    return *value;
+}
+
+unsigned int FSMDriver::binToUsignedInt (string bits) {
+    bitset<32> a (bits);
+    unsigned int *value = reinterpret_cast<unsigned int*>(&a);
 
     return *value;
 }

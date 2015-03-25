@@ -18,6 +18,11 @@ private:
     int MIN_APPROACHING_CURVE_VAR;
 
     float    binToFloat (string bits);
+    unsigned int binToUsignedInt (string bits);
+
+    std::string getArgument(int i, char** argv);
+
+
     float    parameters[22];
 
 public:
