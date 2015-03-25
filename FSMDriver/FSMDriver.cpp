@@ -54,8 +54,30 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
     change_to(StraightLine::instance());
     
 
+    LOW_GEAR_LIMIT = 4;
+    LOW_RPM = 1500;
+    AVERAGE_RPM = 4000;
+    HIGH_RPM = 9500;
+    STUCK_SPEED = 5;
+    MIN_RACED_DISTANCE = 100;
+    MAX_STUCK_TICKS = 300;
+    MAX_SLOW_SPEED_TICKS = 50;
+    MAX_STEERING = 0.12;
+    TARGET_POS = 0.7;
+    BASE_SPEED = 80;
+    MAX_SKIDDING = 3;
+    NEGATIVE_ACCEL_PERCENT = 0.1;
+    VELOCITY_GEAR_4 = 90;
+    VELOCITY_GEAR_3 = 70;
+    VELOCITY_GEAR_2 = 40;
+    MAX_RETURN_ANGLE = 0.7;
+    MIN_RETURN_ANGLE = 0.5;
+    MAX_STRAIGHT_LINE_VAR = 1000;
+    MIN_STRAIGHT_LINE_VAR = 500;
+    MAX_APPROACHING_CURVE_VAR = 400;
+    MIN_APPROACHING_CURVE_VAR = 300;
 
-    LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
+/*    LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
     LOW_RPM = binToFloat(getArgument(1, argv));
     AVERAGE_RPM = binToFloat(getArgument(2, argv));
     HIGH_RPM = binToFloat(getArgument(3, argv));
@@ -80,10 +102,10 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
     MAX_STRAIGHT_LINE_VAR =  binToFloat(getArgument(18, argv));
     MIN_STRAIGHT_LINE_VAR =  binToFloat(getArgument(19, argv));
     MAX_APPROACHING_CURVE_VAR =  binToFloat(getArgument(20, argv));
-    MIN_APPROACHING_CURVE_VAR =  binToFloat(getArgument(21, argv));
+    MIN_APPROACHING_CURVE_VAR =  binToFloat(getArgument(21, argv));*/
 
     //cout << argc << endl << "kill " << argv[2] << endl;
-    segment_id = stoi(argv[2]);
+    // segment_id = stoi(argv[2]);
 
 }
 
