@@ -18,11 +18,11 @@ OutOfTrack *OutOfTrack::instance() {
 }
 
 void OutOfTrack::enter(FSMDriver *driver) {
-    //cout << "Enter OutOfTrack" << endl;
+    cout << "Enter OutOfTrack" << endl;
 }
 
 void OutOfTrack::exit(FSMDriver *driver) {
-    //cout << "Exit OutOfTrack" << endl;
+    cout << "Exit OutOfTrack" << endl;
 }
 
 CarControl OutOfTrack::drive(FSMDriver *fsmdriver, CarState &cs) {

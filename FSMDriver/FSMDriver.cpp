@@ -1,7 +1,5 @@
 #include "FSMDriver.h"
-#include "ApproachingCurve.h"
-#include "StraightLine.h"
-#include "Curve.h"
+#include "InsideTrack.h"
 #include "OutOfTrack.h"
 #include "Stuck.h"
 #include "Log.h"
@@ -22,7 +20,7 @@ const int NUM_SENSORS = 19;
 /******************************************************************************/
 
 
-float trackReadingsVariance(CarState &cs) {
+/*float trackReadingsVariance(CarState &cs) {
     vector<float> sensors(NUM_SENSORS);
     float mean = 0, var = 0;
 
@@ -39,7 +37,7 @@ float trackReadingsVariance(CarState &cs) {
     var /= NUM_SENSORS;
 
     return var;
-}
+}*/
 
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -47,11 +45,11 @@ float trackReadingsVariance(CarState &cs) {
 
 
 FSMDriver::FSMDriver() : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0),gear(0) {
-    change_to(StraightLine::instance());
+    change_to(InsideTrack::instance());
 }
 
 FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0),gear(0) {
-    change_to(StraightLine::instance());
+    change_to(InsideTrack::instance());
     
 
     LOW_GEAR_LIMIT = 4;
@@ -62,9 +60,6 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
     MIN_RACED_DISTANCE = 100;
     MAX_STUCK_TICKS = 300;
     MAX_SLOW_SPEED_TICKS = 50;
-    MAX_STEERING = 0.12;
-    TARGET_POS = 0.7;
-    BASE_SPEED = 80;
     MAX_SKIDDING = 3;
     NEGATIVE_ACCEL_PERCENT = 0.1;
     VELOCITY_GEAR_4 = 90;
@@ -72,10 +67,6 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
     VELOCITY_GEAR_2 = 40;
     MAX_RETURN_ANGLE = 0.7;
     MIN_RETURN_ANGLE = 0.5;
-    MAX_STRAIGHT_LINE_VAR = 1000;
-    MIN_STRAIGHT_LINE_VAR = 500;
-    MAX_APPROACHING_CURVE_VAR = 400;
-    MIN_APPROACHING_CURVE_VAR = 300;
 
 /*    LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
     LOW_RPM = binToFloat(getArgument(1, argv));
@@ -138,16 +129,8 @@ void FSMDriver::transition(CarState &cs) {
     if(Stuck::isStuck(cs)) {
         state = Stuck::instance();
     } else {
-        float var = trackReadingsVariance(cs);
-        
-        /* @todo change numbers to constants with meaningful names. */
-        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state==StraightLine::instance())) 
-            state = StraightLine::instance();
-        else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != Curve::instance())
-         || ((var > MIN_APPROACHING_CURVE_VAR) && current_state==ApproachingCurve::instance())) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
-            state = ApproachingCurve::instance();
-        else if(var > 0)
-            state = Curve::instance();
+        if (cs.getTrack(1) > 0) 
+            state = InsideTrack::instance();
         else
             state = OutOfTrack::instance();
     }
