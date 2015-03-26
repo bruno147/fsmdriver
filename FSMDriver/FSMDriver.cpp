@@ -52,7 +52,7 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
     change_to(InsideTrack::instance());
     
 
-    LOW_GEAR_LIMIT = 4;
+/*    LOW_GEAR_LIMIT = 4;
     LOW_RPM = 1500;
     AVERAGE_RPM = 4000;
     HIGH_RPM = 9500;
@@ -68,7 +68,7 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
     MAX_RETURN_ANGLE = 0.7;
     MIN_RETURN_ANGLE = 0.5;
 
-/*    LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
+    LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
     LOW_RPM = binToFloat(getArgument(1, argv));
     AVERAGE_RPM = binToFloat(getArgument(2, argv));
     HIGH_RPM = binToFloat(getArgument(3, argv));

@@ -4,6 +4,16 @@
 #include <cmath>
 #include "FSM.h"
 
+//-----------------------------------------------------------------
+
+    extern int START_GEAR;
+    extern int LOW_GEAR_LIMIT;
+    extern int LOW_RPM;
+    extern int AVERAGE_RPM;
+    extern int HIGH_RPM;
+    extern int currentGear;
+//-----------------------------------------------------------------
+
 class FSMDriver;
 
 class InsideTrack : public DrivingState<FSMDriver> {
@@ -17,16 +27,10 @@ public:
     ~InsideTrack();
 
 private:
-    int START_GEAR;
-    int LOW_GEAR_LIMIT;
-    int LOW_RPM;
-    int AVERAGE_RPM;
-    int HIGH_RPM;
-    int currentGear;
-
     InsideTrack();
     InsideTrack(InsideTrack const &);
     void operator=(InsideTrack const&);
+    int currentGear;
 
     bool shouldDecreaseGear(int currentGear, int rpm);
     inline bool runningOnLow(int rpm);

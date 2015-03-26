@@ -2,11 +2,10 @@
 
 
 int START_GEAR = 1;
-/*int LOW_GEAR_LIMIT = 4;
-
+int LOW_GEAR_LIMIT = 4;
 int LOW_RPM = 1500;
 int AVERAGE_RPM = 4000;
-int HIGH_RPM = 9500;*/
+int HIGH_RPM = 9500;
 
 InsideTrack::InsideTrack() : currentGear(START_GEAR) {}
 
