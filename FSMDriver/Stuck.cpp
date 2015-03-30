@@ -18,13 +18,13 @@ Stuck *Stuck::instance() {
 }
 
 void Stuck::enter(FSMDriver *driver, CarState &cs) {
-    //cout << "Enter Stuck" << endl;
+    cout << "Enter Stuck" << endl;
     elapsedTicks = 0;
 
 }
 
 void Stuck::exit(FSMDriver *driver) {
-    // cout << "Exit Stuck" << endl;
+    cout << "Exit Stuck" << endl;
 }
 
 

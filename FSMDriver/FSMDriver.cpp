@@ -6,38 +6,11 @@
 
 #include <vector>
 
-//Define constants for transition method:
-/*
-int   FSMDriver::MAX_STRAIGHT_LINE_VAR     = 1000;
-int   FSMDriver::MIN_STRAIGHT_LINE_VAR     =  500;
-int   FSMDriver::MAX_APPROACHING_CURVE_VAR =  400;
-int   FSMDriver::MIN_APPROACHING_CURVE_VAR =  300;
-*/
 
 
 /******************************************************************************/
 const int NUM_SENSORS = 19;
 /******************************************************************************/
-
-
-/*float trackReadingsVariance(CarState &cs) {
-    vector<float> sensors(NUM_SENSORS);
-    float mean = 0, var = 0;
-
-    for (int i = 0; i < NUM_SENSORS; ++i) {
-        sensors[i] = cs.getTrack(i);
-        mean += sensors[i];
-    }
-
-    mean /= NUM_SENSORS;
-
-    for(auto sensor : sensors)
-        var += (sensor-mean)*(sensor-mean);
-
-    var /= NUM_SENSORS;
-
-    return var;
-}*/
 
 
 //-------------------------------------------------------------------------------------------------------------------
