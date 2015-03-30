@@ -30,7 +30,8 @@ CarControl InsideTrack::drive(FSMDriver *fsmdriver, CarState &cs) {
 	float accel  = getAccel(cs);
     float brake = getBrake(cs);
 	float clutch = 0;
-
+    cout << "dist: " << this->distance << endl;
+    //cout << "vy: " << cs.getSpeedY() << endl;
 	return CarControl(accel, brake, gear, steer, clutch);
 }
 int InsideTrack::getGear(CarState &cs) {
@@ -76,9 +77,8 @@ inline bool InsideTrack::shouldIncreaseGear(int currentGear, int rpm) {
 }
 
 
-
 float InsideTrack::getAccel(CarState &cs) { //@todo Change accelaration logic.
-	return 0.6;
+    return this->distance/200;
 }
 
 bool InsideTrack::isFacingWrongWay(CarState &cs) {
@@ -86,18 +86,19 @@ bool InsideTrack::isFacingWrongWay(CarState &cs) {
 }
 
 float InsideTrack::getBrake(CarState cs) {
-	return (cs.getSpeedX() < -2 ? 1:0);
+    return 0;
 }
 
-float InsideTrack::findFarthestDirection(CarState &cs) {
+float InsideTrack::findFarthestDirection(CarState &cs, float &distance) {
     float farthestSensor = -INFINITY;
     float farthestDirection = 0;
-    for (int i = 0; i < 19; i++) {
-        if (farthestSensor < cs.getTrack(i)) {
+       for (int i = 0; i < 19; i++) {
+          if (farthestSensor < cs.getTrack(i)) {
             farthestSensor = cs.getTrack(i);
             farthestDirection = i;
         }
     }
+    distance = farthestSensor;
     farthestDirection = -M_PI/2 + farthestDirection*M_PI/18;
     return normalizeSteer(-farthestDirection);
 }
@@ -108,7 +109,7 @@ float InsideTrack::normalizeSteer(float angle) {
 }
 
 float InsideTrack::getSteer(CarState &cs) {
-    return isFacingWrongWay(cs) ? cs.getAngle() : findFarthestDirection(cs);
+    return isFacingWrongWay(cs) ? cs.getAngle() : findFarthestDirection(cs,this->distance);
 }
 
 InsideTrack::~InsideTrack() {}

@@ -6,12 +6,12 @@
 
 //-----------------------------------------------------------------
 
-    extern int START_GEAR;
-    extern int LOW_GEAR_LIMIT;
-    extern int LOW_RPM;
-    extern int AVERAGE_RPM;
-    extern int HIGH_RPM;
-    extern int currentGear;
+extern int START_GEAR;
+extern int LOW_GEAR_LIMIT;
+extern int LOW_RPM;
+extern int AVERAGE_RPM;
+extern int HIGH_RPM;
+extern int currentGear;
 //-----------------------------------------------------------------
 
 class FSMDriver;
@@ -23,7 +23,6 @@ public:
     void exit(FSMDriver *driver);
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs);
     int getGear(CarState &cs);
-
     ~InsideTrack();
 
 private:
@@ -31,6 +30,7 @@ private:
     InsideTrack(InsideTrack const &);
     void operator=(InsideTrack const&);
     int currentGear;
+    float distance;
 
     bool shouldDecreaseGear(int currentGear, int rpm);
     inline bool runningOnLow(int rpm);
@@ -42,7 +42,7 @@ private:
     float getAccel(CarState &cs);
     bool isFacingWrongWay(CarState &cs);
     float getBrake(CarState cs);
-    float findFarthestDirection(CarState &cs);
+    float findFarthestDirection(CarState &cs,float &distance);
     float normalizeSteer(float angle);
     float getSteer(CarState &cs);
 };
