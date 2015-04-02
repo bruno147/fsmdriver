@@ -12,6 +12,8 @@ extern int LOW_RPM;
 extern int AVERAGE_RPM;
 extern int HIGH_RPM;
 extern int currentGear;
+extern float BASE_SPEED;
+extern float SPEED_FACTOR;
 //-----------------------------------------------------------------
 
 class FSMDriver;
@@ -30,7 +32,7 @@ private:
     InsideTrack(InsideTrack const &);
     void operator=(InsideTrack const&);
     int currentGear;
-    float distance;
+    float distance, targetSpeed;
 
     bool shouldDecreaseGear(int currentGear, int rpm);
     inline bool runningOnLow(int rpm);
@@ -40,9 +42,10 @@ private:
     inline bool isHighGear(int gear);
     inline bool shouldIncreaseGear(int currentGear, int rpm);
     float getAccel(CarState &cs);
+    void setTargetSpeed(CarState &cs);
     bool isFacingWrongWay(CarState &cs);
     float getBrake(CarState cs);
-    float findFarthestDirection(CarState &cs,float &distance);
+    float findFarthestDirection(CarState &cs);
     float normalizeSteer(float angle);
     float getSteer(CarState &cs);
 };
