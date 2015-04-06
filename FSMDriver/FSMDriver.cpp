@@ -91,9 +91,18 @@ void FSMDriver::onShutdown() {
     cout << "End of race!" << endl;
 }
 
+template<typename T>
+T signum(T n)
+{
+    if (n < 0) return -1;
+    return 1;
+}
+
 void FSMDriver::init(float *angles){
+    //for (int i = 0; i < NUM_SENSORS; ++i)
+    //    angles[i] = i*10-90; // @todo como assim?
     for (int i = 0; i < NUM_SENSORS; ++i)
-        angles[i] = i*10-90; // @todo como assim?
+        angles[i]=signum((i*1.0/3)-3)*exp(-(0.5)*powf((((i+9)%18)*1.0/3)-3, 2))*90;
 }
 
 void FSMDriver::transition(CarState &cs) {
