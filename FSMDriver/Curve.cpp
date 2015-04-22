@@ -56,7 +56,7 @@ float Curve::normalizeSteer(float angle) {
     const float MAXSTEER = 0.785398;
     return angle/MAXSTEER;
 }
-
+/**The steer is a essential actuator, getSteer obtain it using the track sensors to get the higher one and aplied that sensor's angle  */
 float Curve::getSteer(CarState &cs) {
     return isFacingWrongWay(cs) ? cs.getAngle() : findFarthestDirection(cs);
 }

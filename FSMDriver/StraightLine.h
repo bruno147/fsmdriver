@@ -13,6 +13,7 @@ extern int HIGH_RPM; // = 9500;
 /******************************************************************************/
 
 class FSMDriver;
+/**Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.*/
 class StraightLine : public DrivingState<FSMDriver> {
 public:
     static StraightLine *instance();

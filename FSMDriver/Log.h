@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 
-//For shared memory
+/**Libraries used for shared memory between programms(Genetic Algorithm and the Driver)*/
 #include <sys/shm.h>
 #include <sys/stat.h>
 
@@ -15,10 +15,12 @@ class FSMDriver;
 class Log {
 public:
     ~Log(){}
+    /**Function to create a pointer to log(similar a state)*/
     static Log *instance() {
         static Log instance;
         return &instance;
     }
+    
     void updateLog(DrivingState<FSMDriver> *s, CarState cs) {
         assert(s);
         damage=cs.getDamage();

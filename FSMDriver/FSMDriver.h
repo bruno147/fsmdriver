@@ -23,23 +23,23 @@ private:
     std::string getArgument(int i, char** argv);
 
 
-    float    parameters[22];
+    float    parameters[22];/**Driver parameters,it can be fixed or set by Genetic Algorithm*/
 
 public:
     virtual void onShutdown();
     virtual void onRestart();
 
-    // Initialization of the desired angles for the rangefinders
+    /** Initialization of the desired angles for the rangefinders*/
     virtual void init(float *angles);
 
     FSMDriver();
     FSMDriver(int, char**);
     virtual ~FSMDriver(){}
 
-    // Transitions between states (if appropriate).
+    /** Transitions between states (if appropriate).*/
     void transition(CarState &);
 
-    //Main driving function.
+    /**Main driving function.*/
     virtual CarControl wDrive(CarState cs);
 };
 

@@ -9,7 +9,7 @@
 extern float MAX_STEERING, TARGET_POS, BASE_SPEED;
 
 class FSMDriver;
-
+/**Class to treat State where the section of the track before a curve, to better complete a curve it require a speed depending of the curve(for example how obligue it is) */
 class ApproachingCurve : public DrivingState<FSMDriver> {
 public:
     static ApproachingCurve* instance();

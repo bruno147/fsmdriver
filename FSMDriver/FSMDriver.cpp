@@ -21,7 +21,7 @@ int   FSMDriver::MIN_APPROACHING_CURVE_VAR =  300;
 const int NUM_SENSORS = 19;
 /******************************************************************************/
 
-
+/**The varience describe the track curvature, information used to choose the state that will control the car.*/
 float trackReadingsVariance(CarState &cs) {
     vector<float> sensors(NUM_SENSORS);
     float mean = 0, var = 0;
@@ -45,11 +45,14 @@ float trackReadingsVariance(CarState &cs) {
 //-------------------------------------------------------------------------------------------------------------------
 //FSMDriver Class
 
-
+/**
+FSMDriver Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.  
+*/
 FSMDriver::FSMDriver() : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0),gear(0) {
     change_to(StraightLine::instance());
 }
-
+/**FSMDriver Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver can be used together with Genetic Algorithm using this function.
+*/
 FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0),gear(0) {
     change_to(StraightLine::instance());
     
@@ -108,17 +111,17 @@ FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel
     // segment_id = stoi(argv[2]);
 
 }
-
+/**This Function is needed to use the Loiacolo files at .*/
 CarControl FSMDriver::wDrive(CarState cs) {
     transition(cs);
     Log::instance()->updateLog(current_state, cs);
     return update(cs);
 }
-
+/**This Function is needed to use the Loiacolo files at .*/
 void FSMDriver::onRestart() {
     cout << "Restarting the race!" << endl;
 }
-
+/**This Function is needed to use the Loiacolo files at .*/
 string FSMDriver::getArgument(int i, char** argv){
     return string(argv[1]).substr((i*32), ((i+1)*32));
 }
@@ -126,12 +129,12 @@ void FSMDriver::onShutdown() {
     Log::instance()->saveTotalTime(segment_id);
     cout << "End of race!" << endl;
 }
-
+/**This Function is needed to use the Loiacolo files at .*/
 void FSMDriver::init(float *angles){
     for (int i = 0; i < NUM_SENSORS; ++i)
         angles[i] = i*10-90; // @todo como assim?
 }
-
+/**The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singletton.*/
 void FSMDriver::transition(CarState &cs) {
     DrivingState<FSMDriver> *state = current_state;
 
@@ -161,7 +164,7 @@ float FSMDriver::binToFloat (string bits) {
 
     return *value;
 }
-
+/**This function is used to turn the string of bits in a float representation of the parameters.*/
 unsigned int FSMDriver::binToUsignedInt (string bits) {
     bitset<32> a (bits);
     unsigned int *value = reinterpret_cast<unsigned int*>(&a);

@@ -10,7 +10,7 @@ int HIGH_RPM = 9500;
 StraightLine::StraightLine() {}
 
 StraightLine::StraightLine(StraightLine const &) {}
-
+/**It Create the straightline state, a pointer to the state, it return a static value to acomplish a singleton*/
 StraightLine *StraightLine::instance() {
     static StraightLine instance;
     return &instance;

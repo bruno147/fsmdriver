@@ -19,7 +19,7 @@ void ApproachingCurve::enter(FSMDriver *driver) {
 void ApproachingCurve::exit(FSMDriver *driver) {
     //cout << "Exit ApproachingCurve" << endl;
 }
-
+/**Class to treat State where the section of the track before a curve, to better complete a curve it require a speed depending of the curve(for example how obligue it is) */
 CarControl ApproachingCurve::drive(FSMDriver *fsmdriver, CarState &cs) {
     if(!sensorsAreUpdated) /*@todo Só atualiza na 1a vez mesmo? */
         updateSensors(cs);

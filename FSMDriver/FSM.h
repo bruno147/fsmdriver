@@ -15,6 +15,7 @@ public:
 };	
 
 template <class Driver>
+/**The DrivingFSM class contein the function to change states and variable to indicate the current and the previous states.*/
 class DrivingFSM {
 public:
 	DrivingFSM(Driver *o) : owner(o), previous_state(nullptr), current_state(nullptr) {
@@ -22,7 +23,7 @@ public:
 	}
 
 	virtual ~DrivingFSM(){}
-
+/**Function to change states it modify the variables current_state and previous_state according transition.*/
 	void change_to(DrivingState<Driver> *s) {
 		assert(s);
 
