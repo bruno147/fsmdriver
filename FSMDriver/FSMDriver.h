@@ -3,7 +3,6 @@
 
 #include "WrapperBaseDriver.h"
 #include "FSM.h"
-#include <bitset>
 
 /*! \class FSMDriver
 *   \brief The driver itself.
