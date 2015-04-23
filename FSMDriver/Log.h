@@ -15,7 +15,7 @@ class FSMDriver;
 class Log {
 public:
     ~Log(){}
-    /**Function to create a pointer to log(similar a state)*/
+    /**Function to create a pointer to log(similar to a state)*/
     static Log *instance() {
         static Log instance;
         return &instance;
