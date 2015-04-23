@@ -5,41 +5,43 @@
 #include "FSM.h"
 #include <bitset>
 
-
+/*! \class FSMDriver
+*   \brief The driver itself.
+*   
+*   This class defines the driver based on a FSM.
+*/
 class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
 private:
-    float accel, brake, steer; //Actuators values
+    //! Actuators values.
+    float accel, brake, steer;
     int gear;
-    int segment_id;
-
-    int MAX_STRAIGHT_LINE_VAR;
-    int MIN_STRAIGHT_LINE_VAR;
-    int MAX_APPROACHING_CURVE_VAR;
-    int MIN_APPROACHING_CURVE_VAR;
-
-    float    binToFloat (string bits);
-    unsigned int binToUsignedInt (string bits);
-
-    std::string getArgument(int i, char** argv);
-
-
-    float    parameters[22];
 
 public:
+    //! Called when the driver finishes the race. 
     virtual void onShutdown();
+    //! Called when TORCS asks a race restart.
     virtual void onRestart();
 
-    // Initialization of the desired angles for the rangefinders
+    //! Initialization of the desired angles for the rangefinders
     virtual void init(float *angles);
-
+    //! Empty constructor.
     FSMDriver();
+    //! Construct from parameters.
     FSMDriver(int, char**);
+    //! Empty destructor
     virtual ~FSMDriver(){}
+    //! Transitions between states.
+    /*!  
+    *   This method decides whenever the current state does not fit with
+    *   the car status and needs to be changed.
+    *   \param cs a data structure cointaining information from the car's sensors.
+    */
+    void transition(CarState &cs);
 
-    // Transitions between states (if appropriate).
-    void transition(CarState &);
-
-    //Main driving function.
+    //! Main driving function.
+    /*! \param cs a data structure cointaining information from the car's sensors.
+    *   \return The data structure cointaining values for the car's actuators.
+    */
     virtual CarControl wDrive(CarState cs);
 };
 
