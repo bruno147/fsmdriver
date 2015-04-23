@@ -3,8 +3,9 @@
 
 #include "CarControl.h"
 #include "CarState.h"
-
+/**Template are used to allow classes to work using multiple types without redeclared it*/
 template <class Driver>
+/**DrivingState: Class to describe the flow (enter and exit) of states and enable each one to drive by function drive*/
 class DrivingState {
 public:
     virtual ~DrivingState(){}
