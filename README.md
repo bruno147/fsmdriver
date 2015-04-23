@@ -6,7 +6,7 @@ Description
 -----------
 
 A driver implementation using Finite State Machine(FSM) to compete at Simulation Car Racing Championship at TORCS Simulator
-environment[Simulated Car Racing Championship](http://arxiv.org/abs/1304.1672). This file describes the basic configuration 
+environment, [Simulated Car Racing Championship](http://arxiv.org/abs/1304.1672). This file describes the basic configuration 
 to compile and run the the FSMDriver controler, including libraries and commands to linux environment(Ubuntu).
 
 ### Finite State Machine
