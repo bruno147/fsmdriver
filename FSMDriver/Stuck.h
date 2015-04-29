@@ -12,6 +12,9 @@ extern unsigned int MAX_SLOW_SPEED_TICKS; // =50;
 /******************************************************************************/
 
 class FSMDriver;
+/* !/class Stuck
+ * Class to treat stuck state when the car is stop or with low speed, it usually happen at track section with high curvature.
+ */
 class Stuck : public DrivingState<FSMDriver> {
 public:
     static Stuck *instance();

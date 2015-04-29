@@ -16,7 +16,9 @@ extern float MIN_RETURN_ANGLE; // = 0.5;
 /******************************************************************************/
 
 class FSMDriver;
-
+/*! /class OutOfTrack
+ *  Class to treat the state where the car is out of the track. Note that this state is important go back to the race in case of colligions and eventual driver's mislead 
+ */
 class OutOfTrack : public DrivingState<FSMDriver> {
 public:
     static OutOfTrack *instance();
