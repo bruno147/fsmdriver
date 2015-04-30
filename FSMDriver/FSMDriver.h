@@ -32,9 +32,11 @@ public:
     //! Transitions between states.
     /*!  
     *   This method decides whenever the current state does not fit with
-    *   the car status and needs to be changed.
+    *   the car status and needs to be changed.The transition choose the most fitted state at the moment of the race. 
+    *	Note that the transition move to each state with only one pointer to each of than, what is called singleton.
     *   \param cs a data structure cointaining information from the car's sensors.
     */
+
     void transition(CarState &cs);
 
     //! Main driving function.
