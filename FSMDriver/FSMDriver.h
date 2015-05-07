@@ -8,6 +8,10 @@
 *   \brief The driver itself.
 *   
 *   This class defines the driver based on a FSM.
+*   Please note that this documentation provide information about the espefic files of the newFSM driver,
+*   the Loiacono's files(at src and include folder) have not been documented by us, for that reason the 
+*   Doxygen does not generate these files documentation, more information can be found at the own comments
+*   of the code. 
 */
 class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
 private:
