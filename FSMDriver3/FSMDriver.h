@@ -8,6 +8,10 @@
 *   \brief The driver itself.
 *   
 *   This class defines the driver based on a FSM.
+*   Please note that this documentation provide information about the espefic files of the newFSM driver,
+*   the Loiacono's files(at src and include folder) have not been documented by us, for that reason the 
+*   Doxygen does not generate these files documentation, more information can be found at the own comments
+*   of the code. 
 */
 class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
 private:
@@ -32,9 +36,11 @@ public:
     //! Transitions between states.
     /*!  
     *   This method decides whenever the current state does not fit with
-    *   the car status and needs to be changed.
+    *   the car status and needs to be changed.The transition choose the most fitted state at the moment of the race. 
+    *	Note that the transition move to each state with only one pointer to each of than, what is called singleton.
     *   \param cs a data structure cointaining information from the car's sensors.
     */
+
     void transition(CarState &cs);
 
     //! Main driving function.

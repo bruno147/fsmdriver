@@ -36,6 +36,7 @@ CarControl InsideTrack::drive(FSMDriver *fsmdriver, CarState &cs) {
     cout << "speed: " << this->targetSpeed << endl;
 	return CarControl(accel, brake, gear, steer, clutch);
 }
+
 int InsideTrack::getGear(CarState &cs) {
     int gear = cs.getGear();
     if(gear <= 0) return START_GEAR;
