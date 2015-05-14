@@ -22,7 +22,7 @@ Requirement
 A makefile is used to minimize the commands needed to compile and run the program.
 Make sure to install the following programs and libraries:
 
-* Torcs Simulator(at least 1.3.6). More information at: http://torcs.sourceforge.net/;
+* Torcs Simulator(at least 1.3.4 or higher). More information at: http://torcs.sourceforge.net/;
 
 * Build-Essential: it contein dpkg, g++(at least 4.6 to provide support to c++11 standart), libc-dev and make;
 
@@ -62,7 +62,7 @@ $ make
 The compiling process creates an executable named FSMDriver, to run it and torcs type the commands: 
 ```
 $ cd ../bin
-$ ./FSMDriver && torcs
+$ ./FSMDriver & torcs
 ```
 
 At the Torcs' graphic interface, click: race -> Quick Race -> New Race.
@@ -71,7 +71,9 @@ Documentation
 -------------
 
 To better understand this code it is possible to use doxygen to generate an html file containing the this documentation.
-Assuming that doxygen is installes follow the steps bellow:
+Please note that depending which driver you want to generate the documentation(via doxygen) it is needed to change the INPUT
+files at Doxyfile to FSMDriver3 or FSMDriver5(by default it is set at FSMDriver3). Assuming that doxygen is installes follow
+the steps bellow:
 
 ```
 $ cd ~/fsmdriver
@@ -81,11 +83,7 @@ $ doxygen doxyfile
 $ firefox html/index.html
 ```
 
-
-
-
-
-          
+        
 =======
 newFSM Controller
 =================
