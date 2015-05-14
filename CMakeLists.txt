@@ -18,11 +18,12 @@ set(SOURCES
 	src/WrapperBaseDriver.cpp)
 
 # Compiler flags
+set(DRIVERF FSMDriver3)
 set(DRIVER FSMDriver)
-set(EXTFLAGS "-D __DRIVER_CLASS__=${DRIVER} -D __DRIVER_INCLUDE__='\"${CMAKE_SOURCE_DIR}/${DRIVER}/${DRIVER}.h\"'")	
+set(EXTFLAGS "-D __DRIVER_CLASS__=${DRIVER} -D __DRIVER_INCLUDE__='\"${CMAKE_SOURCE_DIR}/${DRIVERF}/${DRIVERF}.h\"'")
 add_definitions(-g -O3 -Wall -std=c++0x ${EXTFLAGS})
 
 # Executable
 set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
-add_executable(${DRIVER} ${SOURCES})
+add_executable(${DRIVERF} ${SOURCES})
 
