@@ -28,7 +28,7 @@ public:
 *	\brief The actual state machine
 *	
 *	This is the Finite State Machine structure containing it's states
-*	and onwer protocols.
+*	and owner values.
 */
 template <class Driver>
 class DrivingFSM {
@@ -46,7 +46,6 @@ public:
 	*/
 	void change_to(DrivingState<Driver> *s) {
 		assert(s);
-
 		previous_state = current_state;
 		if(current_state) current_state->exit(owner);
 		current_state = s;
