@@ -22,7 +22,7 @@ Requirement
 A makefile is used to minimize the commands needed to compile and run the program.
 Make sure to install the following programs and libraries:
 
-* Torcs Simulator(at least 1.3.6). More information at: http://torcs.sourceforge.net/;
+* Torcs Simulator(at least 1.3.4 or higher). More information at: http://torcs.sourceforge.net/;
 
 * Build-Essential: it contein dpkg, g++(at least 4.6 to provide support to c++11 standart), libc-dev and make;
 
@@ -62,7 +62,7 @@ $ make
 The compiling process creates an executable named FSMDriver, to run it and torcs type the commands: 
 ```
 $ cd ../bin
-$ ./FSMDriver && torcs
+$ ./FSMDriver & torcs
 ```
 
 At the Torcs' graphic interface, click: race -> Quick Race -> New Race.

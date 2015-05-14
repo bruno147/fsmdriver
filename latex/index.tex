@@ -1,0 +1,50 @@
+
+\begin{DoxyItemize}
+\item 
+\item 
+\end{DoxyItemize}\hypertarget{index_intro_sec}{}\section{Introduction}\label{index_intro_sec}
+
+\begin{DoxyItemize}
+\item 
+\item This is the introduction.
+\item 
+\item 
+\end{DoxyItemize}\hypertarget{index_install_sec}{}\section{Installation}\label{index_install_sec}
+
+\begin{DoxyItemize}
+\item 
+\item 
+\end{DoxyItemize}\hypertarget{index_step1}{}\subsection{Step 1\+: Opening the box}\label{index_step1}
+
+\begin{DoxyItemize}
+\item 
+\item etc... $\ast$/
+\end{DoxyItemize}
+
+\section*{Finite State Machine }
+
+It is a concept where a machine is builded by states that take the machine\textquotesingle{}s control depending the state it is. $<$$<$$<$$<$$<$$<$$<$ H\+E\+A\+D The F\+S\+M\+Driver has 5 states(\+Straight\+Line, Approaching\+Curve, Curve, Out\+Of\+Track and Stuck) and a function(transition), responsible to move the driver to each one depending the track configuration, for example let say the sensor indicate that the car is inside the track in a straight line, an state named straightline take the control of the car. This approach results depends how well the machine\textquotesingle{}s state describe the problem itself.
+
+The F\+S\+M\+Driver Finite State Machine was developed considering a set of possibilities that the driver can be applied. Firstly the car is inside or outside the track. Inside there are the states Straight\+Line, Approaching\+Curve and Curve, outside there are Out\+Of\+Track and Stuck, both should be avoided once the speed of the car is reduce substantially outside the track. Lastly the track curvature define each state inside the track\+: the Straightline with low curvature, Curve \section*{with high curvature and Approaching Curve a section of the track that is near a curve one. }
+
+The new\+F\+S\+M has 3 states(\+Inside\+Track, Out\+Of\+Track and Stuck) and a function(transition), responsible to move the driver to each one depending the track configuration, for example let say the sensor indicate that the car is outside the track due to a collion or a drive mislead, a state named Out\+Of\+Track take the control of the car. This approach results depends how well the machine\textquotesingle{}s state describe the problem itself.
+
+The new\+F\+S\+M Finite State Machine was developed considering a set of possibilities that the driver can be applied. Firstly the car is inside or outside the track, the last one should be avoided once the speed of the car is reduce substantially outside the track. \begin{quote}
+\begin{quote}
+\begin{quote}
+\begin{quote}
+\begin{quote}
+\begin{quote}
+\begin{quote}
+new\+Fsm \end{quote}
+\end{quote}
+\end{quote}
+\end{quote}
+\end{quote}
+\end{quote}
+\end{quote}
+
+
+The states alone do not make a F\+S\+M, the way to move from a state to another is accomplish here using a function called transiction that perform the control\textquotesingle{}s changes at state to state.
+
+Even though is possible to add more states it is important to say that would enhance the complexity to define a set of condition to each one. 

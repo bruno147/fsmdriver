@@ -35,7 +35,7 @@ public:
     */
     void exit(FSMDriver *driver);
     /** Main function at state to drive the car.
-    * \param driver is a pointer of the object of the driver itself,  
+    * \param fsmdriver is a pointer of the object of the driver itself,  
     * \param cs a data structure cointaining information from the car's sensors.
     */
     virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs);

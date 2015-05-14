@@ -1,0 +1,125 @@
+$<$$<$$<$$<$$<$$<$$<$ H\+E\+A\+D \section*{F\+S\+M\+Driver Controller }
+
+\subsection*{Description }
+
+A driver implementation using \hyperlink{md_FSM_Description}{Finite State Machine}(F\+S\+M) to compete at Simulation Car Racing Championship at T\+O\+R\+C\+S Simulator environment, \href{http://arxiv.org/abs/1304.1672}{\tt Simulated Car Racing Championship}. This file describes the basic configuration to compile and run the the F\+S\+M\+Driver controler, including libraries and commands to linux environment(\+Ubuntu).
+
+\subsection*{Copyright }
+
+This work use the src code developed by Daniele Loiacano.\+To understand the basic functions used at F\+S\+M\+Driver(such as drive, enter, shutdown) take a look at the folder src.
+
+\subsection*{Requirement }
+
+A makefile is used to minimize the commands needed to compile and run the program. Make sure to install the following programs and libraries\+:
+
+
+\begin{DoxyItemize}
+\item Torcs Simulator(at least 1.\+3.\+6). More information at\+: \href{http://torcs.sourceforge.net/;}{\tt http\+://torcs.\+sourceforge.\+net/;}
+\item Build-\/\+Essential\+: it contein dpkg, g++(at least 4.\+6 to provide support to c++11 standart), libc-\/dev and make;
+\item Cmake\+: it is important to build the program, reducing the effort to compile it;
+\item Doxygen(optional)\+: a documentation programm to organize the comments and code properly;
+\end{DoxyItemize}
+
+The packages can be installed following the command\+: 
+\begin{DoxyCode}
+1 $ sudo apt-get install cmake build-essential
+\end{DoxyCode}
+ To install doxygen\+: 
+\begin{DoxyCode}
+1 $ git clone https://github.com/doxygen/doxygen.git (optional)
+2 $ cd doxygen
+3 $ ./configure
+4 $ make
+5 $ make install
+\end{DoxyCode}
+
+
+\subsection*{Usage }
+
+The F\+S\+M\+Driver can drive at T\+O\+R\+C\+S Simulator. It is build using makefile.
+
+\subsubsection*{Makefile}
+
+Assuming that the previous requirements are fulfiled, the driver code can be build following the steps bellow\+:
+
+
+\begin{DoxyCode}
+1 $ cd ~/fsmdriver/build
+2 $ cmake ..
+3 $ make
+\end{DoxyCode}
+
+
+The compiling process creates an executable named F\+S\+M\+Driver, to run it and torcs type the commands\+: 
+\begin{DoxyCode}
+1 $ cd ../bin
+2 $ ./FSMDriver & torcs
+\end{DoxyCode}
+
+
+At the Torcs\textquotesingle{} graphic interface, click\+: race -\/$>$ Quick Race -\/$>$ New Race.
+
+\subsection*{Documentation }
+
+To better understand this code it is possible to use doxygen to generate an html file containing the this documentation. Assuming that doxygen is installes follow the steps bellow\+:
+
+
+\begin{DoxyCode}
+1 $ cd ~/fsmdriver
+2 $ doxygen -g D
+3 $ doxygen D
+4 $ doxygen doxyfile
+5 $ firefox html/index.html
+\end{DoxyCode}
+
+
+
+
+ \section*{new\+F\+S\+M Controller }
+
+This is an implementation of a \href{http://arxiv.org/abs/1304.1672}{\tt S\+C\+R} client controller using a Finite State Machine. Code was tested on Ubuntu 14.\+04 with T\+O\+R\+C\+S 1.\+3.\+6.
+
+\subsection*{Dependencies }
+
+
+\begin{DoxyItemize}
+\item \href{http://torcs.sourceforge.net/}{\tt T\+O\+R\+C\+S} 1.\+3.\+4 (or higher). Be sure to install it from the \href{http://torcs.sourceforge.net/index.php?name=Sections&op=viewarticle&artid=3#linux-src-all}{\tt Source Package}, and not a binary distribution (better yet, use the instructions below for installing the S\+C\+R patch).
+\item \href{http://sourceforge.net/projects/cig/files/SCR%20Championship/Server%20Linux/}{\tt S\+C\+R patch} as described in \char`\"{}\+Simulated Car Racing Championship Competition Software Manual\char`\"{} (\href{http://arxiv.org/pdf/1304.1672v2}{\tt v2 -\/ April 2013}),
+\end{DoxyItemize}
+
+\subsection*{Usage }
+
+A \href{http://www.cmake.org/documentation/}{\tt C\+Makefile} is provided in hopes of simplifying the build process (implying in additional {\ttfamily make} and {\ttfamily cmake} dependencies). Assuming you\textquotesingle{}ve downloaded the code, F\+S\+M\+Driver can be compiled with\+:
+
+
+\begin{DoxyCode}
+1 $ cd fsmdriver/build
+2 $ cmake ..
+3 $ make
+\end{DoxyCode}
+
+
+This creates the executable {\ttfamily F\+S\+M\+Driver}. To test it (assuming you started a properly configured race), just run\+:
+
+
+\begin{DoxyCode}
+1 ./bin/FSMDriver
+\end{DoxyCode}
+
+
+\subsection*{Documentation }
+
+Documentation (and further explanations) for the code is available in the source code files, and can be extracted via \href{www.doxygen.org}{\tt Doxygen}. \begin{quote}
+\begin{quote}
+\begin{quote}
+\begin{quote}
+\begin{quote}
+\begin{quote}
+\begin{quote}
+new\+Fsm\end{quote}
+\end{quote}
+\end{quote}
+\end{quote}
+\end{quote}
+\end{quote}
+\end{quote}
