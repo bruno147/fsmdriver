@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_STATE_STUCK_H
-#define FSMDRIVER_STATE_STUCK_H
+#ifndef FSMDriver5_STATE_STUCK_H
+#define FSMDriver5_STATE_STUCK_H
 
 #include <cmath>
 #include "FSM.h"
@@ -11,18 +11,18 @@ extern unsigned int MAX_STUCK_TICKS; // = 300;
 extern unsigned int MAX_SLOW_SPEED_TICKS; // =50;
 /******************************************************************************/
 
-class FSMDriver;
+class FSMDriver5;
 /**Class to treat stuck state when the car is stop or with low speed, it usually happen at track section with high curvature.*/
-class Stuck : public DrivingState<FSMDriver> {
+class Stuck : public DrivingState<FSMDriver5> {
 public:
     static Stuck *instance();
 	static inline bool isStuck(CarState &cs) {
 	    return (seemsStuck(cs) && !justStartedRace(cs));
 	}
 
-    void enter(FSMDriver *driver, CarState &cs);
-    void exit(FSMDriver *driver);
-    virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs);
+    void enter(FSMDriver5 *driver, CarState &cs);
+    void exit(FSMDriver5 *driver);
+    virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
     ~Stuck();
 
 private:
@@ -66,4 +66,4 @@ private:
 	}
 };
 
-#endif // FSMDRIVER_STATE_STUCK_H
+#endif // FSMDriver5_STATE_STUCK_H

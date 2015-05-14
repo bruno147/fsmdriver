@@ -15,7 +15,7 @@
 *   of the code. 
 */
 
-class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
+class FSMDriver3 : public WrapperBaseDriver, public DrivingFSM<FSMDriver3> {
 private:
     //! Actuators values.
     float accel, brake, steer;
@@ -30,11 +30,11 @@ public:
     //! Initialization of the desired angles for the rangefinders
     virtual void init(float *angles);
     //! Empty constructor.
-    FSMDriver();
+    FSMDriver3();
     //! Construct from parameters.
-    FSMDriver(int, char**);
+    FSMDriver3(int, char**);
     //! Empty destructor
-    virtual ~FSMDriver(){}
+    virtual ~FSMDriver3(){}
     //! Transitions between states.
     /*!  
     *   This method decides whenever the current state does not fit with

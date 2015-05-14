@@ -18,15 +18,15 @@ InsideTrack *InsideTrack::instance() {
     return &instance;
 }
 
-void InsideTrack::enter(FSMDriver *driver) {
+void InsideTrack::enter(FSMDriver3 *driver) {
     cout << "Enter InsideTrack" << endl;
 }
 
-void InsideTrack::exit(FSMDriver *driver) {
+void InsideTrack::exit(FSMDriver3 *driver) {
     cout << "Exit InsideTrack" << endl;
 }
 
-CarControl InsideTrack::drive(FSMDriver *fsmdriver, CarState &cs) {
+CarControl InsideTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
 	float steer = getSteer(cs);
     setTargetSpeed(cs);
 	int gear = getGear(cs);

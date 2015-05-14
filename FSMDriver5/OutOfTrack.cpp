@@ -17,15 +17,15 @@ OutOfTrack *OutOfTrack::instance() {
     return &instance;
 }
 
-void OutOfTrack::enter(FSMDriver *driver) {
+void OutOfTrack::enter(FSMDriver5 *driver) {
     //cout << "Enter OutOfTrack" << endl;
 }
 
-void OutOfTrack::exit(FSMDriver *driver) {
+void OutOfTrack::exit(FSMDriver5 *driver) {
     //cout << "Exit OutOfTrack" << endl;
 }
 
-CarControl OutOfTrack::drive(FSMDriver *fsmdriver, CarState &cs) {
+CarControl OutOfTrack::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
     const float clutch = 0;
     const int focus = 0, meta = 0;
 

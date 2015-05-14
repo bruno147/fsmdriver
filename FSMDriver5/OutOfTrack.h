@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_STATE_OUTOFTRACK_H
-#define FSMDRIVER_STATE_OUTOFTRACK_H
+#ifndef FSMDriver5_STATE_OUTOFTRACK_H
+#define FSMDriver5_STATE_OUTOFTRACK_H
 
 #include <cmath>
 #include "FSM.h"
@@ -15,14 +15,14 @@ extern float MAX_RETURN_ANGLE; // = 0.7;
 extern float MIN_RETURN_ANGLE; // = 0.5;
 /******************************************************************************/
 
-class FSMDriver;
+class FSMDriver5;
 /**Class to treat the state where the car is out of the track. Note that this state is important go back to the race in case of colligions and eventual driver's mislead */
-class OutOfTrack : public DrivingState<FSMDriver> {
+class OutOfTrack : public DrivingState<FSMDriver5> {
 public:
     static OutOfTrack *instance();
-    void enter(FSMDriver *driver);
-    void exit(FSMDriver *driver);
-    virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs);
+    void enter(FSMDriver5 *driver);
+    void exit(FSMDriver5 *driver);
+    virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
 
     ~OutOfTrack();
 
@@ -37,4 +37,4 @@ private:
     float getSteer(CarState &cs);
 };
 
-#endif // FSMDRIVER_STATE_OUTOFTRACK_H
+#endif // FSMDriver5_STATE_OUTOFTRACK_H

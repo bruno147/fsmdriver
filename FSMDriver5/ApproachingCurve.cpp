@@ -11,16 +11,16 @@ ApproachingCurve *ApproachingCurve::instance() {
     return &instance;
 }
 
-void ApproachingCurve::enter(FSMDriver *driver) {
+void ApproachingCurve::enter(FSMDriver5 *driver) {
     //cout << "Enter ApproachingCurve" << endl;
     sensorsAreUpdated = false;
 }
 
-void ApproachingCurve::exit(FSMDriver *driver) {
+void ApproachingCurve::exit(FSMDriver5 *driver) {
     //cout << "Exit ApproachingCurve" << endl;
 }
 
-CarControl ApproachingCurve::drive(FSMDriver *fsmdriver, CarState &cs) {
+CarControl ApproachingCurve::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
     if(!sensorsAreUpdated) /*@todo Só atualiza na 1a vez mesmo? */
         updateSensors(cs);
 

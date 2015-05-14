@@ -15,13 +15,13 @@ extern float MAX_RETURN_ANGLE; // = 0.7;
 extern float MIN_RETURN_ANGLE; // = 0.5;
 /******************************************************************************/
 
-class FSMDriver;
+class FSMDriver3;
 /*! \class OutOfTrack
  *  \brief OutOfTrack State Class.
  *
  *  Class to treat the state where the car is out of the track. Note that this state is important go back to the race in case of collisions and eventual driver's mislead 
  */
-class OutOfTrack : public DrivingState<FSMDriver> {
+class OutOfTrack : public DrivingState<FSMDriver3> {
 public:
     /** Create a pointer to the state to accomplish the singleton.
     */
@@ -29,16 +29,16 @@ public:
     /** Function to indicate that the drive started at OutOfTrack state. 
     * \param driver is a pointer of the object of the driver itself. 
     */
-    void enter(FSMDriver *driver);
+    void enter(FSMDriver3 *driver);
     /** Function to indicate that the drive leave the OutOfTrack state. 
     * \param driver is a pointer of the object of the driver itself. 
     */
-    void exit(FSMDriver *driver);
+    void exit(FSMDriver3 *driver);
     /** Main function at state to drive the car.
-    * \param fsmdriver is a pointer of the object of the driver itself,  
+    * \param fsmdriver3 is a pointer of the object of the driver itself,  
     * \param cs a data structure cointaining information from the car's sensors.
     */
-    virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs);
+    virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
     //! Empty destructor
     ~OutOfTrack();
 
