@@ -1,17 +1,16 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(FSMDriver)
-find_package(Boost REQUIRED COMPONENTS filesystem system)
 
 # Source files:
 include_directories(include FSMDriver)
 set(SOURCES 
-	FSMDriver/FSM.h
-	FSMDriver/FSMDriver.h
-	FSMDriver/FSMDriver.cpp
-	FSMDriver/InsideTrack.cpp
-	FSMDriver/OutOfTrack.cpp
-	FSMDriver/Stuck.cpp
+	FSMDriver3/FSM.h
+	FSMDriver3/FSMDriver3.h
+	FSMDriver3/FSMDriver3.cpp
+	FSMDriver3/InsideTrack.cpp
+	FSMDriver3/OutOfTrack.cpp
+	FSMDriver3/Stuck.cpp
 	src/CarControl.cpp
 	src/CarState.cpp
 	src/client.cpp
@@ -27,29 +26,3 @@ add_definitions(-g -O3 -Wall -std=c++0x ${EXTFLAGS})
 set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 add_executable(${DRIVER} ${SOURCES})
 
-
-# GA Flag
- # set(GA ON)
-
-# GA
-if(GA)
-	include_directories(include FSMDriver Genetic Algorithm)
-
-	# set(ROULLETE ON)
-	set(ELITISM ON)
-	# GA source
-	set(GA_SOURCES
-		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.h
-		FSMDriver_Genetic_Algorithm/DriverGeneticAlgorithm.cpp)
-
-	if(ROULLETE)
-  		set(CMAKE_CXX_FLAGS "-g -Wall -O3 -std=c++11 -D ROULLETE")
-	endif()
-
-	if(ELITISM)
-  		set(CMAKE_CXX_FLAGS "-g -Wall -O3 -std=c++11 -D ELITISM")
-	endif()
-
-	add_executable(DriverGeneticAlgorithm ${GA_SOURCES})
-	target_link_libraries(DriverGeneticAlgorithm ${Boost_LIBRARIES})
-endif()

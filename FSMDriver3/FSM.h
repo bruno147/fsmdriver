@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_FSM_H
-#define FSMDRIVER_FSM_H
+#ifndef FSM_H
+#define FSM_H
 
 #include "CarControl.h"
 #include "CarState.h"
@@ -77,4 +77,4 @@ protected:
 	DrivingState<Driver> *current_state;
 };
 
-#endif // FSMDRIVER_FSM_H
+#endif // FSM_H

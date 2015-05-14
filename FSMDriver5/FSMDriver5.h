@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_H
-#define FSMDRIVER_H
+#ifndef FSMDRIVER5_H
+#define FSMDRIVER5_H
 
 #include "WrapperBaseDriver.h"
 #include "FSM.h"
