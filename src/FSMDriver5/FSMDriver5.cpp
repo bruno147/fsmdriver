@@ -1,19 +1,19 @@
-#include "FSMDriver5.h"
-#include "ApproachingCurve.h"
-#include "StraightLine.h"
-#include "Curve.h"
-#include "OutOfTrack.h"
-#include "Stuck.h"
-#include "Log.h"
+#include "../../include/FSMDriver5/FSMDriver.h"
+#include "../../include/FSM/ApproachingCurve.h"
+#include "../../include/FSM/StraightLine.h"
+#include "../../include/FSM/Curve.h"
+#include "../../include/FSM/OutOfTrack.h"
+#include "../../include/FSM/Stuck.h"
+#include "../../include/FSMDriver5/Log.h"
 
 #include <vector>
 
 //Define constants for transition method:
 /*
-int   FSMDriver5::MAX_STRAIGHT_LINE_VAR     = 1000;
-int   FSMDriver5::MIN_STRAIGHT_LINE_VAR     =  500;
-int   FSMDriver5::MAX_APPROACHING_CURVE_VAR =  400;
-int   FSMDriver5::MIN_APPROACHING_CURVE_VAR =  300;
+int   FSMDriver::MAX_STRAIGHT_LINE_VAR     = 1000;
+int   FSMDriver::MIN_STRAIGHT_LINE_VAR     =  500;
+int   FSMDriver::MAX_APPROACHING_CURVE_VAR =  400;
+int   FSMDriver::MIN_APPROACHING_CURVE_VAR =  300;
 */
 
 
@@ -43,17 +43,17 @@ float trackReadingsVariance(CarState &cs) {
 
 
 //-------------------------------------------------------------------------------------------------------------------
-//FSMDriver5 Class
+//FSMDriver Class
 
 /**
-*FSMDriver5 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
+*FSMDriver Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 */
-FSMDriver5::FSMDriver5() : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer(0),gear(0) {
+FSMDriver::FSMDriver() : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0),gear(0) {
     change_to(StraightLine::instance());
 }
-/**FSMDriver5 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver5 can be used together with Genetic Algorithm using this function.
+/**FSMDriver Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver can be used together with Genetic Algorithm using this function.
 */
-FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer(0),gear(0) {
+FSMDriver::FSMDriver(int argc, char** argv) : DrivingFSM<FSMDriver>(this), accel(0),brake(0),steer(0),gear(0) {
     change_to(StraightLine::instance());
 
 
@@ -111,28 +111,28 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this), ac
     // segment_id = stoi(argv[2]);
 
 }
-CarControl FSMDriver5::wDrive(CarState cs) {
+CarControl FSMDriver::wDrive(CarState cs) {
     transition(cs);
     Log::instance()->updateLog(current_state, cs);
     return update(cs);
 }
-void FSMDriver5::onRestart() {
+void FSMDriver::onRestart() {
     cout << "Restarting the race!" << endl;
 }
-string FSMDriver5::getArgument(int i, char** argv){
+string FSMDriver::getArgument(int i, char** argv){
     return string(argv[1]).substr((i*32), ((i+1)*32));
 }
-void FSMDriver5::onShutdown() {
+void FSMDriver::onShutdown() {
     Log::instance()->saveTotalTime(segment_id);
     cout << "End of race!" << endl;
 }
-void FSMDriver5::init(float *angles){
+void FSMDriver::init(float *angles){
     for (int i = 0; i < NUM_SENSORS; ++i)
         angles[i] = i*10-90; // @todo como assim?
 }
 /**The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
-void FSMDriver5::transition(CarState &cs) {
-    DrivingState<FSMDriver5> *state = current_state;
+void FSMDriver::transition(CarState &cs) {
+    DrivingState<FSMDriver> *state = current_state;
 
     if(Stuck::isStuck(cs)) {
         ;//state = Stuck::instance();
@@ -154,14 +154,14 @@ void FSMDriver5::transition(CarState &cs) {
     if (current_state != state) change_to(state);
 }
 /**This function is used to turn the string of bits in a float representation of the parameters.*/
-float FSMDriver5::binToFloat (string bits) {
+float FSMDriver::binToFloat (string bits) {
     bitset<32> a (bits);
     float *value = reinterpret_cast<float*>(&a);
 
     return *value;
 }
 /**This function is used to turn the string of bits in a unsigned int representation of the parameters.*/
-unsigned int FSMDriver5::binToUsignedInt (string bits) {
+unsigned int FSMDriver::binToUsignedInt (string bits) {
     bitset<32> a (bits);
     unsigned int *value = reinterpret_cast<unsigned int*>(&a);
 

@@ -1,8 +1,5 @@
-#include "ApproachingCurve.h"
+#include "../../include/FSM/ApproachingCurve.h"
 
-float MAX_STEERING = 0;
-float TARGET_POS = 0;
-float BASE_SPEED = 0;
 
 ApproachingCurve::ApproachingCurve() {}
 
@@ -11,16 +8,16 @@ ApproachingCurve *ApproachingCurve::instance() {
     return &instance;
 }
 
-void ApproachingCurve::enter(FSMDriver5 *driver) {
+void ApproachingCurve::enter(FSMDriver *driver) {
     //cout << "Enter ApproachingCurve" << endl;
     sensorsAreUpdated = false;
 }
 
-void ApproachingCurve::exit(FSMDriver5 *driver) {
+void ApproachingCurve::exit(FSMDriver *driver) {
     //cout << "Exit ApproachingCurve" << endl;
 }
 
-CarControl ApproachingCurve::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl ApproachingCurve::drive(FSMDriver *FSMDriver, CarState &cs) {
     if(!sensorsAreUpdated) /*@todo Só atualiza na 1a vez mesmo? */
         updateSensors(cs);
 

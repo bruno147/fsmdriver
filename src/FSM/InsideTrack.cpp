@@ -1,13 +1,4 @@
-#include "InsideTrack.h"
-
-/* Also defined in other files,causing conflicts
-int START_GEAR = 1;
-int LOW_GEAR_LIMIT = 4;
-int LOW_RPM = 1500;
-int AVERAGE_RPM = 4000;
-int HIGH_RPM = 9500;
-float BASE_SPEED = 83; */
-float SPEED_FACTOR = 1.4;
+#include "../../include/FSM/InsideTrack.h"
 
 InsideTrack::InsideTrack() : currentGear(START_GEAR) {}
 
@@ -18,15 +9,15 @@ InsideTrack *InsideTrack::instance() {
     return &instance;
 }
 
-void InsideTrack::enter(FSMDriver3 *driver) {
+void InsideTrack::enter(FSMDriver *driver) {
     cout << "Enter InsideTrack" << endl;
 }
 
-void InsideTrack::exit(FSMDriver3 *driver) {
+void InsideTrack::exit(FSMDriver *driver) {
     cout << "Exit InsideTrack" << endl;
 }
 
-CarControl InsideTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
+CarControl InsideTrack::drive(FSMDriver *FSMDriver, CarState &cs) {
 	float steer = getSteer(cs);
     setTargetSpeed(cs);
 	int gear = getGear(cs);

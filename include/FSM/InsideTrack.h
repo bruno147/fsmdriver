@@ -3,26 +3,16 @@
 
 #include <cmath>
 #include "FSM.h"
+#include "Constants.h"
 
-//-----------------------------------------------------------------
 
-extern int START_GEAR;
-extern int LOW_GEAR_LIMIT;
-extern int LOW_RPM;
-extern int AVERAGE_RPM;
-extern int HIGH_RPM;
-extern int currentGear;
-extern float BASE_SPEED;
-extern float SPEED_FACTOR;
-//-----------------------------------------------------------------
-
-class FSMDriver3;
+class FSMDriver;
 /*! \class InsideTrack
  *  \brief InsideTrack State Class.
  *
  *  Class to treat the state where the car inside of the track. Most of the effort to enhance speed and surpass opponents is applied here.
  */
-class InsideTrack : public DrivingState<FSMDriver3> {
+class InsideTrack : public DrivingState<FSMDriver> {
 public:
     /** Create a pointer to the state to accomplish the singleton.
     */
@@ -30,16 +20,16 @@ public:
     /** Function to indicate that the drive started at insidetrack state. 
     * \param driver is a pointer of the object of the driver itself. 
     */
-    void enter(FSMDriver3 *driver);
+    void enter(FSMDriver *driver);
     /** Function to indicate that the drive leave the insidetrack state. 
     * \param driver is a pointer of the object of the driver itself. 
     */
-    void exit(FSMDriver3 *driver);
+    void exit(FSMDriver *driver);
     /** Main function at state to drive the car.
     * \param driver is a pointer of the object of the driver itself,  
     * \param cs a data structure cointaining information from the car's sensors.
     */
-    virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+    virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs);
     /** Auxiliar function to obtain the gear analysing the car's rpm.
     */   
     int getGear(CarState &cs);

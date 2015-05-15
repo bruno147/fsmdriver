@@ -1,23 +1,18 @@
-#ifndef FSMDRIVER3_STATE_STUCK_H
+#ifndef FSMDriver_STATE_STUCK_H
 #define FSMDRIVER_STATE_STUCK_H
 
 #include <cmath>
+#include "Constants.h"
 #include "FSM.h"
 
-/******************************************************************************/
-extern float STUCK_SPEED; // = 5;
-extern unsigned int MIN_RACED_DISTANCE; // = 100;
-extern unsigned int MAX_STUCK_TICKS; // = 300;
-extern unsigned int MAX_SLOW_SPEED_TICKS; // =50;
-/******************************************************************************/
 
-class FSMDriver3;
+class FSMDriver;
 /*! \class Stuck
  * \brief Stuck State Class.
  *
  * Class to treat stuck state when the car is stop or with low speed, it usually happen at track section with high curvature.
  */
-class Stuck : public DrivingState<FSMDriver3> {
+class Stuck : public DrivingState<FSMDriver> {
 public:
     /** Create a pointer to the state to accomplish the singleton.
     */
@@ -28,16 +23,16 @@ public:
     /** Function to indicate that the drive started at Stuck State. 
     * \param driver is a pointer of the object of the driver itself. 
     */
-    void enter(FSMDriver3 *driver, CarState &cs);
+    void enter(FSMDriver *driver, CarState &cs);
     /** Function to indicate that the drive leave the Stuck State. 
     * \param driver is a pointer of the object of the driver itself. 
     */
-    void exit(FSMDriver3 *driver);
+    void exit(FSMDriver *driver);
     /** Main function at state to drive the car.
     * /param driver is a pointer of the object of the driver itself,  
     * cs a data structure cointaining information from the car's sensors.
     */
-    virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+    virtual CarControl drive(FSMDriver *FSMDriver, CarState &cs);
     ~Stuck();
 
 private:
@@ -81,4 +76,4 @@ private:
 	}
 };
 
-#endif // FSMDRIVER3_STATE_STUCK_H
+#endif // FSMDriver_STATE_STUCK_H

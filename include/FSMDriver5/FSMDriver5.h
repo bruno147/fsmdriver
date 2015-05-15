@@ -1,8 +1,8 @@
 #ifndef FSMDRIVER5_H
 #define FSMDRIVER5_H
 
-#include "WrapperBaseDriver.h"
-#include "FSM.h"
+#include "../client/WrapperBaseDriver.h"
+#include "../FSM/FSM.h"
 #include <bitset>
 
 /*! \class FSMDriver

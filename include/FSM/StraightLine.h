@@ -1,25 +1,18 @@
-#ifndef FSMDriver5_STATE_STRAIGHTLINE_H
-#define FSMDriver5_STATE_STRAIGHTLINE_H
+#ifndef FSMDriver_STATE_STRAIGHTLINE_H
+#define FSMDriver_STATE_STRAIGHTLINE_H
 
 #include "FSM.h"
+#include "Constants.h"
 
-/******************************************************************************/
-extern int START_GEAR; // = 1;
-extern int LOW_GEAR_LIMIT; // = 4;
 
-extern int LOW_RPM; // = 1500;
-extern int AVERAGE_RPM; // = 4000;
-extern int HIGH_RPM; // = 9500;
-/******************************************************************************/
-
-class FSMDriver5;
+class FSMDriver;
 /**Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.*/
-class StraightLine : public DrivingState<FSMDriver5> {
+class StraightLine : public DrivingState<FSMDriver> {
 public:
     static StraightLine *instance();
-    void enter(FSMDriver5 *driver);
-    void exit(FSMDriver5 *driver);
-    virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
+    void enter(FSMDriver *driver);
+    void exit(FSMDriver *driver);
+    virtual CarControl drive(FSMDriver *FSMDriver, CarState &cs);
     static int getGear(CarState &cs);
 
     ~StraightLine();
@@ -40,4 +33,4 @@ private:
     static inline bool shouldIncreaseGear(int currentGear, int rpm);
 };
 
-#endif // FSMDriver5_STATE_STRAIGHTLINE_H
+#endif // FSMDriver_STATE_STRAIGHTLINE_H
