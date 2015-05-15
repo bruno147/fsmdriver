@@ -46,7 +46,7 @@ float trackReadingsVariance(CarState &cs) {
 //FSMDriver5 Class
 
 /**
-*FSMDriver5 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.  
+*FSMDriver5 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 */
 FSMDriver5::FSMDriver5() : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer(0),gear(0) {
     change_to(StraightLine::instance());
@@ -55,7 +55,7 @@ FSMDriver5::FSMDriver5() : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer
 */
 FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer(0),gear(0) {
     change_to(StraightLine::instance());
-    
+
 
     LOW_GEAR_LIMIT = 4;
     LOW_RPM = 1500;
@@ -135,20 +135,20 @@ void FSMDriver5::transition(CarState &cs) {
     DrivingState<FSMDriver5> *state = current_state;
 
     if(Stuck::isStuck(cs)) {
-        state = Stuck::instance();
+        ;//state = Stuck::instance();
     } else {
         float var = trackReadingsVariance(cs);
-        
+
         /* @todo change numbers to constants with meaningful names. */
-        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state==StraightLine::instance())) 
-            state = StraightLine::instance();
+        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state==StraightLine::instance()))
+            ;//state = StraightLine::instance();
         else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != Curve::instance())
          || ((var > MIN_APPROACHING_CURVE_VAR) && current_state==ApproachingCurve::instance())) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
-            state = ApproachingCurve::instance();
+            ;//state = ApproachingCurve::instance();
         else if(var > 0)
-            state = Curve::instance();
+            ;//state = Curve::instance();
         else
-            state = OutOfTrack::instance();
+            ;//state = OutOfTrack::instance();
     }
 
     if (current_state != state) change_to(state);
