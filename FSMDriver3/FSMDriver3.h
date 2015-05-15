@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER3_H
-#define FSMDRIVER3_H
+#ifndef FSMDRIVER_H
+#define FSMDRIVER_H
 
 #include "WrapperBaseDriver.h"
 #include "FSM.h"
@@ -15,7 +15,7 @@
 *   of the code. 
 */
 
-class FSMDriver3 : public WrapperBaseDriver, public DrivingFSM<FSMDriver3> {
+class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
 private:
     //! Actuators values.
     float accel, brake, steer;
@@ -30,11 +30,11 @@ public:
     //! Initialization of the desired angles for the rangefinders
     virtual void init(float *angles);
     //! Empty constructor.
-    FSMDriver3();
+    FSMDriver();
     //! Construct from parameters.
-    FSMDriver3(int, char**);
+    FSMDriver(int, char**);
     //! Empty destructor
-    virtual ~FSMDriver3(){}
+    virtual ~FSMDriver(){}
     //! Transitions between states.
     /*!  
     *   This method decides whenever the current state does not fit with
@@ -52,4 +52,4 @@ public:
     virtual CarControl wDrive(CarState cs);
 };
 
-#endif // FSMDRIVER3_H
+#endif // FSMDRIVER_H

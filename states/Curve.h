@@ -1,19 +1,19 @@
-#ifndef FSMDriver5_STATE_CURVE_H
-#define FSMDriver5_STATE_CURVE_H
+#ifndef FSMDriver_STATE_CURVE_H
+#define FSMDriver_STATE_CURVE_H
 
 #include <cmath>
 #include "FSM.h"
 #include "StraightLine.h"
 
 
-class FSMDriver5;
+class FSMDriver;
 /**Class to treat curve state where the track has a minimal curvature. Note that this state is important at the race considering oponents with equal speed the way the driver complete the curve can achieve the lead at the race.*/
-class Curve : public DrivingState<FSMDriver5> {
+class Curve : public DrivingState<FSMDriver> {
 public:
     static Curve *instance();
-    void enter(FSMDriver5 *driver);
-    void exit(FSMDriver5 *driver);
-    virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
+    void enter(FSMDriver *driver);
+    void exit(FSMDriver *driver);
+    virtual CarControl drive(FSMDriver *FSMDriver, CarState &cs);
 
     ~Curve();
 
@@ -32,4 +32,4 @@ private:
     float getSteer(CarState &cs);
 };
 
-#endif // FSMDriver5_STATE_CURVE_H
+#endif // FSMDriver_STATE_CURVE_H

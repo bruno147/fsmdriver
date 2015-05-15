@@ -9,15 +9,15 @@ Curve *Curve::instance() {
     return &instance;
 }
 
-void Curve::enter(FSMDriver5 *driver) {
+void Curve::enter(FSMDriver *driver) {
     // cout << "Enter Curve" << endl;
 }
 
-void Curve::exit(FSMDriver5 *driver) {
+void Curve::exit(FSMDriver *driver) {
     // cout << "Exit Curve" << endl;
 }
 
-CarControl Curve::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl Curve::drive(FSMDriver *FSMDriver, CarState &cs) {
 	float steer = getSteer(cs);
 	int gear = StraightLine::getGear(cs);
 	float accel  = getAccel(cs);

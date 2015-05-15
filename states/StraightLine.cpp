@@ -1,11 +1,11 @@
 #include "StraightLine.h"
 
-int START_GEAR = 1;
-int LOW_GEAR_LIMIT = 4;
+// int START_GEAR = 1;
+// int LOW_GEAR_LIMIT = 4;
 
-int LOW_RPM = 1500;
-int AVERAGE_RPM = 4000;
-int HIGH_RPM = 9500;
+// int LOW_RPM = 1500;
+// int AVERAGE_RPM = 4000;
+// int HIGH_RPM = 9500;
 
 StraightLine::StraightLine() {}
 
@@ -16,15 +16,15 @@ StraightLine *StraightLine::instance() {
     return &instance;
 }
 
-void StraightLine::enter(FSMDriver5 *driver) {
+void StraightLine::enter(FSMDriver *driver) {
     //cout << "Enter StraightLine" << endl;
 }
 
-void StraightLine::exit(FSMDriver5 *driver) {
+void StraightLine::exit(FSMDriver *driver) {
     //cout << "Exit StraightLine" << endl;
 }
 
-CarControl StraightLine::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl StraightLine::drive(FSMDriver *FSMDriver, CarState &cs) {
     const float accel = 1, brake = 0, clutch = 0;
     const int focus = 0, meta = 0;
     float steer = cs.getAngle();

@@ -17,18 +17,18 @@ Stuck *Stuck::instance() {
     return &instance;
 }
 
-void Stuck::enter(FSMDriver5 *driver, CarState &cs) {
-    //cout << "Enter Stuck" << endl;
+void Stuck::enter(FSMDriver *driver, CarState &cs) {
+    cout << "Enter Stuck" << endl;
     elapsedTicks = 0;
 
 }
 
-void Stuck::exit(FSMDriver5 *driver) {
-    // cout << "Exit Stuck" << endl;
+void Stuck::exit(FSMDriver *driver) {
+    cout << "Exit Stuck" << endl;
 }
 
 
-CarControl Stuck::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl Stuck::drive(FSMDriver *fsmdriver, CarState &cs) {
 	++elapsedTicks;
 	trackInitialPos = getInitialPos(cs);
     if(notStuckAnymore(cs.getTrackPos(), cs.getAngle()) || hasBeenStuckLongEnough()){

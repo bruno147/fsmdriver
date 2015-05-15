@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER5_H
-#define FSMDRIVER5_H
+#ifndef FSMDRIVER_H
+#define FSMDRIVER_H
 
 #include "WrapperBaseDriver.h"
 #include "FSM.h"
@@ -15,7 +15,7 @@
 *   of the code. 
 */
 
-class FSMDriver5 : public WrapperBaseDriver, public DrivingFSM<FSMDriver5> {
+class FSMDriver : public WrapperBaseDriver, public DrivingFSM<FSMDriver> {
 private:
     float accel, brake, steer; //Actuators values
     int gear;
@@ -41,9 +41,9 @@ public:
     /** Initialization of the desired angles for the rangefinders*/
     virtual void init(float *angles);
 
-    FSMDriver5();
-    FSMDriver5(int, char**);
-    virtual ~FSMDriver5(){}
+    FSMDriver();
+    FSMDriver(int, char**);
+    virtual ~FSMDriver(){}
 
     /** Transitions between states (if appropriate).*/
     void transition(CarState &);
@@ -52,4 +52,4 @@ public:
     virtual CarControl wDrive(CarState cs);
 };
 
-#endif // FSMDriver5_H
+#endif // FSMDriver_H

@@ -3,25 +3,16 @@
 
 #include <cmath>
 #include "FSM.h"
+#include "Constants.h"
 
 
-/******************************************************************************/
-extern float MAX_SKIDDING; // = 3;
-extern float NEGATIVE_ACCEL_PERCENT; // = 0.1;
-extern int VELOCITY_GEAR_4; // = 90;
-extern int VELOCITY_GEAR_3; // = 70;
-extern int VELOCITY_GEAR_2; // = 40;
-extern float MAX_RETURN_ANGLE; // = 0.7;
-extern float MIN_RETURN_ANGLE; // = 0.5;
-/******************************************************************************/
-
-class FSMDriver3;
+class FSMDriver;
 /*! \class OutOfTrack
  *  \brief OutOfTrack State Class.
  *
  *  Class to treat the state where the car is out of the track. Note that this state is important go back to the race in case of collisions and eventual driver's mislead 
  */
-class OutOfTrack : public DrivingState<FSMDriver3> {
+class OutOfTrack : public DrivingState<FSMDriver> {
 public:
     /** Create a pointer to the state to accomplish the singleton.
     */
@@ -29,16 +20,16 @@ public:
     /** Function to indicate that the drive started at OutOfTrack state. 
     * \param driver is a pointer of the object of the driver itself. 
     */
-    void enter(FSMDriver3 *driver);
+    void enter(FSMDriver *driver);
     /** Function to indicate that the drive leave the OutOfTrack state. 
     * \param driver is a pointer of the object of the driver itself. 
     */
-    void exit(FSMDriver3 *driver);
+    void exit(FSMDriver *driver);
     /** Main function at state to drive the car.
-    * \param fsmdriver3 is a pointer of the object of the driver itself,  
+    * \param fsmdriver is a pointer of the object of the driver itself,  
     * \param cs a data structure cointaining information from the car's sensors.
     */
-    virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+    virtual CarControl drive(FSMDriver *fsmdriver, CarState &cs);
     //! Empty destructor
     ~OutOfTrack();
 

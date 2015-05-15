@@ -17,15 +17,15 @@ OutOfTrack *OutOfTrack::instance() {
     return &instance;
 }
 
-void OutOfTrack::enter(FSMDriver5 *driver) {
-    //cout << "Enter OutOfTrack" << endl;
+void OutOfTrack::enter(FSMDriver *driver) {
+    cout << "Enter OutOfTrack" << endl;
 }
 
-void OutOfTrack::exit(FSMDriver5 *driver) {
-    //cout << "Exit OutOfTrack" << endl;
+void OutOfTrack::exit(FSMDriver *driver) {
+    cout << "Exit OutOfTrack" << endl;
 }
 
-CarControl OutOfTrack::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl OutOfTrack::drive(FSMDriver *fsmdriver, CarState &cs) {
     const float clutch = 0;
     const int focus = 0, meta = 0;
 
@@ -54,7 +54,8 @@ int OutOfTrack::getGear(CarState &cs) {
 
 float OutOfTrack::getSteer(CarState &cs) {
 	float angle = cs.getAngle();
-    if(cs.getTrackPos() > 0){ //aim to go back to the track with a range of angles, between MIN_RETURN_ANGLE and MAX_RETURN_ANGLE with relation to the axis of track
+    /**Aim to go back to the track with a range of angles, between MIN_RETURN_ANGLE and MAX_RETURN_ANGLE with relation to the axis of track*/
+    if(cs.getTrackPos() > 0){ 
         if(angle > MAX_RETURN_ANGLE) return 1;
         if(angle < MIN_RETURN_ANGLE) return -1;
     } else {
