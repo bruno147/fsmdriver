@@ -10,7 +10,7 @@
 #include <sys/shm.h>
 #include <sys/stat.h>
 
-class FSMDriver;
+class FSMDriver5;
 
 class Log {
 public:
@@ -21,7 +21,7 @@ public:
         return &instance;
     }
     
-    void updateLog(DrivingState<FSMDriver> *s, CarState cs) {
+    void updateLog(DrivingState<FSMDriver5> *s, CarState cs) {
         assert(s);
         damage=cs.getDamage();
 
