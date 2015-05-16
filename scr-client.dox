@@ -1,0 +1,16 @@
+/**
+ * @class BaseDriver BaseDriver.h "include/BaseDriver.h"
+ * Created by [Daniele Loiacono](http://sourceforge.net/projects/cig/) and copied here for
+ * convenience, no additional documentation is provided in this project.
+ *
+ * @class CarControl CarControl.h "include/CarControl.h"
+ * Created by [Daniele Loiacono](http://sourceforge.net/projects/cig/) and copied here for
+ * convenience, no additional documentation is provided in this project.
+ *
+ * @class CarState CarState.h "include/CarState.h"
+ * Created by [Daniele Loiacono](http://sourceforge.net/projects/cig/) and copied here for
+ * convenience, no additional documentation is provided in this project.
+ *
+ * @class WrapperBaseDriver WrapperBaseDriver.h "include/WrapperBaseDriver.h"
+ * Created by [Daniele Loiacono](http://sourceforge.net/projects/cig/) and copied here for
+ * convenience, no additional documentation is provided in this project. */
