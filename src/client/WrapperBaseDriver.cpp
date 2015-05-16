@@ -13,7 +13,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "../../include/client/WrapperBaseDriver.h"
+#include "WrapperBaseDriver.h"
 
 string 
 WrapperBaseDriver::drive(string sensors)

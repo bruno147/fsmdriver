@@ -13,7 +13,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "../../include/client/SimpleParser.h"
+#include "SimpleParser.h"
 
 bool
 SimpleParser::parse(string sensors, string tag, float &value)

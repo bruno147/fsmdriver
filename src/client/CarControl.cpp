@@ -13,7 +13,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "../../include/client/CarControl.h"
+#include "CarControl.h"
 
 // meta-command value for race restart
 int CarControl::META_RESTART=1;

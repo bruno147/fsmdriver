@@ -1,8 +1,8 @@
 #ifndef FSM_H
 #define FSM_H
 
-#include "../client/CarControl.h"
-#include "../client/CarState.h"
+#include "CarControl.h"
+#include "CarState.h"
 
 
 /*! \class DrivingState

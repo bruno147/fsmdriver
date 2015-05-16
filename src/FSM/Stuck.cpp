@@ -1,5 +1,9 @@
-#include "../../include/FSM/Stuck.h"
+#include "Stuck.h"
 
+float STUCK_SPEED = 5;
+unsigned int MIN_RACED_DISTANCE = 100;
+unsigned int MAX_STUCK_TICKS = 300;
+unsigned int MAX_SLOW_SPEED_TICKS = 50;
 
 unsigned int Stuck::slowSpeedTicks = 0;
 float Stuck::trackInitialPos = 0;
@@ -13,18 +17,18 @@ Stuck *Stuck::instance() {
     return &instance;
 }
 
-void Stuck::enter(FSMDriver *driver, CarState &cs) {
+void Stuck::enter(FSMDriver3 *driver, CarState &cs) {
     cout << "Enter Stuck" << endl;
     elapsedTicks = 0;
 
 }
 
-void Stuck::exit(FSMDriver *driver) {
+void Stuck::exit(FSMDriver3 *driver) {
     cout << "Exit Stuck" << endl;
 }
 
 
-CarControl Stuck::drive(FSMDriver *FSMDriver, CarState &cs) {
+CarControl Stuck::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
 	++elapsedTicks;
 	trackInitialPos = getInitialPos(cs);
     if(notStuckAnymore(cs.getTrackPos(), cs.getAngle()) || hasBeenStuckLongEnough()){

@@ -13,7 +13,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "../../include/client/CarState.h"
+#include "CarState.h"
 
 
 CarState::CarState(string sensors)
