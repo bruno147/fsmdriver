@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_STATE_CURVE_H
-#define FSMDRIVER_STATE_CURVE_H
+#ifndef UNB_FSMDRIVER_STATE_CURVE_H
+#define UNB_FSMDRIVER_STATE_CURVE_H
 
 #include "StraightLine.h"
 
@@ -26,4 +26,4 @@ private:
     float getSteer(CarState &cs);
 };
 
-#endif // FSMDRIVER_STATE_CURVE_H
+#endif // UNB_FSMDRIVER_STATE_CURVE_H

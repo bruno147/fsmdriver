@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_FSM_H
-#define FSMDRIVER_FSM_H
+#ifndef UNB_FSMDRIVER_FSM_H
+#define UNB_FSMDRIVER_FSM_H
 
 #include "DrivingState.h"
 
@@ -62,4 +62,4 @@ protected:
     DrivingState *current_state;
 };
 
-#endif // FSMDRIVER_FSM_H
+#endif // UNB_FSMDRIVER_FSM_H

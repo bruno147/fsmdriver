@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_FSMDRIVER_5_LOG_H
-#define FSMDRIVER_FSMDRIVER_5_LOG_H
+#ifndef UNB_FSMDRIVER_FSMDRIVER_5_LOG_H
+#define UNB_FSMDRIVER_FSMDRIVER_5_LOG_H
 
 #include <iostream>
 #include <fstream>
@@ -131,4 +131,4 @@ private:
 
 
 
-#endif // FSMDRIVER_FSMDRIVER_5_LOG_H
+#endif // UNB_FSMDRIVER_FSMDRIVER_5_LOG_H

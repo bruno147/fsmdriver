@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_STATE_STRAIGHTLINE_H
-#define FSMDRIVER_STATE_STRAIGHTLINE_H
+#ifndef UNB_FSMDRIVER_STATE_STRAIGHTLINE_H
+#define UNB_FSMDRIVER_STATE_STRAIGHTLINE_H
 
 #include "DrivingState.h"
 
@@ -37,4 +37,4 @@ private:
     static inline bool shouldIncreaseGear(int currentGear, int rpm);
 };
 
-#endif // FSMDRIVER_STATE_STRAIGHTLINE_H
+#endif // UNB_FSMDRIVER_STATE_STRAIGHTLINE_H

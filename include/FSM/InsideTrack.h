@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_STATE_INSIDE_TRACK_H
-#define FSMDRIVER_STATE_INSIDE_TRACK_H
+#ifndef UNB_FSMDRIVER_STATE_INSIDE_TRACK_H
+#define UNB_FSMDRIVER_STATE_INSIDE_TRACK_H
 
 #include "DrivingState.h"
 
@@ -71,4 +71,4 @@ private:
     float getSteer(CarState &cs);
 };
 
-#endif // FSMDRIVER_STATE_INSIDETRACK_H
+#endif // UNB_FSMDRIVER_STATE_INSIDETRACK_H

@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_STATE_OUTOFTRACK_H
-#define FSMDRIVER_STATE_OUTOFTRACK_H
+#ifndef UNB_FSMDRIVER_STATE_OUTOFTRACK_H
+#define UNB_FSMDRIVER_STATE_OUTOFTRACK_H
 
 #include <cmath>
 
@@ -55,4 +55,4 @@ private:
     float getSteer(CarState &cs);
 };
 
-#endif // FSMDRIVER_STATE_OUTOFTRACK_H
+#endif // UNB_FSMDRIVER_STATE_OUTOFTRACK_H

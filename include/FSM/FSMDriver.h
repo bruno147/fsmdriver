@@ -1,5 +1,5 @@
-#ifndef FSMDRIVER_FSMDRIVER_H
-#define FSMDRIVER_FSMDRIVER_H
+#ifndef UNB_FSMDRIVER_FSMDRIVER_H
+#define UNB_FSMDRIVER_FSMDRIVER_H
 
 #include "DrivingFSM.h"
 #include "WrapperBaseDriver.h"
@@ -22,4 +22,4 @@ protected:
     DrivingFSM fsm;
 };
 
-#endif // FSMDRIVER_FSMDRIVER_H
+#endif // UNB_FSMDRIVER_FSMDRIVER_H

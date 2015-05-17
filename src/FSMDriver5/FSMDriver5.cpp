@@ -9,10 +9,6 @@
 #include <vector>
 
 
-float STUCK_SPEED = 5;
-unsigned int MIN_RACED_DISTANCE = 100;
-unsigned int MAX_STUCK_TICKS = 300;
-unsigned int MAX_SLOW_SPEED_TICKS = 50;
 //Define constants for transition method:
 /*
 int   FSMDriver5::MAX_STRAIGHT_LINE_VAR     = 1000;
@@ -68,7 +64,7 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : accel(0),brake(0),steer(0),gear(
     STUCK_SPEED = 5;
     MIN_RACED_DISTANCE = 100;
     MAX_STUCK_TICKS = 300;
-    MAX_SLOW_SPEED_TICKS = 50;
+    STUCK_THRESHOLD_TICKS = 50;
     MAX_STEERING = 0.12;
     TARGET_POS = 0.7;
     BASE_SPEED = 80;
@@ -92,7 +88,7 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : accel(0),brake(0),steer(0),gear(
     STUCK_SPEED = binToFloat(getArgument(4, argv));
     MIN_RACED_DISTANCE = binToFloat(getArgument(5, argv));
     MAX_STUCK_TICKS = binToFloat(getArgument(6, argv));
-    MAX_SLOW_SPEED_TICKS = binToFloat(getArgument(7, argv));
+    STUCK_THRESHOLD_TICKS = binToFloat(getArgument(7, argv));
 
     MAX_STEERING = binToFloat(getArgument(8, argv));
     TARGET_POS = binToFloat(getArgument(9, argv));
