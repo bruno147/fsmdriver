@@ -1,21 +1,18 @@
 #ifndef APPROACHINGCURVE_H
 #define APPROACHINGCURVE_H
 
-#include <cmath>
-#include "FSM.h"
 #include "StraightLine.h"
 
 // extern const int INCREASE_GEAR_RPM;
 extern float MAX_STEERING, TARGET_POS, BASE_SPEED;
 
-class FSMDriver5;
 /**Class to treat State where the section of the track before a curve, to better complete a curve it require a speed depending of the curve(for example how obligue it is) */
-class ApproachingCurve : public DrivingState<FSMDriver5> {
+class ApproachingCurve : public DrivingState {
 public:
     static ApproachingCurve* instance();
-    void enter(FSMDriver5 *driver);
-    void exit(FSMDriver5 *driver);
-    virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
+    void enter(BaseDriver *driver);
+    void exit(BaseDriver *driver);
+    virtual CarControl drive(BaseDriver *driver, CarState &cs);
 
     ~ApproachingCurve();
 

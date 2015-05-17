@@ -16,15 +16,7 @@ StraightLine *StraightLine::instance() {
     return &instance;
 }
 
-void StraightLine::enter(FSMDriver5 *driver) {
-    //cout << "Enter StraightLine" << endl;
-}
-
-void StraightLine::exit(FSMDriver5 *driver) {
-    //cout << "Exit StraightLine" << endl;
-}
-
-CarControl StraightLine::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl StraightLine::drive(BaseDriver *driver, CarState &cs) {
     const float accel = 1, brake = 0, clutch = 0;
     const int focus = 0, meta = 0;
     float steer = cs.getAngle();

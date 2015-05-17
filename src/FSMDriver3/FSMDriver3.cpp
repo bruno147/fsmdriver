@@ -5,8 +5,6 @@
 
 #include <vector>
 
-
-
 /******************************************************************************/
 #define NUM_SENSORS 19
 /******************************************************************************/
@@ -16,20 +14,20 @@
 //FSMDriver Class
 
 /**
-*FSMDriver Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.  
+*FSMDriver Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 */
-FSMDriver3::FSMDriver3() : DrivingFSM<FSMDriver3>(this), accel(0),brake(0),steer(0),gear(0) {
-    change_to(InsideTrack::instance());
+FSMDriver3::FSMDriver3() : accel(0), brake(0), steer(0), gear(0) {
+    fsm.change_to(InsideTrack::instance());
 }
 /**FSMDriver Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver can be used together with Genetic Algorithm using this function.
 */
-FSMDriver3::FSMDriver3(int argc, char** argv) : DrivingFSM<FSMDriver3>(this), accel(0),brake(0),steer(0),gear(0) {
-    change_to(InsideTrack::instance());
+FSMDriver3::FSMDriver3(int argc, char** argv) : accel(0), brake(0), steer(0), gear(0) {
+    fsm.change_to(InsideTrack::instance());
 }
 
 CarControl FSMDriver3::wDrive(CarState cs) {
     transition(cs);
-    return update(cs);
+    return fsm.update(cs);
 }
 
 void FSMDriver3::onRestart() {
@@ -51,17 +49,15 @@ void FSMDriver3::init(float *angles){
 }
 /**The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
 void FSMDriver3::transition(CarState &cs) {
-    DrivingState<FSMDriver3> *state = current_state;
+    DrivingState *state = Stuck::instance();
 
-    if(Stuck::isStuck(cs)) {
-        state = Stuck::instance();
-    } else {
-        if (cs.getTrack(1) > 0) 
+    if(!((Stuck *)state)->isStuck(cs)) {
+        if (cs.getTrack(1) > 0)
             state = InsideTrack::instance();
         else
             state = OutOfTrack::instance();
     }
 
-    if (current_state != state) change_to(state);
+    fsm.change_to(state);
 }
 

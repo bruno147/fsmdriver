@@ -1,84 +1,57 @@
-#ifndef FSMDRIVER3_STATE_STUCK_H
+#ifndef FSMDRIVER_STATE_STUCK_H
 #define FSMDRIVER_STATE_STUCK_H
 
-#include <cmath>
-#include "FSM.h"
+#include "DrivingState.h"
 
-/******************************************************************************/
-extern float STUCK_SPEED; // = 5;
-extern unsigned int MIN_RACED_DISTANCE; // = 100;
-extern unsigned int MAX_STUCK_TICKS; // = 300;
-extern unsigned int MAX_SLOW_SPEED_TICKS; // =50;
-/******************************************************************************/
 
-class FSMDriver3;
-/*! \class Stuck
- * \brief Stuck State Class.
- *
- * Class to treat stuck state when the car is stop or with low speed, it usually happen at track section with high curvature.
- */
-class Stuck : public DrivingState<FSMDriver3> {
+/** @todo Should not be using global variables. FIX THIS!!!!! */
+extern float STUCK_SPEED;
+extern unsigned int MIN_RACED_DISTANCE;
+extern unsigned int MAX_STUCK_TICKS;
+extern unsigned int MAX_SLOW_SPEED_TICKS;
+
+
+/** Implements the behavior for a driver that is stuck, THIS CLASS MUST BE
+ * PROPERLY IMPLEMENTED! Singleton implementation aims to have one instance of
+ * state for possibly many users, so slowSpeedTicks, elapsedTicks, trackInitialPos
+ * cannot store information of a single user. @todo FIX THIS!!!!! */
+class Stuck : public DrivingState {
 public:
-    /** Create a pointer to the state to accomplish the singleton.
-    */
+    /** Returns a pointer to the singleton for this state. */
     static Stuck *instance();
-    static inline bool isStuck(CarState &cs) {
-	return (seemsStuck(cs) && !justStartedRace(cs));
-    }
-    /** Function to indicate that the drive started at Stuck State. 
-    * \param driver is a pointer of the object of the driver itself. 
-    */
-    void enter(FSMDriver3 *driver, CarState &cs);
-    /** Function to indicate that the drive leave the Stuck State. 
-    * \param driver is a pointer of the object of the driver itself. 
-    */
-    void exit(FSMDriver3 *driver);
-    /** Main function at state to drive the car.
-    * /param driver is a pointer of the object of the driver itself,  
-    * cs a data structure cointaining information from the car's sensors.
-    */
-    virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+
+    /** Destructor. */
     ~Stuck();
 
-private:
-    unsigned int elapsedTicks;
-    static unsigned int slowSpeedTicks;
-    static float trackInitialPos;
+    /* Inherited. */
+    void enter(BaseDriver *, CarState &);
 
+	/* Inherited. */
+    CarControl drive(BaseDriver *, CarState &);
+
+    /* Indicates whether the driver is stuck according to its perrception.
+     * @param cs Driver's perception of the environment. */
+	bool isStuck(CarState &cs);
+
+private:
+    /* Private functions (singleton pattern). */
     Stuck();
-    Stuck(Stuck const &);
-    void operator=(Stuck const&);
-    
+    Stuck(const Stuck &s);
+    void operator=(const Stuck &s);
+
+
+    unsigned int elapsedTicks;
+    unsigned int slowSpeedTicks;
+    float trackInitialPos;
+
+    bool seemsStuck(CarState &cs);
+    bool justStartedRace(CarState &cs);
+	bool onRightWay(float trackPos, float angle);
+	bool notStuckAnymore(float trackPos, float angle);
+	bool hasBeenStuckLongEnough();
 
 	float getSteer(float trackInitialPos, CarState &cs);
 	float getInitialPos(CarState &cs);
-
-	static inline bool seemsStuck(CarState &cs) {
-		cs.getSpeedX()<STUCK_SPEED?slowSpeedTicks++:slowSpeedTicks = 0;
-		if(notStuckAnymore(cs.getTrackPos(), cs.getAngle())){
-			slowSpeedTicks=0;
-		}
-		return (slowSpeedTicks>MAX_SLOW_SPEED_TICKS?1:0);
-	    //return (abs(cs.getSpeedX()) <= STUCK_SPEED);
-	}
-
-	static inline bool justStartedRace(CarState &cs) {
-	    return (cs.getDistRaced() <= MIN_RACED_DISTANCE); 
-	}
-	
-	static inline bool onRightWay(float trackPos, float angle) {
-	    return (((trackPos < 0) && (angle > -1.57) && (angle < 0)) ||
-	            ((trackPos > 0) && (angle < 1.57 ) && (angle > 0)) ||
-	            ((trackPos > 1) && (angle > 0))||
-	            ((trackPos < -1) && (angle < 0)));
-	}
-	/* @todo give this test (and the previous ones) with a meaningful name... */
-	static inline bool notStuckAnymore(float trackPos, float angle) {
-		return (onRightWay(trackPos, angle));
-	}
-	inline bool hasBeenStuckLongEnough() {
-		return (elapsedTicks >= MAX_STUCK_TICKS);
-	}
 };
 
-#endif // FSMDRIVER3_STATE_STUCK_H
+#endif // FSMDRIVER_STATE_STUCK_H

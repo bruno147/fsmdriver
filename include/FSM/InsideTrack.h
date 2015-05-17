@@ -1,8 +1,7 @@
-#ifndef FSMDRIVER_STATE_TRACK_H
-#define FSMDRIVER_STATE_TRACK_H
+#ifndef FSMDRIVER_STATE_INSIDE_TRACK_H
+#define FSMDRIVER_STATE_INSIDE_TRACK_H
 
-#include <cmath>
-#include "FSM.h"
+#include "DrivingState.h"
 
 //-----------------------------------------------------------------
 
@@ -16,32 +15,31 @@ extern float BASE_SPEED;
 extern float SPEED_FACTOR;
 //-----------------------------------------------------------------
 
-class FSMDriver3;
 /*! \class InsideTrack
  *  \brief InsideTrack State Class.
  *
  *  Class to treat the state where the car inside of the track. Most of the effort to enhance speed and surpass opponents is applied here.
  */
-class InsideTrack : public DrivingState<FSMDriver3> {
+class InsideTrack : public DrivingState {
 public:
     /** Create a pointer to the state to accomplish the singleton.
     */
     static InsideTrack *instance();
-    /** Function to indicate that the drive started at insidetrack state. 
-    * \param driver is a pointer of the object of the driver itself. 
+    /** Function to indicate that the drive started at insidetrack state.
+    * \param driver is a pointer of the object of the driver itself.
     */
-    void enter(FSMDriver3 *driver);
-    /** Function to indicate that the drive leave the insidetrack state. 
-    * \param driver is a pointer of the object of the driver itself. 
+    void enter(BaseDriver *driver);
+    /** Function to indicate that the drive leave the insidetrack state.
+    * \param driver is a pointer of the object of the driver itself.
     */
-    void exit(FSMDriver3 *driver);
+    void exit(BaseDriver *driver);
     /** Main function at state to drive the car.
-    * \param driver is a pointer of the object of the driver itself,  
+    * \param driver is a pointer of the object of the driver itself,
     * \param cs a data structure cointaining information from the car's sensors.
     */
-    virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+    virtual CarControl drive(BaseDriver *driver, CarState &cs);
     /** Auxiliar function to obtain the gear analysing the car's rpm.
-    */   
+    */
     int getGear(CarState &cs);
     //! Empty destructor
     ~InsideTrack();
@@ -62,7 +60,7 @@ private:
     inline bool shouldIncreaseGear(int currentGear, int rpm);
     float getAccel(CarState &cs);
     void setTargetSpeed(CarState &cs);
-    /** isFacingWrongWay verify if the car is driving the right path, once it is possible 
+    /** isFacingWrongWay verify if the car is driving the right path, once it is possible
     * that the car collide and turn to the opposite way.
     * /param cs a data structure cointaining information from the car's sensors.
     */

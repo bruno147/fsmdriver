@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "ApproachingCurve.h"
 
 float MAX_STEERING = 0;
@@ -11,22 +13,22 @@ ApproachingCurve *ApproachingCurve::instance() {
     return &instance;
 }
 
-void ApproachingCurve::enter(FSMDriver5 *driver) {
+void ApproachingCurve::enter(BaseDriver *driver) {
     //cout << "Enter ApproachingCurve" << endl;
     sensorsAreUpdated = false;
 }
 
-void ApproachingCurve::exit(FSMDriver5 *driver) {
+void ApproachingCurve::exit(BaseDriver *driver) {
     //cout << "Exit ApproachingCurve" << endl;
 }
 
-CarControl ApproachingCurve::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl ApproachingCurve::drive(BaseDriver *driver, CarState &cs) {
     if(!sensorsAreUpdated) /*@todo Só atualiza na 1a vez mesmo? */
         updateSensors(cs);
 
     const int focus = 0, meta = 0;
     const float clutch = 0;
-    
+
     return CarControl(getAccel(cs), getBrake(cs), getGear(cs), cs.getAngle(), clutch, focus, meta);
     //Use the line below if the behavior of adjusting the car to the curve ahead is desired (not fully functional):
     //return CarControl(getAccel(cs), getBrake(cs), getGear(cs), getSteering(cs), clutch, focus, meta);
@@ -54,7 +56,7 @@ void ApproachingCurve::updateSensors(CarState &cs) {
 
 float ApproachingCurve::getSteering(CarState &cs) {
     if(rSensor == lSensor) return 0;
-    
+
     float angle = cs.getAngle();
     //If the controller is not in a pre-defined region amongst the inside limits of the track (between 0.7 and 0.9 with the current
     //set of values, normalized), than it will be adjusted to do so
@@ -62,13 +64,13 @@ float ApproachingCurve::getSteering(CarState &cs) {
     //Previous conditions:																// 0.2 is an arbitrary margin
     //bool adjustedToCurve = (cs.getTrackPos() <= TARGET_POS);
 
-    if(!adjustedToCurve) {   
+    if(!adjustedToCurve) {
         if(approachingRightTurn())
             angle = MAX_STEERING - angle;
         else
             angle -= MAX_STEERING;
     }
-    
+
     return angle;
 }
 

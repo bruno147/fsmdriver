@@ -1,7 +1,5 @@
-#ifndef LOG_H
-#define LOG_H
-
-#include "FSM.h"
+#ifndef FSMDRIVER_FSMDRIVER_5_LOG_H
+#define FSMDRIVER_FSMDRIVER_5_LOG_H
 
 #include <iostream>
 #include <fstream>
@@ -9,6 +7,8 @@
 /**Libraries used for shared memory between programms(Genetic Algorithm and the Driver)*/
 #include <sys/shm.h>
 #include <sys/stat.h>
+
+#include "CarState.h"
 
 class FSMDriver5;
 
@@ -20,13 +20,12 @@ public:
         static Log instance;
         return &instance;
     }
-    
-    void updateLog(DrivingState<FSMDriver5> *s, CarState cs) {
-        assert(s);
+
+    void updateLog(CarState cs) {
         damage=cs.getDamage();
 
         if(distRaced<cs.getDistFromStart()) distRaced=cs.getDistFromStart();
-        
+
         if(curveComplete(cs)){
             totalTime+=cs.getLastLapTime();
             totalDistRaced+=distRaced;
@@ -46,7 +45,7 @@ public:
             myfile << " Damage " << damage << "; ";
 
             myfile.close();
-            
+
             lapCounter++;
         }
 
@@ -88,7 +87,7 @@ public:
         cout << "damage: " << damage << endl;
         cout << "totalDistRaced: " << totalDistRaced << endl;
         cout << "distRaced: " << distRaced << endl;
-        
+
         //Assigned shared memory
         /*if(lapCounter==3){
             sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced+distRaced);
@@ -132,4 +131,4 @@ private:
 
 
 
-#endif // LOG_H
+#endif // FSMDRIVER_FSMDRIVER_5_LOG_H

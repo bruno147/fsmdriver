@@ -1,28 +1,18 @@
-#ifndef FSMDRIVER3_H
-#define FSMDRIVER3_H
+#ifndef FSMDRIVER_FSMDRIVER_3_H
+#define FSMDRIVER_FSMDRIVER_3_H
 
-#include "WrapperBaseDriver.h"
-#include "FSM.h"
+#include "FSMDriver.h"
 
-/*! \class FSMDriver
-*   \brief The driver itself.
-*   
-*   This class defines the driver based on a FSM.
-*
-*   Please note that this documentation provide information about the espefic files of the newFSM driver,
-*   the Loiacono's files(at src and include folder) have not been documented by us, for that reason the 
-*   Doxygen does not generate these files documentation, more information can be found at the own comments
-*   of the code. 
-*/
-
-class FSMDriver3 : public WrapperBaseDriver, public DrivingFSM<FSMDriver3> {
+/** Defines a controller that uses a Finite State Machine with 3 states do model
+ * its behavior. */
+class FSMDriver3 : public FSMDriver {
 private:
     //! Actuators values.
     float accel, brake, steer;
     int gear;
 
 public:
-    //! Called when the driver finishes the race. 
+    //! Called when the driver finishes the race.
     virtual void onShutdown();
     //! Called when TORCS asks a race restart.
     virtual void onRestart();
@@ -36,9 +26,9 @@ public:
     //! Empty destructor
     virtual ~FSMDriver3(){}
     //! Transitions between states.
-    /*!  
+    /*!
     *   This method decides whenever the current state does not fit with
-    *   the car status and needs to be changed.The transition choose the most fitted state at the moment of the race. 
+    *   the car status and needs to be changed.The transition choose the most fitted state at the moment of the race.
     *	Note that the transition move to each state with only one pointer to each of than, what is called singleton.
     *   \param cs a data structure cointaining information from the car's sensors.
     */
@@ -52,4 +42,4 @@ public:
     virtual CarControl wDrive(CarState cs);
 };
 
-#endif // FSMDRIVER3_H
+#endif // FSMDRIVER_FSMDRIVER_3_H

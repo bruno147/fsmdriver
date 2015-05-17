@@ -1,3 +1,6 @@
+// #define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "InsideTrack.h"
 
 /* Also defined in other files,causing conflicts
@@ -18,15 +21,15 @@ InsideTrack *InsideTrack::instance() {
     return &instance;
 }
 
-void InsideTrack::enter(FSMDriver3 *driver) {
+void InsideTrack::enter(BaseDriver *driver) {
     cout << "Enter InsideTrack" << endl;
 }
 
-void InsideTrack::exit(FSMDriver3 *driver) {
+void InsideTrack::exit(BaseDriver *driver) {
     cout << "Exit InsideTrack" << endl;
 }
 
-CarControl InsideTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
+CarControl InsideTrack::drive(BaseDriver *driver, CarState &cs) {
 	float steer = getSteer(cs);
     setTargetSpeed(cs);
 	int gear = getGear(cs);

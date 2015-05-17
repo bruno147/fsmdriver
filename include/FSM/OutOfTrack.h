@@ -2,7 +2,8 @@
 #define FSMDRIVER_STATE_OUTOFTRACK_H
 
 #include <cmath>
-#include "FSM.h"
+
+#include "DrivingState.h"
 
 
 /******************************************************************************/
@@ -15,30 +16,29 @@ extern float MAX_RETURN_ANGLE; // = 0.7;
 extern float MIN_RETURN_ANGLE; // = 0.5;
 /******************************************************************************/
 
-class FSMDriver3;
 /*! \class OutOfTrack
  *  \brief OutOfTrack State Class.
  *
- *  Class to treat the state where the car is out of the track. Note that this state is important go back to the race in case of collisions and eventual driver's mislead 
+ *  Class to treat the state where the car is out of the track. Note that this state is important go back to the race in case of collisions and eventual driver's mislead
  */
-class OutOfTrack : public DrivingState<FSMDriver3> {
+class OutOfTrack : public DrivingState {
 public:
     /** Create a pointer to the state to accomplish the singleton.
     */
     static OutOfTrack *instance();
-    /** Function to indicate that the drive started at OutOfTrack state. 
-    * \param driver is a pointer of the object of the driver itself. 
+    /** Function to indicate that the drive started at OutOfTrack state.
+    * \param driver is a pointer of the object of the driver itself.
     */
-    void enter(FSMDriver3 *driver);
-    /** Function to indicate that the drive leave the OutOfTrack state. 
-    * \param driver is a pointer of the object of the driver itself. 
+    void enter(BaseDriver *driver);
+    /** Function to indicate that the drive leave the OutOfTrack state.
+    * \param driver is a pointer of the object of the driver itself.
     */
-    void exit(FSMDriver3 *driver);
+    void exit(BaseDriver *driver);
     /** Main function at state to drive the car.
-    * \param fsmdriver3 is a pointer of the object of the driver itself,  
+    * \param fsmdriver3 is a pointer of the object of the driver itself,
     * \param cs a data structure cointaining information from the car's sensors.
     */
-    virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+    virtual CarControl drive(BaseDriver *fsmdriver3, CarState &cs);
     //! Empty destructor
     ~OutOfTrack();
 

@@ -8,6 +8,11 @@
 
 #include <vector>
 
+
+float STUCK_SPEED = 5;
+unsigned int MIN_RACED_DISTANCE = 100;
+unsigned int MAX_STUCK_TICKS = 300;
+unsigned int MAX_SLOW_SPEED_TICKS = 50;
 //Define constants for transition method:
 /*
 int   FSMDriver5::MAX_STRAIGHT_LINE_VAR     = 1000;
@@ -48,14 +53,13 @@ float trackReadingsVariance(CarState &cs) {
 /**
 *FSMDriver5 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 */
-FSMDriver5::FSMDriver5() : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer(0),gear(0) {
-    change_to(StraightLine::instance());
+FSMDriver5::FSMDriver5() : accel(0),brake(0),steer(0),gear(0) {
+    fsm.change_to(StraightLine::instance());
 }
 /**FSMDriver5 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver5 can be used together with Genetic Algorithm using this function.
 */
-FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer(0),gear(0) {
-    change_to(StraightLine::instance());
-
+FSMDriver5::FSMDriver5(int argc, char** argv) : accel(0),brake(0),steer(0),gear(0) {
+    fsm.change_to(StraightLine::instance());
 
     LOW_GEAR_LIMIT = 4;
     LOW_RPM = 1500;
@@ -113,8 +117,8 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this), ac
 }
 CarControl FSMDriver5::wDrive(CarState cs) {
     transition(cs);
-    Log::instance()->updateLog(current_state, cs);
-    return update(cs);
+    Log::instance()->updateLog(cs);
+    return fsm.update(cs);
 }
 void FSMDriver5::onRestart() {
     cout << "Restarting the race!" << endl;
@@ -132,26 +136,24 @@ void FSMDriver5::init(float *angles){
 }
 /**The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
 void FSMDriver5::transition(CarState &cs) {
-    DrivingState<FSMDriver5> *state = current_state;
+    DrivingState *state = Stuck::instance();
 
-    if(Stuck::isStuck(cs)) {
-        ;//state = Stuck::instance();
-    } else {
+    if(!((Stuck *)state)->isStuck(cs)) {
         float var = trackReadingsVariance(cs);
 
         /* @todo change numbers to constants with meaningful names. */
-        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state==StraightLine::instance()))
-            ;//state = StraightLine::instance();
-        else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != Curve::instance())
-         || ((var > MIN_APPROACHING_CURVE_VAR) && current_state==ApproachingCurve::instance())) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
-            ;//state = ApproachingCurve::instance();
+        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && fsm.isCurrentState(StraightLine::instance())))
+            state = StraightLine::instance();
+        else if ((var > MAX_APPROACHING_CURVE_VAR && !fsm.isCurrentState(Curve::instance()))
+         || ((var > MIN_APPROACHING_CURVE_VAR) && fsm.isCurrentState(ApproachingCurve::instance()))) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
+            state = ApproachingCurve::instance();
         else if(var > 0)
-            ;//state = Curve::instance();
+            state = Curve::instance();
         else
-            ;//state = OutOfTrack::instance();
+            state = OutOfTrack::instance();
     }
 
-    if (current_state != state) change_to(state);
+    fsm.change_to(state);
 }
 /**This function is used to turn the string of bits in a float representation of the parameters.*/
 float FSMDriver5::binToFloat (string bits) {

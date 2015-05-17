@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Curve.h"
 
 Curve::Curve() : currentGear(START_GEAR) {}
@@ -9,15 +11,7 @@ Curve *Curve::instance() {
     return &instance;
 }
 
-void Curve::enter(FSMDriver5 *driver) {
-    // cout << "Enter Curve" << endl;
-}
-
-void Curve::exit(FSMDriver5 *driver) {
-    // cout << "Exit Curve" << endl;
-}
-
-CarControl Curve::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl Curve::drive(BaseDriver *driver, CarState &cs) {
 	float steer = getSteer(cs);
 	int gear = StraightLine::getGear(cs);
 	float accel  = getAccel(cs);
