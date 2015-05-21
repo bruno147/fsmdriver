@@ -5,6 +5,8 @@
 
 #include "FSMDriver.h"
 
+extern float BASE_SPEED;
+
 /** Defines a controller that uses a Finite State Machine with 5 states do model
  * its behavior. */
 class FSMDriver5 : public FSMDriver {

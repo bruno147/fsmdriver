@@ -5,6 +5,12 @@
 float MAX_STEERING = 0;
 float TARGET_POS = 0;
 float BASE_SPEED = 0;
+//
+//
+/******************************************************************************
+ * Helper functions.                                                          *
+ ******************************************************************************/
+
 
 ApproachingCurve::ApproachingCurve() {}
 

@@ -15,9 +15,9 @@ unsigned int MAX_STUCK_TICKS = 300;
 unsigned int STUCK_THRESHOLD_TICKS = 50;
 
 
-/*******************************************************************************
- * Helper functions.
- *******************************************************************************/
+/******************************************************************************
+ * Helper functions.                                                          *
+ ******************************************************************************/
 inline
 bool raceJustStarted(CarState &cs) {
     return (cs.getDistRaced() <= MIN_RACED_DISTANCE);
@@ -41,7 +41,7 @@ inline
 bool seemsStuck(unsigned int ticksElapsedWhileStuck) {
     return (ticksElapsedWhileStuck > STUCK_THRESHOLD_TICKS);
 }
-/*******************************************************************************/
+/******************************************************************************/
 
 
 Stuck::Stuck() : elapsedTicks(0),

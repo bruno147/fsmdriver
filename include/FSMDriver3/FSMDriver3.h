@@ -1,3 +1,11 @@
+/**  @file: FSMDriver3.h
+ * @author: Guilherme N. Ramos (gnramos@unb.br)
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version. */
+
 #ifndef UNB_FSMDRIVER_FSMDRIVER_3_H
 #define UNB_FSMDRIVER_FSMDRIVER_3_H
 
@@ -6,40 +14,31 @@
 /** Defines a controller that uses a Finite State Machine with 3 states do model
  * its behavior. */
 class FSMDriver3 : public FSMDriver {
-private:
-    //! Actuators values.
-    float accel, brake, steer;
-    int gear;
-
 public:
-    //! Called when the driver finishes the race.
-    virtual void onShutdown();
-    //! Called when TORCS asks a race restart.
-    virtual void onRestart();
-
-    //! Initialization of the desired angles for the rangefinders
-    virtual void init(float *angles);
-    //! Empty constructor.
+    /** Constructor. */
     FSMDriver3();
-    //! Construct from parameters.
-    FSMDriver3(int, char**);
-    //! Empty destructor
-    virtual ~FSMDriver3(){}
-    //! Transitions between states.
-    /*!
-    *   This method decides whenever the current state does not fit with
-    *   the car status and needs to be changed.The transition choose the most fitted state at the moment of the race.
-    *	Note that the transition move to each state with only one pointer to each of than, what is called singleton.
-    *   \param cs a data structure cointaining information from the car's sensors.
-    */
 
+    /** Constructor.
+     * @param argc *FSMDriver Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver can be used together with Genetic Algorithm using this function.*/
+    // FSMDriver3(int argc, char** argv);
+
+    /** Destructor */
+    ~FSMDriver3();
+
+    /* Inherited. */
+    void onShutdown();
+
+    /* Inherited. */
+    void onRestart();
+
+    /* Inherited */
+    void init(float *);
+
+    /* Inherited */
     void transition(CarState &cs);
 
-    //! Main driving function.
-    /*! \param cs a data structure cointaining information from the car's sensors.
-    *   \return The data structure cointaining values for the car's actuators.
-    */
-    virtual CarControl wDrive(CarState cs);
+    /* Inherited */
+    CarControl wDrive(CarState cs);
 };
 
 #endif // UNB_FSMDRIVER_FSMDRIVER_3_H

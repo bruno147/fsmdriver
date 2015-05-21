@@ -1,74 +1,70 @@
+/**  @file: InsideTrack.h
+ * @author: Guilherme N. Ramos (gnramos@unb.br)
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version. */
+
 #ifndef UNB_FSMDRIVER_STATE_INSIDE_TRACK_H
 #define UNB_FSMDRIVER_STATE_INSIDE_TRACK_H
 
 #include "DrivingState.h"
 
-//-----------------------------------------------------------------
-
+/** @todo Should not be using global variables. FIX THIS!!!!! */
 extern int START_GEAR;
 extern int LOW_GEAR_LIMIT;
 extern int LOW_RPM;
 extern int AVERAGE_RPM;
 extern int HIGH_RPM;
-extern int currentGear;
+// extern int currentGear;
 extern float BASE_SPEED;
 extern float SPEED_FACTOR;
-//-----------------------------------------------------------------
 
-/*! \class InsideTrack
- *  \brief InsideTrack State Class.
- *
- *  Class to treat the state where the car inside of the track. Most of the effort to enhance speed and surpass opponents is applied here.
- */
+
+/** Implements the behavior for a driver that is inside the track limits, THIS CLASS MUST BE
+ * PROPERLY IMPLEMENTED! Singleton implementation aims to have one instance of
+ * state for possibly many users. @todo FIX THIS!!!!! */
 class InsideTrack : public DrivingState {
 public:
-    /** Create a pointer to the state to accomplish the singleton.
-    */
+    /** Returns a pointer to the singleton for this state. */
     static InsideTrack *instance();
-    /** Function to indicate that the drive started at insidetrack state.
-    * \param driver is a pointer of the object of the driver itself.
-    */
-    void enter(BaseDriver *driver);
-    /** Function to indicate that the drive leave the insidetrack state.
-    * \param driver is a pointer of the object of the driver itself.
-    */
-    void exit(BaseDriver *driver);
-    /** Main function at state to drive the car.
-    * \param driver is a pointer of the object of the driver itself,
-    * \param cs a data structure cointaining information from the car's sensors.
-    */
-    virtual CarControl drive(BaseDriver *driver, CarState &cs);
-    /** Auxiliar function to obtain the gear analysing the car's rpm.
-    */
-    int getGear(CarState &cs);
-    //! Empty destructor
+
+    /** Destructor. */
     ~InsideTrack();
 
+    /* Inherited. */
+    CarControl drive(BaseDriver *, CarState &);
+
 private:
+    /* Private functions (singleton pattern). */
     InsideTrack();
     InsideTrack(InsideTrack const &);
     void operator=(InsideTrack const&);
+
     int currentGear;
     float distance, targetSpeed;
 
-    bool shouldDecreaseGear(int currentGear, int rpm);
-    inline bool runningOnLow(int rpm);
-    inline bool runningUnderAverage(int rpm);
-    inline bool runningOnHigh(int rpm);
-    inline bool isLowGear(int gear);
-    inline bool isHighGear(int gear);
-    inline bool shouldIncreaseGear(int currentGear, int rpm);
+
+    /** Defines the acceleration according to its perception.
+     * @param cs Driver's perception of the environment. */
     float getAccel(CarState &cs);
-    void setTargetSpeed(CarState &cs);
-    /** isFacingWrongWay verify if the car is driving the right path, once it is possible
-    * that the car collide and turn to the opposite way.
-    * /param cs a data structure cointaining information from the car's sensors.
-    */
-    bool isFacingWrongWay(CarState &cs);
+
+    /** Defines the breaking according to its perception.
+     * @param cs Driver's perception of the environment. */
     float getBrake(CarState cs);
+
+    /** Defines the gear according to its perception.
+     * @param cs Driver's perception of the environment. */
+    int getGear(CarState &cs);
+
+    /** Defines the steering according to its perception.
+     * @param cs Driver's perception of the environment. */
+    float getSteer(CarState &cs);
+
+    void setTargetSpeed(CarState &cs);
     float findFarthestDirection(CarState &cs);
     float normalizeSteer(float angle);
-    float getSteer(CarState &cs);
 };
 
 #endif // UNB_FSMDRIVER_STATE_INSIDETRACK_H

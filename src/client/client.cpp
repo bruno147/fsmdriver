@@ -1,8 +1,8 @@
 /***************************************************************************
- 
+
     file                 : client.cpp
     copyright            : (C) 2007 Daniele Loiacono
- 
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     char buf[UDP_MSGLEN];
 
 
-#ifdef WIN32 
+#ifdef WIN32
      /* WinSock Startup */
 
      WSADATA wsaData={0};
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
 
     cout << "ID: "   << id     << endl;
 
-    cout << "MAX_STEPS: " << maxSteps << endl; 
+    cout << "MAX_STEPS: " << maxSteps << endl;
 
     cout << "MAX_EPISODES: " << maxEpisodes << endl;
 
@@ -155,8 +155,8 @@ int main(int argc, char *argv[])
            hostInfo->h_addr_list[0], hostInfo->h_length);
     serverAddress.sin_port = htons(serverPort);
 
-//    tDriver d;
-    tDriver d(argc,argv);
+    tDriver d;
+    // tDriver d(argc,argv);
     strcpy(d.trackName,trackName);
     d.stage = stage;
 
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
     {
         /***********************************************************************************
         ************************* UDP client identification ********************************
-        ***********************************************************************************/
+        ************************************************************************************/
         do
         {
         	// Initialize the angles of rangefinders
@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 
         }  while(1);
 
-	unsigned long currentStep=0; 
+	unsigned long currentStep=0;
 
         while(1)
         {
