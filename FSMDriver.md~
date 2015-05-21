@@ -32,11 +32,11 @@ Given that driver is outside a distance from the center of the track, that state
 
 ### StraightLine ###
 
-State to tracks not obliquous, the controler can drive at maximum speed. It is a state used at 5 states controller.
+It is a state used at 5 states controller.
 
 ### Stuck ###
 
-State used when the car speed is too low, actuators such as steer, accel, gear much be set at values to take it out of this condition.
+It is a state used at 5 states controller.
 
 Transitions
 -----------
