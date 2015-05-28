@@ -4,18 +4,6 @@
 #include <cmath>
 #include "FSM.h"
 
-//-----------------------------------------------------------------
-
-extern int START_GEAR;
-extern int LOW_GEAR_LIMIT;
-extern int LOW_RPM;
-extern int AVERAGE_RPM;
-extern int HIGH_RPM;
-extern int currentGear;
-extern float BASE_SPEED;
-extern float SPEED_FACTOR;
-//-----------------------------------------------------------------
-
 class FSMDriver3;
 /*! \class InsideTrack
  *  \brief InsideTrack State Class.
@@ -24,17 +12,22 @@ class FSMDriver3;
  */
 class InsideTrack : public DrivingState<FSMDriver3> {
 public:
+    /* Default Constructor
+     * 
+     * \param START_GEAR
+     * \param LOW_GEAR_LIMIT
+     * \param LOW_RPM
+     * \param AVERAGE_RPM
+     * \param HIGH_RPM
+     * \param BASE_SPEED
+     * \param SPEED_FACTOR
+     */
+    InsideTrack(int, int, int, int, int, float, float);
+    InsideTrack(InsideTrack const &);
+    void operator=(InsideTrack const&);
     /** Create a pointer to the state to accomplish the singleton.
     */
     static InsideTrack *instance();
-    /** Function to indicate that the drive started at insidetrack state. 
-    * \param driver is a pointer of the object of the driver itself. 
-    */
-    void enter(FSMDriver3 *driver);
-    /** Function to indicate that the drive leave the insidetrack state. 
-    * \param driver is a pointer of the object of the driver itself. 
-    */
-    void exit(FSMDriver3 *driver);
     /** Main function at state to drive the car.
     * \param driver is a pointer of the object of the driver itself,  
     * \param cs a data structure cointaining information from the car's sensors.
@@ -43,23 +36,41 @@ public:
     /** Auxiliar function to obtain the gear analysing the car's rpm.
     */   
     int getGear(CarState &cs);
+    /** Auxiliar function to set class parameters
+     * 
+     * \param START_GEAR
+     * \param LOW_GEAR_LIMIT
+     * \param LOW_RPM
+     * \param AVERAGE_RPM
+     * \param HIGH_RPM
+     * \param BASE_SPEED
+     * \param SPEED_FACTOR
+     */
+    void setParameters(int, int, int, int, int, float, float);
     //! Empty destructor
     ~InsideTrack();
 
 private:
-    InsideTrack();
-    InsideTrack(InsideTrack const &);
-    void operator=(InsideTrack const&);
+    //! Parameters
+    int START_GEAR;
+    int LOW_GEAR_LIMIT;
+    int LOW_RPM;
+    int AVERAGE_RPM;
+    int HIGH_RPM;
+    float BASE_SPEED;
+    float SPEED_FACTOR;
+
+    
     int currentGear;
     float distance, targetSpeed;
 
     bool shouldDecreaseGear(int currentGear, int rpm);
-    inline bool runningOnLow(int rpm);
-    inline bool runningUnderAverage(int rpm);
-    inline bool runningOnHigh(int rpm);
-    inline bool isLowGear(int gear);
-    inline bool isHighGear(int gear);
-    inline bool shouldIncreaseGear(int currentGear, int rpm);
+    bool runningOnLow(int rpm);
+    bool runningUnderAverage(int rpm);
+    bool runningOnHigh(int rpm);
+    bool isLowGear(int gear);
+    bool isHighGear(int gear);
+    bool shouldIncreaseGear(int currentGear, int rpm);
     float getAccel(CarState &cs);
     void setTargetSpeed(CarState &cs);
     /** isFacingWrongWay verify if the car is driving the right path, once it is possible 

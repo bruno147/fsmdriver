@@ -4,17 +4,6 @@
 #include <cmath>
 #include "FSM.h"
 
-
-/******************************************************************************/
-extern float MAX_SKIDDING; // = 3;
-extern float NEGATIVE_ACCEL_PERCENT; // = 0.1;
-extern int VELOCITY_GEAR_4; // = 90;
-extern int VELOCITY_GEAR_3; // = 70;
-extern int VELOCITY_GEAR_2; // = 40;
-extern float MAX_RETURN_ANGLE; // = 0.7;
-extern float MIN_RETURN_ANGLE; // = 0.5;
-/******************************************************************************/
-
 class FSMDriver3;
 /*! \class OutOfTrack
  *  \brief OutOfTrack State Class.
@@ -39,10 +28,30 @@ public:
     * \param cs a data structure cointaining information from the car's sensors.
     */
     virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+    /** Auxiliar function to set class parameters
+     * 
+     * \param MAX_SKIDDING
+     * \param NEGATIVE_ACCEL_PERCENT
+     * \param VELOCITY_GEAR_4
+     * \param VELOCITY_GEAR_3
+     * \param VELOCITY_GEAR_2
+     * \param MAX_RETURN_ANGLE
+     * \param MIN_RETURN_ANGLE
+     */
+    void setParameters(float, float, int, int, int, float, float);
     //! Empty destructor
     ~OutOfTrack();
 
 private:
+    //! Parameters
+    float MAX_SKIDDING;
+    float NEGATIVE_ACCEL_PERCENT;
+    int VELOCITY_GEAR_4;
+    int VELOCITY_GEAR_3;
+    int VELOCITY_GEAR_2;
+    float MAX_RETURN_ANGLE;
+    float MIN_RETURN_ANGLE;
+
     //! Empty constructor.
     OutOfTrack();
     //! Construct from parameters.

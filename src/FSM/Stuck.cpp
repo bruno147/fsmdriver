@@ -1,9 +1,9 @@
 #include "Stuck.h"
 
-float STUCK_SPEED = 5;
-unsigned int MIN_RACED_DISTANCE = 100;
-unsigned int MAX_STUCK_TICKS = 300;
-unsigned int MAX_SLOW_SPEED_TICKS = 50;
+float Stuck::STUCK_SPEED = 5;
+unsigned int Stuck::MIN_RACED_DISTANCE = 100;
+unsigned int Stuck::MAX_STUCK_TICKS = 300;
+unsigned int Stuck::MAX_SLOW_SPEED_TICKS = 50;
 
 unsigned int Stuck::slowSpeedTicks = 0;
 float Stuck::trackInitialPos = 0;

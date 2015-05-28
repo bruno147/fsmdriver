@@ -1,7 +1,12 @@
 #ifndef FSMDRIVER3_H
 #define FSMDRIVER3_H
 
+#include <vector>
+
 #include "WrapperBaseDriver.h"
+#include "InsideTrack.h"
+#include "OutOfTrack.h"
+#include "Stuck.h"
 #include "FSM.h"
 
 /*! \class FSMDriver3
@@ -21,6 +26,11 @@ private:
     float accel, brake, steer;
     int gear;
 
+    //! States.
+    InsideTrack* insideTrack;
+    OutOfTrack* outOfTrack;
+    Stuck* stuck;
+
 public:
     //! Called when the driver finishes the race. 
     virtual void onShutdown();
@@ -34,7 +44,7 @@ public:
     //! Construct from parameters.
     FSMDriver3(int, char**);
     //! Empty destructor
-    virtual ~FSMDriver3(){}
+    virtual ~FSMDriver3();
     //! Transitions between states.
     /*!  
     *   This method decides whenever the current state does not fit with
@@ -42,7 +52,6 @@ public:
     *	Note that the transition move to each state with only one pointer to each of than, what is called singleton.
     *   \param cs a data structure cointaining information from the car's sensors.
     */
-
     void transition(CarState &cs);
 
     //! Main driving function.

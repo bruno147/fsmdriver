@@ -1,30 +1,19 @@
 #include "InsideTrack.h"
 
-/* Also defined in other files,causing conflicts
-int START_GEAR = 1;
-int LOW_GEAR_LIMIT = 4;
-int LOW_RPM = 1500;
-int AVERAGE_RPM = 4000;
-int HIGH_RPM = 9500;
-float BASE_SPEED = 83; */
 float SPEED_FACTOR = 1.4;
 
-InsideTrack::InsideTrack() : currentGear(START_GEAR) {}
+InsideTrack::InsideTrack(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm, float _bs, float _sf) {
+    START_GEAR = _sg;
+    LOW_GEAR_LIMIT = _lgl;
+    LOW_RPM = _lrpm;
+    AVERAGE_RPM = _arpm;
+    HIGH_RPM = _hrpm;
+    BASE_SPEED = _bs;
+    SPEED_FACTOR = _sf;
+    currentGear = START_GEAR;
+}
 
 InsideTrack::InsideTrack(InsideTrack const &) {}
-
-InsideTrack *InsideTrack::instance() {
-    static InsideTrack instance;
-    return &instance;
-}
-
-void InsideTrack::enter(FSMDriver3 *driver) {
-    cout << "Enter InsideTrack" << endl;
-}
-
-void InsideTrack::exit(FSMDriver3 *driver) {
-    cout << "Exit InsideTrack" << endl;
-}
 
 CarControl InsideTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
 	float steer = getSteer(cs);
@@ -33,7 +22,7 @@ CarControl InsideTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
 	float accel  = getAccel(cs);
     float brake = getBrake(cs);
 	float clutch = 0;
-    cout << "speed: " << this->targetSpeed << endl;
+    // cout << "speed: " << this->targetSpeed << endl;
 	return CarControl(accel, brake, gear, steer, clutch);
 }
 

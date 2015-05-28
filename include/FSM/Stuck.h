@@ -4,12 +4,6 @@
 #include <cmath>
 #include "FSM.h"
 
-/******************************************************************************/
-extern float STUCK_SPEED; // = 5;
-extern unsigned int MIN_RACED_DISTANCE; // = 100;
-extern unsigned int MAX_STUCK_TICKS; // = 300;
-extern unsigned int MAX_SLOW_SPEED_TICKS; // =50;
-/******************************************************************************/
 
 class FSMDriver3;
 /*! \class Stuck
@@ -23,7 +17,7 @@ public:
     */
     static Stuck *instance();
     static inline bool isStuck(CarState &cs) {
-	return (seemsStuck(cs) && !justStartedRace(cs));
+    return (seemsStuck(cs) && !justStartedRace(cs));
     }
     /** Function to indicate that the drive started at Stuck State. 
     * \param driver is a pointer of the object of the driver itself. 
@@ -38,9 +32,23 @@ public:
     * cs a data structure cointaining information from the car's sensors.
     */
     virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+    /** Auxiliar function to set class parameters
+     * 
+     * \param STUCK_SPEED
+     * \param MIN_RACED_DISTANCE
+     * \param MAX_STUCK_TICKS
+     * \param MAX_SLOW_SPEED_TICKS
+     */
+    void setParameters(float, int, int, int);
     ~Stuck();
 
 private:
+    //! Parameters
+    static float STUCK_SPEED;
+    static unsigned int MIN_RACED_DISTANCE;
+    static unsigned int MAX_STUCK_TICKS;
+    static unsigned int MAX_SLOW_SPEED_TICKS;
+
     unsigned int elapsedTicks;
     static unsigned int slowSpeedTicks;
     static float trackInitialPos;

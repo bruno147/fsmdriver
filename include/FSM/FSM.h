@@ -47,9 +47,9 @@ public:
 	void change_to(DrivingState<Driver> *s) {
 		assert(s);
 		previous_state = current_state;
-		if(current_state) current_state->exit(owner);
+		// if(current_state) current_state->exit(owner);
 		current_state = s;
-		current_state->enter(owner);
+		// current_state->enter(owner);
 	}
 	//! It allows the FSM to return to the previous state.
 	void revert_state() {
