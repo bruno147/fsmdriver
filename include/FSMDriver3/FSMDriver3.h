@@ -22,10 +22,6 @@
 
 class FSMDriver3 : public WrapperBaseDriver, public DrivingFSM<FSMDriver3> {
 private:
-    //! Actuators values.
-    float accel, brake, steer;
-    int gear;
-
     //! States.
     InsideTrack* insideTrack;
     OutOfTrack* outOfTrack;

@@ -12,7 +12,7 @@ class FSMDriver3;
  */
 class InsideTrack : public DrivingState<FSMDriver3> {
 public:
-    /* Default Constructor
+    /* Constructor
      * 
      * \param START_GEAR
      * \param LOW_GEAR_LIMIT
@@ -23,6 +23,7 @@ public:
      * \param SPEED_FACTOR
      */
     InsideTrack(int, int, int, int, int, float, float);
+    InsideTrack();
     InsideTrack(InsideTrack const &);
     void operator=(InsideTrack const&);
     /** Create a pointer to the state to accomplish the singleton.

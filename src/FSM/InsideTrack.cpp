@@ -1,6 +1,6 @@
 #include "InsideTrack.h"
 
-float SPEED_FACTOR = 1.4;
+// float SPEED_FACTOR = 1.4;
 
 InsideTrack::InsideTrack(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm, float _bs, float _sf) {
     START_GEAR = _sg;
@@ -10,6 +10,16 @@ InsideTrack::InsideTrack(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm, flo
     HIGH_RPM = _hrpm;
     BASE_SPEED = _bs;
     SPEED_FACTOR = _sf;
+    currentGear = START_GEAR;
+}
+InsideTrack::InsideTrack() {
+    START_GEAR = 1;
+    LOW_GEAR_LIMIT = 4;
+    LOW_RPM = 1500;
+    AVERAGE_RPM = 4000;
+    HIGH_RPM = 9000;
+    BASE_SPEED = 83;
+    SPEED_FACTOR = 1.4;
     currentGear = START_GEAR;
 }
 

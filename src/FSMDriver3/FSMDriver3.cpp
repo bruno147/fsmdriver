@@ -7,6 +7,10 @@
 #define NUM_SENSORS 19
 /******************************************************************************/
 
+int signum(float n) {
+    if (n < 0) return -1;
+    return 1;
+}
 
 //-------------------------------------------------------------------------------------------------------------------
 //FSMDriver3 Class
@@ -14,7 +18,7 @@
 /**
 *FSMDriver3 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.  
 */
-FSMDriver3::FSMDriver3() : DrivingFSM<FSMDriver3>(this), accel(0),brake(0),steer(0),gear(0) {
+FSMDriver3::FSMDriver3() : DrivingFSM<FSMDriver3>(this) {
     insideTrack = new InsideTrack(1, 4, 1500, 4000, 9500, 83, 1.4);
     // outOfTrack = new OutOfTrack();
     // stuck = new Stuck();
@@ -22,8 +26,8 @@ FSMDriver3::FSMDriver3() : DrivingFSM<FSMDriver3>(this), accel(0),brake(0),steer
 }
 /**FSMDriver3 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver3 can be used together with Genetic Algorithm using this function.
 */
-FSMDriver3::FSMDriver3(int argc, char** argv) : DrivingFSM<FSMDriver3>(this), accel(0),brake(0),steer(0),gear(0) {
-    insideTrack = new InsideTrack(1, 4, 1500, 4000, 9500, 83, 1.4);
+FSMDriver3::FSMDriver3(int argc, char** argv) : DrivingFSM<FSMDriver3>(this) {
+    insideTrack = new InsideTrack();
     change_to(insideTrack);
 }
 
@@ -38,11 +42,6 @@ void FSMDriver3::onRestart() {
 
 void FSMDriver3::onShutdown() {
     cout << "End of race!" << endl;
-}
-
-int signum(float n) {
-    if (n < 0) return -1;
-    return 1;
 }
 
 void FSMDriver3::init(float *angles){
