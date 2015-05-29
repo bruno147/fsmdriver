@@ -20,14 +20,15 @@ int signum(float n) {
 */
 FSMDriver3::FSMDriver3() : DrivingFSM<FSMDriver3>(this) {
     insideTrack = new InsideTrack(1, 4, 1500, 4000, 9500, 83, 1.4);
-    // outOfTrack = new OutOfTrack();
-    // stuck = new Stuck();
+    outOfTrack = new OutOfTrack();
+    stuck = new Stuck();
     change_to(insideTrack);
 }
 /**FSMDriver3 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver3 can be used together with Genetic Algorithm using this function.
 */
 FSMDriver3::FSMDriver3(int argc, char** argv) : DrivingFSM<FSMDriver3>(this) {
     insideTrack = new InsideTrack();
+    outOfTrack = new OutOfTrack();
     stuck = new Stuck();
     change_to(insideTrack);
 }
@@ -59,7 +60,7 @@ void FSMDriver3::transition(CarState &cs) {
         if (cs.getTrack(1) > 0) 
             state = insideTrack;
         else
-            state = OutOfTrack::instance();
+            state = outOfTrack;
     }
 
     if (current_state != state) change_to(state);

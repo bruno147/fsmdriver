@@ -1,29 +1,16 @@
 #include "OutOfTrack.h"
 
-float MAX_SKIDDING = 3;
-float NEGATIVE_ACCEL_PERCENT = 0.1;
-int VELOCITY_GEAR_4 = 90;
-int VELOCITY_GEAR_3 = 70;
-int VELOCITY_GEAR_2 = 40;
-float MAX_RETURN_ANGLE = 0.7;
-float MIN_RETURN_ANGLE = 0.5;
-
-OutOfTrack::OutOfTrack() {}
+OutOfTrack::OutOfTrack(float _ms = 3, float _nap = 0.1, int _vg4 = 90, int _vg3 = 70, int _vg2 = 40, float _maxra = 0.7, float _minra = 0.5) {
+    MAX_SKIDDING = _ms;
+    NEGATIVE_ACCEL_PERCENT = _nap;
+    VELOCITY_GEAR_4 = _vg4;
+    VELOCITY_GEAR_3 = _vg3;
+    VELOCITY_GEAR_2 = _vg2;
+    MAX_RETURN_ANGLE = _maxra;
+    MIN_RETURN_ANGLE = _minra;
+}
 
 OutOfTrack::OutOfTrack(OutOfTrack const &) {}
-
-OutOfTrack *OutOfTrack::instance() {
-    static OutOfTrack instance;
-    return &instance;
-}
-
-void OutOfTrack::enter(FSMDriver3 *driver) {
-    cout << "Enter OutOfTrack" << endl;
-}
-
-void OutOfTrack::exit(FSMDriver3 *driver) {
-    cout << "Exit OutOfTrack" << endl;
-}
 
 CarControl OutOfTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
     const float clutch = 0;
