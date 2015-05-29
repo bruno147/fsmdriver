@@ -22,8 +22,8 @@ public:
      * \param BASE_SPEED
      * \param SPEED_FACTOR
      */
-    InsideTrack(int, int, int, int, int, float, float);
-    InsideTrack();
+    InsideTrack(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
+                int _arpm = 4000, int _hrpm = 9000, float _bs = 83, float _sf = 1.4);
     InsideTrack(InsideTrack const &);
     void operator=(InsideTrack const&);
     /** Create a pointer to the state to accomplish the singleton.
