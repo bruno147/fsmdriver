@@ -28,6 +28,7 @@ FSMDriver3::FSMDriver3() : DrivingFSM<FSMDriver3>(this) {
 */
 FSMDriver3::FSMDriver3(int argc, char** argv) : DrivingFSM<FSMDriver3>(this) {
     insideTrack = new InsideTrack();
+    stuck = new Stuck();
     change_to(insideTrack);
 }
 
@@ -53,7 +54,7 @@ void FSMDriver3::transition(CarState &cs) {
     DrivingState<FSMDriver3> *state = current_state;
 
     if(Stuck::isStuck(cs)) {
-        state = Stuck::instance();
+        state = stuck;
     } else {
         if (cs.getTrack(1) > 0) 
             state = insideTrack;

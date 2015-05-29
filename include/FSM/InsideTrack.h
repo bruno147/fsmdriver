@@ -26,9 +26,6 @@ public:
                 int _arpm = 4000, int _hrpm = 9000, float _bs = 83, float _sf = 1.4);
     InsideTrack(InsideTrack const &);
     void operator=(InsideTrack const&);
-    /** Create a pointer to the state to accomplish the singleton.
-    */
-    static InsideTrack *instance();
     /** Main function at state to drive the car.
     * \param driver is a pointer of the object of the driver itself,  
     * \param cs a data structure cointaining information from the car's sensors.
