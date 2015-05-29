@@ -2,8 +2,7 @@
 
 // float SPEED_FACTOR = 1.4;
 
-InsideTrack::InsideTrack(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
-                         int _arpm = 4000, int _hrpm = 9000, float _bs = 83, float _sf = 1.4) {
+InsideTrack::InsideTrack(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm, float _bs, float _sf) {
     START_GEAR = _sg;
     LOW_GEAR_LIMIT = _lgl;
     LOW_RPM = _lrpm;

@@ -19,7 +19,7 @@ int signum(float n) {
 *FSMDriver3 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.  
 */
 FSMDriver3::FSMDriver3() : DrivingFSM<FSMDriver3>(this) {
-    insideTrack = new InsideTrack(1, 4, 1500, 4000, 9500, 83, 1.4);
+    insideTrack = new InsideTrack();
     outOfTrack = new OutOfTrack();
     stuck = new Stuck();
     change_to(insideTrack);
