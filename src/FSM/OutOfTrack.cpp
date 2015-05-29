@@ -1,6 +1,6 @@
 #include "OutOfTrack.h"
 
-OutOfTrack::OutOfTrack(float _ms = 3, float _nap = 0.1, int _vg4 = 90, int _vg3 = 70, int _vg2 = 40, float _maxra = 0.7, float _minra = 0.5) {
+OutOfTrack::OutOfTrack(float _ms, float _nap, int _vg4, int _vg3, int _vg2, float _maxra, float _minra) {
     MAX_SKIDDING = _ms;
     NEGATIVE_ACCEL_PERCENT = _nap;
     VELOCITY_GEAR_4 = _vg4;
