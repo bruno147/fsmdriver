@@ -1,12 +1,4 @@
 #include "FSMDriver5.h"
-#include "ApproachingCurve.h"
-#include "StraightLine.h"
-#include "Curve.h"
-#include "OutOfTrack.h"
-#include "Stuck.h"
-#include "Log.h"
-
-#include <vector>
 
 //Define constants for transition method:
 /*
@@ -52,67 +44,73 @@ float trackReadingsVariance(CarState &cs) {
 *FSMDriver55 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 >>>>>>> refactoring:src/FSMDriver55/FSMDriver55.cpp
 */
-FSMDriver5::FSMDriver5() : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer(0),gear(0) {
-    change_to(StraightLine::instance());
+FSMDriver5::FSMDriver5() : DrivingFSM<FSMDriver5>(this) {
+    change_to(straightLine);
 }
 /**FSMDriver5 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver5 can be used together with Genetic Algorithm using this function.
 */
-FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this), accel(0),brake(0),steer(0),gear(0) {
-    change_to(StraightLine::instance());
+FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this) {
+    change_to(straightLine);
 
 
-    LOW_GEAR_LIMIT = 4;
-    LOW_RPM = 1500;
-    AVERAGE_RPM = 4000;
-    HIGH_RPM = 9500;
-    STUCK_SPEED = 5;
-    MIN_RACED_DISTANCE = 100;
-    MAX_STUCK_TICKS = 300;
-    MAX_SLOW_SPEED_TICKS = 50;
-    MAX_STEERING = 0.12;
-    TARGET_POS = 0.7;
-    BASE_SPEED = 80;
-    MAX_SKIDDING = 3;
-    NEGATIVE_ACCEL_PERCENT = 0.1;
-    VELOCITY_GEAR_4 = 90;
-    VELOCITY_GEAR_3 = 70;
-    VELOCITY_GEAR_2 = 40;
-    MAX_RETURN_ANGLE = 0.7;
-    MIN_RETURN_ANGLE = 0.5;
-    MAX_STRAIGHT_LINE_VAR = 1000;
-    MIN_STRAIGHT_LINE_VAR = 500;
-    MAX_APPROACHING_CURVE_VAR = 400;
-    MIN_APPROACHING_CURVE_VAR = 300;
+    // LOW_GEAR_LIMIT = 4;
+    // LOW_RPM = 1500;
+    // AVERAGE_RPM = 4000;
+    // HIGH_RPM = 9500;
+    // STUCK_SPEED = 5;
+    // MIN_RACED_DISTANCE = 100;
+    // MAX_STUCK_TICKS = 300;
+    // MAX_SLOW_SPEED_TICKS = 50;
+    // MAX_STEERING = 0.12;
+    // TARGET_POS = 0.7;
+    // BASE_SPEED = 80;
+    // MAX_SKIDDING = 3;
+    // NEGATIVE_ACCEL_PERCENT = 0.1;
+    // VELOCITY_GEAR_4 = 90;
+    // VELOCITY_GEAR_3 = 70;
+    // VELOCITY_GEAR_2 = 40;
+    // MAX_RETURN_ANGLE = 0.7;
+    // MIN_RETURN_ANGLE = 0.5;
+    // MAX_STRAIGHT_LINE_VAR = 1000;
+    // MIN_STRAIGHT_LINE_VAR = 500;
+    // MAX_APPROACHING_CURVE_VAR = 400;
+    // MIN_APPROACHING_CURVE_VAR = 300;
 
-/*    LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
-    LOW_RPM = binToFloat(getArgument(1, argv));
-    AVERAGE_RPM = binToFloat(getArgument(2, argv));
-    HIGH_RPM = binToFloat(getArgument(3, argv));
+    float LOW_GEAR_LIMIT = binToFloat(getArgument(0, argv));
+    float LOW_RPM = binToFloat(getArgument(1, argv));
+    float AVERAGE_RPM = binToFloat(getArgument(2, argv));
+    float HIGH_RPM = binToFloat(getArgument(3, argv));
 
-    STUCK_SPEED = binToFloat(getArgument(4, argv));
-    MIN_RACED_DISTANCE = binToFloat(getArgument(5, argv));
-    MAX_STUCK_TICKS = binToFloat(getArgument(6, argv));
-    MAX_SLOW_SPEED_TICKS = binToFloat(getArgument(7, argv));
+    float STUCK_SPEED = binToFloat(getArgument(4, argv));
+    float MIN_RACED_DISTANCE = binToFloat(getArgument(5, argv));
+    float MAX_STUCK_TICKS = binToFloat(getArgument(6, argv));
+    float MAX_SLOW_SPEED_TICKS = binToFloat(getArgument(7, argv));
 
-    MAX_STEERING = binToFloat(getArgument(8, argv));
-    TARGET_POS = binToFloat(getArgument(9, argv));
-    BASE_SPEED =  binToFloat(getArgument(10, argv));
+    float MAX_STEERING = binToFloat(getArgument(8, argv));
+    float TARGET_POS = binToFloat(getArgument(9, argv));
+    float BASE_SPEED =  binToFloat(getArgument(10, argv));
 
-    MAX_SKIDDING =  binToFloat(getArgument(11, argv));
-    NEGATIVE_ACCEL_PERCENT =  binToFloat(getArgument(12, argv));
-    VELOCITY_GEAR_4 =  binToFloat(getArgument(13, argv));
-    VELOCITY_GEAR_3 =  binToFloat(getArgument(14, argv));
-    VELOCITY_GEAR_2 =  binToFloat(getArgument(15, argv));
-    MAX_RETURN_ANGLE = binToFloat(getArgument(16, argv));
-    MIN_RETURN_ANGLE =  binToFloat(getArgument(17, argv));
+    float MAX_SKIDDING =  binToFloat(getArgument(11, argv));
+    float NEGATIVE_ACCEL_PERCENT =  binToFloat(getArgument(12, argv));
+    float VELOCITY_GEAR_4 =  binToFloat(getArgument(13, argv));
+    float VELOCITY_GEAR_3 =  binToFloat(getArgument(14, argv));
+    float VELOCITY_GEAR_2 =  binToFloat(getArgument(15, argv));
+    float MAX_RETURN_ANGLE = binToFloat(getArgument(16, argv));
+    float MIN_RETURN_ANGLE =  binToFloat(getArgument(17, argv));
 
     MAX_STRAIGHT_LINE_VAR =  binToFloat(getArgument(18, argv));
     MIN_STRAIGHT_LINE_VAR =  binToFloat(getArgument(19, argv));
     MAX_APPROACHING_CURVE_VAR =  binToFloat(getArgument(20, argv));
-    MIN_APPROACHING_CURVE_VAR =  binToFloat(getArgument(21, argv));*/
+    MIN_APPROACHING_CURVE_VAR =  binToFloat(getArgument(21, argv));
 
     //cout << argc << endl << "kill " << argv[2] << endl;
-    // segment_id = stoi(argv[2]);
+    segment_id = stoi(argv[2]);
+
+    straightLine = new StraightLine(LOW_GEAR_LIMIT, LOW_RPM, AVERAGE_RPM, HIGH_RPM);
+    approachingCurve = new ApproachingCurve(MAX_STEERING, TARGET_POS, BASE_SPEED);
+    curve = new Curve();
+    outOfTrack = new OutOfTrack(MAX_SKIDDING, NEGATIVE_ACCEL_PERCENT, VELOCITY_GEAR_4, VELOCITY_GEAR_3, VELOCITY_GEAR_2, MAX_RETURN_ANGLE, MIN_RETURN_ANGLE);
+    stuck = new Stuck(STUCK_SPEED, MIN_RACED_DISTANCE, MAX_STUCK_TICKS, MAX_SLOW_SPEED_TICKS);
 
 }
 CarControl FSMDriver5::wDrive(CarState cs) {
@@ -139,20 +137,20 @@ void FSMDriver5::transition(CarState &cs) {
     DrivingState<FSMDriver5> *state = current_state;
 
     if(Stuck::isStuck(cs)) {
-        ;//state = Stuck::instance();
+        state = stuck;
     } else {
         float var = trackReadingsVariance(cs);
 
         /* @todo change numbers to constants with meaningful names. */
-        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state==StraightLine::instance()))
-            ;//state = StraightLine::instance();
-        else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != Curve::instance())
-         || ((var > MIN_APPROACHING_CURVE_VAR) && current_state==ApproachingCurve::instance())) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
-            ;//state = ApproachingCurve::instance();
+        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state == straightLine))
+            state = straightLine;
+        else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != curve)
+         || ((var > MIN_APPROACHING_CURVE_VAR) && current_state == approachingCurve)) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
+            state = approachingCurve;
         else if(var > 0)
-            ;//state = Curve::instance();
+            state = curve;
         else
-            ;//state = OutOfTrack::instance();
+            state = outOfTrack;
     }
 
     if (current_state != state) change_to(state);
@@ -170,4 +168,12 @@ unsigned int FSMDriver5::binToUsignedInt (string bits) {
     unsigned int *value = reinterpret_cast<unsigned int*>(&a);
 
     return *value;
+}
+
+FSMDriver5::~FSMDriver5() {
+    delete straightLine;
+    delete approachingCurve;
+    delete curve;
+    delete outOfTrack;
+    delete stuck;
 }

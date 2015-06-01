@@ -1,23 +1,13 @@
 #include "ApproachingCurve.h"
 
-float MAX_STEERING = 0;
-float TARGET_POS = 0;
-float BASE_SPEED = 0;
+// float MAX_STEERING = 0;
+// float TARGET_POS = 0;
+// float BASE_SPEED = 0;
 
-ApproachingCurve::ApproachingCurve() {}
-
-ApproachingCurve *ApproachingCurve::instance() {
-    static ApproachingCurve instance;
-    return &instance;
-}
-
-void ApproachingCurve::enter(FSMDriver5 *driver) {
-    //cout << "Enter ApproachingCurve" << endl;
-    sensorsAreUpdated = false;
-}
-
-void ApproachingCurve::exit(FSMDriver5 *driver) {
-    //cout << "Exit ApproachingCurve" << endl;
+ApproachingCurve::ApproachingCurve(int _ms, int _tp, int _bs) {
+    MAX_STEERING = _ms;
+    TARGET_POS = _tp;
+    BASE_SPEED = _bs;
 }
 
 CarControl ApproachingCurve::drive(FSMDriver5 *FSMDriver5, CarState &cs) {

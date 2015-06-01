@@ -3,6 +3,14 @@
 
 #include "WrapperBaseDriver.h"
 #include "FSM.h"
+#include "ApproachingCurve.h"
+#include "StraightLine.h"
+#include "Curve.h"
+#include "OutOfTrack.h"
+#include "Stuck.h"
+#include "Log.h"
+
+#include <vector>
 #include <bitset>
 
 /*! \class FSMDriver5
@@ -17,8 +25,13 @@
 
 class FSMDriver5 : public WrapperBaseDriver, public DrivingFSM<FSMDriver5> {
 private:
-    float accel, brake, steer; //Actuators values
-    int gear;
+    //! States.
+    StraightLine* straightLine;
+    ApproachingCurve* approachingCurve;
+    Curve* curve;
+    OutOfTrack* outOfTrack;
+    Stuck* stuck;
+
     int segment_id;
 
     int MAX_STRAIGHT_LINE_VAR;
@@ -31,7 +44,6 @@ private:
 
     std::string getArgument(int i, char** argv);
 
-
     float    parameters[22];/**Driver parameters,it can be fixed or set by Genetic Algorithm*/
 
 public:
@@ -43,7 +55,7 @@ public:
 
     FSMDriver5();
     FSMDriver5(int, char**);
-    virtual ~FSMDriver5(){}
+    virtual ~FSMDriver5();
 
     /** Transitions between states (if appropriate).*/
     void transition(CarState &);

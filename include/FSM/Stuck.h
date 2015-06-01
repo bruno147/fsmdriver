@@ -20,7 +20,7 @@ public:
      * \param MAX_STUCK_TICKS
      * \param MAX_SLOW_SPEED_TICKS
      */
-    Stuck(float _ss = 0.0, int _mrd = 0, int _mst = 0, int _msst = 0);
+    Stuck(float _ss = 5.0, int _mrd = 100, int _mst = 300, int _msst = 50);
     Stuck(Stuck const &);
     void operator=(Stuck const&);
     static bool isStuck(CarState &cs);

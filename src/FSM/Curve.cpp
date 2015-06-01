@@ -1,21 +1,8 @@
 #include "Curve.h"
 
-Curve::Curve() : currentGear(START_GEAR) {}
+Curve::Curve() : currentGear(StraightLine::START_GEAR) {}
 
 Curve::Curve(Curve const &) {}
-
-Curve *Curve::instance() {
-    static Curve instance;
-    return &instance;
-}
-
-void Curve::enter(FSMDriver5 *driver) {
-    // cout << "Enter Curve" << endl;
-}
-
-void Curve::exit(FSMDriver5 *driver) {
-    // cout << "Exit Curve" << endl;
-}
 
 CarControl Curve::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
 	float steer = getSteer(cs);

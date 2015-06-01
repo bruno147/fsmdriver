@@ -3,31 +3,28 @@
 
 #include "FSM.h"
 
-/******************************************************************************/
-extern int START_GEAR; // = 1;
-extern int LOW_GEAR_LIMIT; // = 4;
-
-extern int LOW_RPM; // = 1500;
-extern int AVERAGE_RPM; // = 4000;
-extern int HIGH_RPM; // = 9500;
-/******************************************************************************/
-
 class FSMDriver5;
 /**Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.*/
 class StraightLine : public DrivingState<FSMDriver5> {
 public:
-    static StraightLine *instance();
-    void enter(FSMDriver5 *driver);
-    void exit(FSMDriver5 *driver);
+    static int START_GEAR;
+    
+    StraightLine(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
+                 int _arpm = 4000, int _hrpm = 9500);
+    StraightLine(StraightLine const &);
+    void operator=(StraightLine const&);
+    
     virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
     static int getGear(CarState &cs);
 
     ~StraightLine();
 
 private:
-    StraightLine();
-    StraightLine(StraightLine const &);
-    void operator=(StraightLine const&);
+    static int LOW_GEAR_LIMIT;
+    static int LOW_RPM;
+    static int AVERAGE_RPM;
+    static int HIGH_RPM;
+
 
     float getBrake(CarState &cs);
 

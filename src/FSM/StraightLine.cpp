@@ -1,28 +1,20 @@
 #include "StraightLine.h"
 
-int START_GEAR = 1;
-int LOW_GEAR_LIMIT = 4;
+int StraightLine::START_GEAR = 1;
+int StraightLine::LOW_GEAR_LIMIT = 4;
+int StraightLine::LOW_RPM = 1500;
+int StraightLine::AVERAGE_RPM = 4000;
+int StraightLine::HIGH_RPM = 9500;
 
-int LOW_RPM = 1500;
-int AVERAGE_RPM = 4000;
-int HIGH_RPM = 9500;
-
-StraightLine::StraightLine() {}
+StraightLine::StraightLine(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) {
+    START_GEAR = _sg;
+    LOW_GEAR_LIMIT = _lgl;
+    LOW_RPM = _lrpm;
+    AVERAGE_RPM = _arpm;
+    HIGH_RPM = _hrpm;
+}
 
 StraightLine::StraightLine(StraightLine const &) {}
-
-StraightLine *StraightLine::instance() {
-    static StraightLine instance;
-    return &instance;
-}
-
-void StraightLine::enter(FSMDriver5 *driver) {
-    //cout << "Enter StraightLine" << endl;
-}
-
-void StraightLine::exit(FSMDriver5 *driver) {
-    //cout << "Exit StraightLine" << endl;
-}
 
 CarControl StraightLine::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
     const float accel = 1, brake = 0, clutch = 0;

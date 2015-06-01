@@ -10,9 +10,9 @@ class FSMDriver5;
 /**Class to treat curve state where the track has a minimal curvature. Note that this state is important at the race considering oponents with equal speed the way the driver complete the curve can achieve the lead at the race.*/
 class Curve : public DrivingState<FSMDriver5> {
 public:
-    static Curve *instance();
-    void enter(FSMDriver5 *driver);
-    void exit(FSMDriver5 *driver);
+    Curve();
+    Curve(Curve const &);
+    void operator=(Curve const&);
     virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
 
     ~Curve();
@@ -20,9 +20,6 @@ public:
 private:
     int currentGear;
 
-    Curve();
-    Curve(Curve const &);
-    void operator=(Curve const&);
 
     float getAccel(CarState &cs);
     bool isFacingWrongWay(CarState &cs);
