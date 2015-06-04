@@ -1,6 +1,7 @@
 #include "OutOfTrack.h"
 
-OutOfTrack::OutOfTrack(float _ms, float _nap, int _vg4, int _vg3, int _vg2, float _maxra, float _minra) {
+OutOfTrack::OutOfTrack(FSMDriver *o, float _ms, float _nap, int _vg4, int _vg3, int _vg2, float _maxra, float _minra)
+                       : DrivingState(o) {
     MAX_SKIDDING = _ms;
     NEGATIVE_ACCEL_PERCENT = _nap;
     VELOCITY_GEAR_4 = _vg4;
@@ -10,9 +11,9 @@ OutOfTrack::OutOfTrack(float _ms, float _nap, int _vg4, int _vg3, int _vg2, floa
     MIN_RETURN_ANGLE = _minra;
 }
 
-OutOfTrack::OutOfTrack(OutOfTrack const &) {}
+// OutOfTrack::OutOfTrack(OutOfTrack const &) {}
 
-CarControl OutOfTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
+CarControl OutOfTrack::drive(CarState &cs) {
     const float clutch = 0;
     const int focus = 0, meta = 0;
 
@@ -22,7 +23,7 @@ CarControl OutOfTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
 float OutOfTrack::getBrake(CarState &cs) {
     if(cs.getSpeedX() < 0) return 1;
     if(abs(cs.getSpeedY()) > MAX_SKIDDING) return 0.1;
-    
+
     return 0;
 }
 
@@ -35,21 +36,21 @@ int OutOfTrack::getGear(CarState &cs) {
                                                             /* @todo need reverse behavior */
     if(cs.getSpeedX() > VELOCITY_GEAR_3) return 3;
     if(cs.getSpeedX() > VELOCITY_GEAR_2) return 2;
-    
+
     return 1;
 }
 
 float OutOfTrack::getSteer(CarState &cs) {
 	float angle = cs.getAngle();
     /**Aim to go back to the track with a range of angles, between MIN_RETURN_ANGLE and MAX_RETURN_ANGLE with relation to the axis of track*/
-    if(cs.getTrackPos() > 0){ 
+    if(cs.getTrackPos() > 0){
         if(angle > MAX_RETURN_ANGLE) return 1;
         if(angle < MIN_RETURN_ANGLE) return -1;
     } else {
         if(angle < -(MAX_RETURN_ANGLE)) return -1;
         if(angle > -(MIN_RETURN_ANGLE)) return 1;
     }
-    
+
     return 0;
 }
 

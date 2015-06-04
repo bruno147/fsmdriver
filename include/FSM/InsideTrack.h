@@ -1,19 +1,20 @@
-#ifndef FSMDRIVER_STATE_TRACK_H
-#define FSMDRIVER_STATE_TRACK_H
+#ifndef UNB_FSMDRIVER_STATE_INSIDE_TRACK_H
+#define UNB_FSMDRIVER_STATE_INSIDE_TRACK_H
 
 #include <cmath>
 #include "FSM.h"
 
-class FSMDriver3;
-/*! \class InsideTrack
- *  \brief InsideTrack State Class.
+/**
+ * Handles the driving when the car is within track limits.
  *
- *  Class to treat the state where the car inside of the track. Most of the effort to enhance speed and surpass opponents is applied here.
+ * @todo proper description
+ * @todo proper documentation
  */
-class InsideTrack : public DrivingState<FSMDriver3> {
+class InsideTrack : public DrivingState {
 public:
     /* Constructor
-     * 
+     *
+     * @param o a pointer to the driver that owns the state.
      * \param START_GEAR
      * \param LOW_GEAR_LIMIT
      * \param LOW_RPM
@@ -22,20 +23,22 @@ public:
      * \param BASE_SPEED
      * \param SPEED_FACTOR
      */
-    InsideTrack(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
-                int _arpm = 4000, int _hrpm = 9000, float _bs = 83, float _sf = 1.4);
-    InsideTrack(InsideTrack const &);
-    void operator=(InsideTrack const&);
-    /** Main function at state to drive the car.
-    * \param driver is a pointer of the object of the driver itself,  
-    * \param cs a data structure cointaining information from the car's sensors.
-    */
-    virtual CarControl drive(FSMDriver3 *fsmdriver3, CarState &cs);
+    InsideTrack(FSMDriver *o,
+                int _sg = 1, int _lgl = 4, int _lrpm = 1500,
+                int _arpm = 4000, int _hrpm = 9000, float _bs = 83,
+                float _sf = 1.4);
+    // InsideTrack(InsideTrack const &);
+    // void operator=(InsideTrack const&);
+
+
+    /* Inherited documentation. */
+    CarControl drive(CarState &);
+
     /** Auxiliar function to obtain the gear analysing the car's rpm.
-    */   
+    */
     int getGear(CarState &cs);
     /** Auxiliar function to set class parameters
-     * 
+     *
      * \param START_GEAR
      * \param LOW_GEAR_LIMIT
      * \param LOW_RPM
@@ -58,7 +61,7 @@ private:
     float BASE_SPEED;
     float SPEED_FACTOR;
 
-    
+
     int currentGear;
     float distance, targetSpeed;
 
@@ -71,7 +74,7 @@ private:
     bool shouldIncreaseGear(int currentGear, int rpm);
     float getAccel(CarState &cs);
     void setTargetSpeed(CarState &cs);
-    /** isFacingWrongWay verify if the car is driving the right path, once it is possible 
+    /** isFacingWrongWay verify if the car is driving the right path, once it is possible
     * that the car collide and turn to the opposite way.
     * /param cs a data structure cointaining information from the car's sensors.
     */

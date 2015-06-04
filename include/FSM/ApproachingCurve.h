@@ -1,5 +1,5 @@
-#ifndef APPROACHINGCURVE_H
-#define APPROACHINGCURVE_H
+#ifndef UNB_FSMDRIVER_STATE_APPROACHING_CURVE_H
+#define UNB_FSMDRIVER_STATE_APPROACHING_CURVE_H
 
 #include <cmath>
 #include "FSM.h"
@@ -16,7 +16,7 @@ public:
 
 private:
     float MAX_STEERING, TARGET_POS, BASE_SPEED;
-    
+
     bool sensorsAreUpdated;
     float rSensor, cSensor, lSensor, targetSpeed;
 
@@ -38,4 +38,4 @@ private:
 
 
 
-#endif // APPROACHINGCURVE_H
+#endif // UNB_FSMDRIVER_STATE_APPROACHING_CURVE_H

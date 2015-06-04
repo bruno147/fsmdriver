@@ -2,7 +2,9 @@
 
 // float SPEED_FACTOR = 1.4;
 
-InsideTrack::InsideTrack(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm, float _bs, float _sf) {
+InsideTrack::InsideTrack(FSMDriver *o, int _sg, int _lgl, int _lrpm, int _arpm,
+                         int _hrpm, float _bs, float _sf)
+                        : DrivingState(o) {
     START_GEAR = _sg;
     LOW_GEAR_LIMIT = _lgl;
     LOW_RPM = _lrpm;
@@ -13,9 +15,9 @@ InsideTrack::InsideTrack(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm, flo
     currentGear = START_GEAR;
 }
 
-InsideTrack::InsideTrack(InsideTrack const &) {}
+// InsideTrack::InsideTrack(InsideTrack const &) {}
 
-CarControl InsideTrack::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
+CarControl InsideTrack::drive(CarState &cs) {
 	float steer = getSteer(cs);
     setTargetSpeed(cs);
 	int gear = getGear(cs);

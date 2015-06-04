@@ -8,7 +8,8 @@ unsigned int Stuck::MAX_SLOW_SPEED_TICKS = 50;
 unsigned int Stuck::slowSpeedTicks = 0;
 float Stuck::trackInitialPos = 0;
 
-Stuck::Stuck(float _ss, int _mrd, int _mst, int _msst) {
+Stuck::Stuck(FSMDriver *o, float _ss, int _mrd, int _mst, int _msst)
+            : DrivingState(o) {
     STUCK_SPEED = _ss;
     MIN_RACED_DISTANCE  = _mrd;
     MAX_STUCK_TICKS = _mst;
@@ -16,7 +17,7 @@ Stuck::Stuck(float _ss, int _mrd, int _mst, int _msst) {
     elapsedTicks = 0;
 }
 
-Stuck::Stuck(Stuck const &) {}
+// Stuck::Stuck(Stuck const &) {}
 
 void Stuck::setParameters(float _ss = 0, int _mrd = 0, int _mst = 0, int _msst = 0) {
     STUCK_SPEED = _ss;
@@ -26,7 +27,7 @@ void Stuck::setParameters(float _ss = 0, int _mrd = 0, int _mst = 0, int _msst =
 }
 
 
-CarControl Stuck::drive(FSMDriver3 *fsmdriver3, CarState &cs) {
+CarControl Stuck::drive(    CarState &cs) {
     ++elapsedTicks;
     trackInitialPos = getInitialPos(cs);
     if(notStuckAnymore(cs.getTrackPos(), cs.getAngle()) || hasBeenStuckLongEnough()){
