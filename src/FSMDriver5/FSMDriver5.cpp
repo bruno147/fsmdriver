@@ -56,10 +56,10 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : straightLine(this), approachingC
     // LOW_RPM = 1500;
     // AVERAGE_RPM = 4000;
     // HIGH_RPM = 9500;
-    // STUCK_SPEED = 5;
-    // MIN_RACED_DISTANCE = 100;
-    // MAX_STUCK_TICKS = 300;
-    // MAX_SLOW_SPEED_TICKS = 50;
+    // stuck_speed = 5;
+    // minimum_distance_raced = 100;
+    // maximum_number_of_ticks_stuck = 300;
+    // maximum_number_of_ticks_in_slow_speed = 50;
     // MAX_STEERING = 0.12;
     // TARGET_POS = 0.7;
     // BASE_SPEED = 80;
@@ -80,10 +80,10 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : straightLine(this), approachingC
     float AVERAGE_RPM = binToFloat(getArgument(2, argv));
     float HIGH_RPM = binToFloat(getArgument(3, argv));
 
-    float STUCK_SPEED = binToFloat(getArgument(4, argv));
-    float MIN_RACED_DISTANCE = binToFloat(getArgument(5, argv));
-    float MAX_STUCK_TICKS = binToFloat(getArgument(6, argv));
-    float MAX_SLOW_SPEED_TICKS = binToFloat(getArgument(7, argv));
+    float stuck_speed = binToFloat(getArgument(4, argv));
+    float minimum_distance_raced = binToFloat(getArgument(5, argv));
+    float maximum_number_of_ticks_stuck = binToFloat(getArgument(6, argv));
+    float maximum_number_of_ticks_in_slow_speed = binToFloat(getArgument(7, argv));
 
     float MAX_STEERING = binToFloat(getArgument(8, argv));
     float TARGET_POS = binToFloat(getArgument(9, argv));
@@ -122,10 +122,10 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : straightLine(this), approachingC
     outOfTrack.MAX_RETURN_ANGLE = MAX_RETURN_ANGLE;
     outOfTrack.MIN_RETURN_ANGLE = MIN_RETURN_ANGLE;
 
-    stuck.STUCK_SPEED = STUCK_SPEED;
-    stuck.MIN_RACED_DISTANCE = MIN_RACED_DISTANCE;
-    stuck.MAX_STUCK_TICKS = MAX_STUCK_TICKS;
-    stuck.MAX_SLOW_SPEED_TICKS = MAX_SLOW_SPEED_TICKS;
+    stuck.stuck_speed = stuck_speed;
+    stuck.minimum_distance_raced = minimum_distance_raced;
+    stuck.maximum_number_of_ticks_stuck = maximum_number_of_ticks_stuck;
+    stuck.maximum_number_of_ticks_in_slow_speed = maximum_number_of_ticks_in_slow_speed;
 }
 
 void FSMDriver5::onRestart() {
@@ -146,7 +146,7 @@ void FSMDriver5::init(float *angles){
 void FSMDriver5::transition(CarState &cs) {
     DrivingState *state = current_state;
 
-    if(Stuck::isStuck(cs)) {
+    if(stuck.isStuck(cs)) {
         state = &stuck;
     } else {
         float var = trackReadingsVariance(cs);

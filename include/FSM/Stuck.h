@@ -1,67 +1,69 @@
+/**  @file: Stuck.h
+ * @author: Guilherme N. Ramos (gnramos@unb.br)
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version. */
+
 #ifndef UNB_FSMDRIVER_STATE_STUCK_H
-#define FSMDRIVER_STATE_STUCK_H
+#define UNB_FSMDRIVER_STATE_STUCK_H
 
 #include <cmath>
-#include "FSM.h"
+
+#include "DrivingState.h"
 
 /**
- * Handles the driving when the car stuck. This usually means it is stopped or
- * with low speed, it usually happen at track section with high curvature.
+ * Handles the driving when the car is stuck. This usually means it is stopped
+ * or has been driving at a very low speed for a while.
  *
- * @todo proper description
- * @todo proper documentation
- */
+ * @todo proper documentation */
 class Stuck : public DrivingState {
 public:
     /** Constructor.
      *
      * @param o a pointer to the driver that owns the state.
-     * \param STUCK_SPEED
-     * \param MIN_RACED_DISTANCE
-     * \param MAX_STUCK_TICKS
-     * \param MAX_SLOW_SPEED_TICKS
-     */
-    Stuck(FSMDriver *o, float _ss = 5.0, int _mrd = 100, int _mst = 300, int _msst = 50);
-    // Stuck(Stuck const &);
-    // void operator=(Stuck const&);
-
-
-    /* Inherited documentation. */
-    CarControl drive(CarState &);
-
-    static bool isStuck(CarState &cs);
-    /** Auxiliar function to set class parameters
+     * @param ss the stuck speed
+     * @param mrd the minimum raced distance
+     * @param mst the maximum stuck ticks
+     * @param msst the maximum ticks in slow speed
      *
-     * \param STUCK_SPEED
-     * \param MIN_RACED_DISTANCE
-     * \param MAX_STUCK_TICKS
-     * \param MAX_SLOW_SPEED_TICKS
-     */
-    void setParameters(float, int, int, int);
+     * @todo fix parameter descriptions */
+    Stuck(FSMDriver *o, float ss = 5.0, int mrd = 100, int mst = 300, int msst = 50);
+
+    /** Destructor. */
     ~Stuck();
 
+    /** @todo describe behavior */
+    CarControl drive(CarState &);
+
+    /** Indicates if the controller is stuck.
+     *
+     * @param cs the driver's perception of the environment.
+     * @return true if the controller is stuck, false otherwise. */
+    bool isStuck(CarState &cs);
+
 public:
-    //! Parameters
-    /** @todo documentar. Por que estáticos?
-     * @todo deixar argumentos privados. */
-    static float STUCK_SPEED;
-    static unsigned int MIN_RACED_DISTANCE;
-    static unsigned int MAX_STUCK_TICKS;
-    static unsigned int MAX_SLOW_SPEED_TICKS;
+    /** @todo proper documentation of attributes */
+    float stuck_speed;
+    unsigned int minimum_distance_raced;
+    unsigned int maximum_number_of_ticks_stuck;
+    unsigned int maximum_number_of_ticks_in_slow_speed;
 
 private:
-    unsigned int elapsedTicks;
-    static unsigned int slowSpeedTicks;
-    static float trackInitialPos;
-
-	float getSteer(float trackInitialPos, CarState &cs);
-	float getInitialPos(CarState &cs);
-
-	static bool seemsStuck(CarState &cs);
-    static bool justStartedRace(CarState &cs);
-    static bool onRightWay(float trackPos, float angle);
-    static bool notStuckAnymore(float trackPos, float angle);
+    /** @todo proper documentation of attributes */
+    bool seemsStuck(CarState &cs);
+    bool justStartedRace(CarState &cs);
+    bool onRightWay(float trackPos, float angle);
+    bool notStuckAnymore(CarState &cs);
     bool hasBeenStuckLongEnough();
+    float getSteer(float trackInitialPos, CarState &cs);
+    float getInitialPos(CarState &cs);
+
+    unsigned int elapsedTicks;
+    unsigned int slowSpeedTicks;
+    float trackInitialPos;
+
 };
 
 #endif // UNB_FSMDRIVER_STATE_STUCK_H

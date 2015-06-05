@@ -1,7 +1,7 @@
-#ifndef straightLine
-#define FSMDRIVER5_H
+#ifndef UNB_FSMDRIVER_FSMDRIVER5_H
+#define UNB_FSMDRIVER_FSMDRIVER5_H
 
-#include "FSM.h"
+#include "FSMDriver.h"
 #include "ApproachingCurve.h"
 #include "StraightLine.h"
 #include "Curve.h"
@@ -55,4 +55,4 @@ public:
     void transition(CarState &);
 };
 
-#endif // FSMDriver5_H
+#endif // UNB_FSMDRIVER_FSMDRIVER5_H

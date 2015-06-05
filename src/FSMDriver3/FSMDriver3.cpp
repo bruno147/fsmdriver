@@ -43,7 +43,7 @@ void FSMDriver3::init(float *angles){
 void FSMDriver3::transition(CarState &cs) {
     DrivingState *state = current_state;
 
-    if(Stuck::isStuck(cs)) {
+    if(stuck.isStuck(cs)) {
         state = &stuck;
     } else {
         if (cs.getTrack(1) > 0)

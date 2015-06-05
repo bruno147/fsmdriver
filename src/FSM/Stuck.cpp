@@ -1,40 +1,35 @@
+/**  @file: Stuck.cpp
+ * @author: Guilherme N. Ramos (gnramos@unb.br)
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version. */
+
 #include "Stuck.h"
 
-float Stuck::STUCK_SPEED = 5;
-unsigned int Stuck::MIN_RACED_DISTANCE = 100;
-unsigned int Stuck::MAX_STUCK_TICKS = 300;
-unsigned int Stuck::MAX_SLOW_SPEED_TICKS = 50;
-
-unsigned int Stuck::slowSpeedTicks = 0;
-float Stuck::trackInitialPos = 0;
-
-Stuck::Stuck(FSMDriver *o, float _ss, int _mrd, int _mst, int _msst)
-            : DrivingState(o) {
-    STUCK_SPEED = _ss;
-    MIN_RACED_DISTANCE  = _mrd;
-    MAX_STUCK_TICKS = _mst;
-    MAX_SLOW_SPEED_TICKS = _msst;
-    elapsedTicks = 0;
+Stuck::Stuck(FSMDriver *o, float ss, int mrd, int mst, int msst)
+            : DrivingState(o), stuck_speed(ss), minimum_distance_raced(mrd),
+              maximum_number_of_ticks_stuck(mst), maximum_number_of_ticks_in_slow_speed(msst),
+              elapsedTicks(0), slowSpeedTicks(0), trackInitialPos(0) {
 }
 
-// Stuck::Stuck(Stuck const &) {}
-
-void Stuck::setParameters(float _ss = 0, int _mrd = 0, int _mst = 0, int _msst = 0) {
-    STUCK_SPEED = _ss;
-    MIN_RACED_DISTANCE  = _mrd;
-    MAX_STUCK_TICKS = _mst;
-    MAX_SLOW_SPEED_TICKS = _msst;
+Stuck::~Stuck() {
+    /* Nothing */
 }
 
-
-CarControl Stuck::drive(    CarState &cs) {
+CarControl
+Stuck::drive(CarState &cs) {
     ++elapsedTicks;
+
     trackInitialPos = getInitialPos(cs);
-    if(notStuckAnymore(cs.getTrackPos(), cs.getAngle()) || hasBeenStuckLongEnough()){
+
+    if(notStuckAnymore(cs) || hasBeenStuckLongEnough()){
         elapsedTicks = 0;
         slowSpeedTicks = 0;
         trackInitialPos = 0;
     }
+
     const float accel = 1, brake = 0, clutch = 0;
     const int gear = -1, focus = 0, meta = 0;
     float steer = getSteer(trackInitialPos, cs);
@@ -42,11 +37,13 @@ CarControl Stuck::drive(    CarState &cs) {
     return CarControl(accel, brake, gear, steer, clutch, focus, meta);
 }
 
-bool Stuck::justStartedRace(CarState &cs) {
-    return (cs.getDistRaced() <= MIN_RACED_DISTANCE);
+bool
+Stuck::justStartedRace(CarState &cs) {
+    return (cs.getDistRaced() <= minimum_distance_raced);
 }
 
-bool Stuck::onRightWay(float trackPos, float angle) {
+bool
+Stuck::onRightWay(float trackPos, float angle) {
     return (((trackPos < 0) && (angle > -1.57) && (angle < 0)) ||
             ((trackPos > 0) && (angle < 1.57 ) && (angle > 0)) ||
             ((trackPos > 1) && (angle > 0))||
@@ -54,37 +51,43 @@ bool Stuck::onRightWay(float trackPos, float angle) {
 }
 
 /* @todo give this test (and the previous ones) with a meaningful name... */
-bool Stuck::notStuckAnymore(float trackPos, float angle) {
-    return (onRightWay(trackPos, angle));
+bool
+Stuck::notStuckAnymore(CarState &cs) {
+    return onRightWay(cs.getTrackPos(), cs.getAngle());
 }
 
-bool Stuck::hasBeenStuckLongEnough() {
-    return (elapsedTicks >= MAX_STUCK_TICKS);
+bool
+Stuck::hasBeenStuckLongEnough() {
+    return (elapsedTicks >= maximum_number_of_ticks_stuck);
 }
 
 bool Stuck::isStuck(CarState &cs) {
     return (seemsStuck(cs) && !justStartedRace(cs));
 }
 
-float Stuck::getSteer(float trackInitialPos, CarState &cs){
-    //return (trackInitialPos > 0 ? 1 : -1);
-    if(abs(cs.getAngle()) > 1.557){// around 180 graus
+float
+Stuck::getSteer(float trackInitialPos, CarState &cs){
+    if(abs(cs.getAngle()) > 1.557) // around 180 graus
         return (trackInitialPos > 0 ? -1 : 1);
-    }else{
-    	return (trackInitialPos > 0 ? 1 : -1);
-    }
+
+    return (trackInitialPos > 0 ? 1 : -1);
 }
 
-bool Stuck::seemsStuck(CarState &cs) {
-    cs.getSpeedX()<STUCK_SPEED?slowSpeedTicks++:slowSpeedTicks = 0;
-    if(notStuckAnymore(cs.getTrackPos(), cs.getAngle())){
-        slowSpeedTicks=0;
-    }
-    return (slowSpeedTicks>MAX_SLOW_SPEED_TICKS?1:0);
+bool
+Stuck::seemsStuck(CarState &cs) {
+    if(cs.getSpeedX() < stuck_speed)
+        ++slowSpeedTicks;
+    else
+        slowSpeedTicks = 0;
+
+    if(notStuckAnymore(cs))
+        slowSpeedTicks = 0;
+
+    return (slowSpeedTicks > maximum_number_of_ticks_in_slow_speed);
 }
 
-float Stuck::getInitialPos(CarState &cs){
-	return (trackInitialPos==0?cs.getTrackPos():trackInitialPos);
+float
+Stuck::getInitialPos(CarState &cs) {
+	return (trackInitialPos == 0 ? cs.getTrackPos() : trackInitialPos);
 }
 
-Stuck::~Stuck() {}

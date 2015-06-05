@@ -2,7 +2,7 @@
 #define UNB_FSMDRIVER_STATE_CURVE_H
 
 #include <cmath>
-#include "FSM.h"
+#include "DrivingState.h"
 #include "StraightLine.h"
 
 /**Class to treat curve state where the track has a minimal curvature. Note that this state is important at the race considering oponents with equal speed the way the driver complete the curve can achieve the lead at the race.*/

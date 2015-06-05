@@ -1,7 +1,7 @@
 #ifndef UNB_FSMDRIVER_STATE_STRAIGHT_LINE_H
 #define UNB_FSMDRIVER_STATE_STRAIGHT_LINE_H
 
-#include "FSM.h"
+#include "DrivingState.h"
 
 /**Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.*/
 class StraightLine : public DrivingState {
