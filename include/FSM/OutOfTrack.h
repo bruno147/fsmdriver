@@ -49,8 +49,10 @@ public:
     //! Empty destructor
     ~OutOfTrack();
 
-private:
+public:
     //! Parameters
+    /** @todo documentar
+     * @todo deixar argumentos privados. */
     float MAX_SKIDDING;
     float NEGATIVE_ACCEL_PERCENT;
     int VELOCITY_GEAR_4;
@@ -59,7 +61,7 @@ private:
     float MAX_RETURN_ANGLE;
     float MIN_RETURN_ANGLE;
 
-
+private:
     float getBrake(CarState &cs);
     float getAccel(CarState &cs);
     int getGear(CarState &cs);

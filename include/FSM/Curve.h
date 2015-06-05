@@ -5,15 +5,15 @@
 #include "FSM.h"
 #include "StraightLine.h"
 
-
-class FSMDriver5;
 /**Class to treat curve state where the track has a minimal curvature. Note that this state is important at the race considering oponents with equal speed the way the driver complete the curve can achieve the lead at the race.*/
-class Curve : public DrivingState<FSMDriver5> {
+class Curve : public DrivingState {
 public:
-    Curve();
-    Curve(Curve const &);
-    void operator=(Curve const&);
-    virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
+    Curve(FSMDriver *o);
+    // Curve(Curve const &);
+    // void operator=(Curve const&);
+
+    /* Inherited documentation. */
+    CarControl drive(CarState &);
 
     ~Curve();
 

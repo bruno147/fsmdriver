@@ -6,7 +6,7 @@ int StraightLine::LOW_RPM = 1500;
 int StraightLine::AVERAGE_RPM = 4000;
 int StraightLine::HIGH_RPM = 9500;
 
-StraightLine::StraightLine(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) {
+StraightLine::StraightLine(FSMDriver *o, int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) : DrivingState(o) {
     START_GEAR = _sg;
     LOW_GEAR_LIMIT = _lgl;
     LOW_RPM = _lrpm;
@@ -14,9 +14,9 @@ StraightLine::StraightLine(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) {
     HIGH_RPM = _hrpm;
 }
 
-StraightLine::StraightLine(StraightLine const &) {}
+// StraightLine::StraightLine(StraightLine const &) {}
 
-CarControl StraightLine::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl StraightLine::drive(CarState &cs) {
     const float accel = 1, brake = 0, clutch = 0;
     const int focus = 0, meta = 0;
     float steer = cs.getAngle();

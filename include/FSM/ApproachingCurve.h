@@ -5,16 +5,18 @@
 #include "FSM.h"
 #include "StraightLine.h"
 
-class FSMDriver5;
 /**Class to treat State where the section of the track before a curve, to better complete a curve it require a speed depending of the curve(for example how obligue it is) */
-class ApproachingCurve : public DrivingState<FSMDriver5> {
+class ApproachingCurve : public DrivingState {
 public:
-    ApproachingCurve(int _ms = 0, int _tp = 0, int _bs = 0);
-    virtual CarControl drive(FSMDriver5 *FSMDriver5, CarState &cs);
+    ApproachingCurve(FSMDriver *o, int _ms = 0, int _tp = 0, int _bs = 0);
+
+    /* Inherited documentation. */
+    CarControl drive(CarState &);
 
     ~ApproachingCurve();
 
-private:
+public:
+    /** @todo deixar argumentos privados. */
     float MAX_STEERING, TARGET_POS, BASE_SPEED;
 
     bool sensorsAreUpdated;
@@ -25,6 +27,7 @@ private:
     float getSteering(CarState &cs);
     float getBrake(CarState &cs);
 
+    /** @todo inline no cpp, não no h*/
     inline int getGear(CarState &cs) {
         return StraightLine::getGear(cs);
     }

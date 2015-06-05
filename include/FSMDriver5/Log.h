@@ -1,5 +1,5 @@
-#ifndef LOG_H
-#define LOG_H
+#ifndef UNB_FSMDRIVER_LOG_H
+#define UNB_FSMDRIVER_LOG_H
 
 #include "FSM.h"
 
@@ -10,8 +10,6 @@
 #include <sys/shm.h>
 #include <sys/stat.h>
 
-class FSMDriver5;
-
 class Log {
 public:
     ~Log(){}
@@ -20,13 +18,13 @@ public:
         static Log instance;
         return &instance;
     }
-    
-    void updateLog(DrivingState<FSMDriver5> *s, CarState cs) {
+
+    void updateLog(DrivingState *s, CarState cs) {
         assert(s);
         damage=cs.getDamage();
 
         if(distRaced<cs.getDistFromStart()) distRaced=cs.getDistFromStart();
-        
+
         if(curveComplete(cs)){
             totalTime+=cs.getLastLapTime();
             totalDistRaced+=distRaced;
@@ -46,7 +44,7 @@ public:
             myfile << " Damage " << damage << "; ";
 
             myfile.close();
-            
+
             lapCounter++;
         }
 
@@ -88,7 +86,7 @@ public:
         cout << "damage: " << damage << endl;
         cout << "totalDistRaced: " << totalDistRaced << endl;
         cout << "distRaced: " << distRaced << endl;
-        
+
         //Assigned shared memory
         /*if(lapCounter==3){
             sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced+distRaced);
@@ -132,4 +130,4 @@ private:
 
 
 
-#endif // LOG_H
+#endif // UNB_FSMDRIVER_LOG_H

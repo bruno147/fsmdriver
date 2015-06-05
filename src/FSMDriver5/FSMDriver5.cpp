@@ -39,18 +39,17 @@ float trackReadingsVariance(CarState &cs) {
 
 /**
 <<<<<<< HEAD:FSMDriver55/FSMDriver55.cpp
-*FSMDriver5 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.  
+*FSMDriver5 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 =======
 *FSMDriver55 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 >>>>>>> refactoring:src/FSMDriver55/FSMDriver55.cpp
 */
-FSMDriver5::FSMDriver5() : DrivingFSM<FSMDriver5>(this) {
-    change_to(straightLine);
+FSMDriver5::FSMDriver5() : straightLine(this), approachingCurve(this), curve(this), outOfTrack(this), stuck(this) {
+    change_to(&straightLine);
 }
 /**FSMDriver5 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver5 can be used together with Genetic Algorithm using this function.
 */
-FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this) {
-    change_to(straightLine);
+FSMDriver5::FSMDriver5(int argc, char** argv) : straightLine(this), approachingCurve(this), curve(this), outOfTrack(this), stuck(this) {
 
 
     // LOW_GEAR_LIMIT = 4;
@@ -106,18 +105,29 @@ FSMDriver5::FSMDriver5(int argc, char** argv) : DrivingFSM<FSMDriver5>(this) {
     //cout << argc << endl << "kill " << argv[2] << endl;
     segment_id = stoi(argv[2]);
 
-    straightLine = new StraightLine(LOW_GEAR_LIMIT, LOW_RPM, AVERAGE_RPM, HIGH_RPM);
-    approachingCurve = new ApproachingCurve(MAX_STEERING, TARGET_POS, BASE_SPEED);
-    curve = new Curve();
-    outOfTrack = new OutOfTrack(MAX_SKIDDING, NEGATIVE_ACCEL_PERCENT, VELOCITY_GEAR_4, VELOCITY_GEAR_3, VELOCITY_GEAR_2, MAX_RETURN_ANGLE, MIN_RETURN_ANGLE);
-    stuck = new Stuck(STUCK_SPEED, MIN_RACED_DISTANCE, MAX_STUCK_TICKS, MAX_SLOW_SPEED_TICKS);
+    straightLine.LOW_GEAR_LIMIT = LOW_GEAR_LIMIT;
+    straightLine.LOW_RPM = LOW_RPM;
+    straightLine.AVERAGE_RPM = AVERAGE_RPM;
+    straightLine.HIGH_RPM = HIGH_RPM;
 
+    approachingCurve.MAX_STEERING = MAX_STEERING;
+    approachingCurve.TARGET_POS = TARGET_POS;
+    approachingCurve.BASE_SPEED = BASE_SPEED;
+
+    outOfTrack.MAX_SKIDDING = MAX_SKIDDING;
+    outOfTrack.NEGATIVE_ACCEL_PERCENT = NEGATIVE_ACCEL_PERCENT;
+    outOfTrack.VELOCITY_GEAR_4 = VELOCITY_GEAR_4;
+    outOfTrack.VELOCITY_GEAR_3 = VELOCITY_GEAR_3;
+    outOfTrack.VELOCITY_GEAR_2 = VELOCITY_GEAR_2;
+    outOfTrack.MAX_RETURN_ANGLE = MAX_RETURN_ANGLE;
+    outOfTrack.MIN_RETURN_ANGLE = MIN_RETURN_ANGLE;
+
+    stuck.STUCK_SPEED = STUCK_SPEED;
+    stuck.MIN_RACED_DISTANCE = MIN_RACED_DISTANCE;
+    stuck.MAX_STUCK_TICKS = MAX_STUCK_TICKS;
+    stuck.MAX_SLOW_SPEED_TICKS = MAX_SLOW_SPEED_TICKS;
 }
-CarControl FSMDriver5::wDrive(CarState cs) {
-    transition(cs);
-    Log::instance()->updateLog(current_state, cs);
-    return update(cs);
-}
+
 void FSMDriver5::onRestart() {
     cout << "Restarting the race!" << endl;
 }
@@ -134,26 +144,28 @@ void FSMDriver5::init(float *angles){
 }
 /**The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
 void FSMDriver5::transition(CarState &cs) {
-    DrivingState<FSMDriver5> *state = current_state;
+    DrivingState *state = current_state;
 
     if(Stuck::isStuck(cs)) {
-        state = stuck;
+        state = &stuck;
     } else {
         float var = trackReadingsVariance(cs);
 
         /* @todo change numbers to constants with meaningful names. */
-        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state == straightLine))
-            state = straightLine;
-        else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != curve)
-         || ((var > MIN_APPROACHING_CURVE_VAR) && current_state == approachingCurve)) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
-            state = approachingCurve;
+        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state == &straightLine))
+            state = &straightLine;
+        else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != &curve)
+         || ((var > MIN_APPROACHING_CURVE_VAR) && current_state == &approachingCurve)) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
+            state = &approachingCurve;
         else if(var > 0)
-            state = curve;
+            state = &curve;
         else
-            state = outOfTrack;
+            state = &outOfTrack;
     }
 
     if (current_state != state) change_to(state);
+
+    Log::instance()->updateLog(current_state, cs);
 }
 /**This function is used to turn the string of bits in a float representation of the parameters.*/
 float FSMDriver5::binToFloat (string bits) {
@@ -171,9 +183,4 @@ unsigned int FSMDriver5::binToUsignedInt (string bits) {
 }
 
 FSMDriver5::~FSMDriver5() {
-    delete straightLine;
-    delete approachingCurve;
-    delete curve;
-    delete outOfTrack;
-    delete stuck;
 }

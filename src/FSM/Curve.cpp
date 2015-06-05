@@ -1,10 +1,10 @@
 #include "Curve.h"
 
-Curve::Curve() : currentGear(StraightLine::START_GEAR) {}
+Curve::Curve(FSMDriver *o) : DrivingState(o), currentGear(StraightLine::START_GEAR) {}
 
-Curve::Curve(Curve const &) {}
+// Curve::Curve(Curve const &) {}
 
-CarControl Curve::drive(FSMDriver5 *FSMDriver5, CarState &cs) {
+CarControl Curve::drive(CarState &cs) {
 	float steer = getSteer(cs);
 	int gear = StraightLine::getGear(cs);
 	float accel  = getAccel(cs);

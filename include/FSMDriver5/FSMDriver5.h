@@ -1,7 +1,6 @@
-#ifndef FSMDRIVER5_H
+#ifndef straightLine
 #define FSMDRIVER5_H
 
-#include "WrapperBaseDriver.h"
 #include "FSM.h"
 #include "ApproachingCurve.h"
 #include "StraightLine.h"
@@ -18,7 +17,7 @@
  * @todo describe class.
  * @todo document attributes, fix attribute names (no caps-only).
  * @todo document methods */
-class FSMDriver5 : public WrapperBaseDriver, public DrivingFSM<FSMDriver5> {
+class FSMDriver5 : public FSMDriver {
 private:
     StraightLine straightLine;
     ApproachingCurve approachingCurve;
@@ -54,9 +53,6 @@ public:
     /** Transitions between states (if appropriate).
      * @todo fix documentation. */
     void transition(CarState &);
-
-    /* Inherits documentation. */
-    virtual CarControl wDrive(CarState cs);
 };
 
 #endif // FSMDriver5_H

@@ -40,13 +40,16 @@ public:
     void setParameters(float, int, int, int);
     ~Stuck();
 
-private:
+public:
     //! Parameters
+    /** @todo documentar. Por que estáticos?
+     * @todo deixar argumentos privados. */
     static float STUCK_SPEED;
     static unsigned int MIN_RACED_DISTANCE;
     static unsigned int MAX_STUCK_TICKS;
     static unsigned int MAX_SLOW_SPEED_TICKS;
 
+private:
     unsigned int elapsedTicks;
     static unsigned int slowSpeedTicks;
     static float trackInitialPos;
