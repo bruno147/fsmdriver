@@ -52,7 +52,8 @@ public:
 public:
     //! Parameters
     /** @todo documentar
-     * @todo deixar argumentos privados. */
+     *  @todo deixar argumentos privados. 
+     */
     float MAX_SKIDDING;
     float NEGATIVE_ACCEL_PERCENT;
     int VELOCITY_GEAR_4;

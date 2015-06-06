@@ -1,9 +1,5 @@
 #include "ApproachingCurve.h"
 
-// float MAX_STEERING = 0;
-// float TARGET_POS = 0;
-// float BASE_SPEED = 0;
-
 ApproachingCurve::ApproachingCurve(FSMDriver *o, int _ms, int _tp, int _bs) : DrivingState(o) {
     MAX_STEERING = _ms;
     TARGET_POS = _tp;
@@ -72,6 +68,18 @@ float ApproachingCurve::getBrake(CarState &cs) {
     if (diff > 0) brake = brakeFactor * diff;
 
     return brake;
+}
+
+inline int ApproachingCurve::getGear(CarState &cs) {
+    return StraightLine::getGear(cs);
+}
+
+inline float ApproachingCurve::getAccel(CarState cs) {
+    return (cs.getSpeedX() > targetSpeed ? 0 : 1);
+}
+
+inline bool ApproachingCurve::approachingRightTurn() {
+    return (rSensor > lSensor);
 }
 
 ApproachingCurve::~ApproachingCurve() {}

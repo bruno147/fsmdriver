@@ -1,14 +1,5 @@
 #include "FSMDriver5.h"
 
-//Define constants for transition method:
-/*
-int   FSMDriver5::MAX_STRAIGHT_LINE_VAR     = 1000;
-int   FSMDriver5::MIN_STRAIGHT_LINE_VAR     =  500;
-int   FSMDriver5::MAX_APPROACHING_CURVE_VAR =  400;
-int   FSMDriver5::MIN_APPROACHING_CURVE_VAR =  300;
-*/
-
-
 /******************************************************************************/
 const int NUM_SENSORS = 19;
 /******************************************************************************/
@@ -35,22 +26,17 @@ float trackReadingsVariance(CarState &cs) {
 
 
 //-------------------------------------------------------------------------------------------------------------------
-//FSMDriver5 Class
+// FSMDriver5 Class
 
-/**
-<<<<<<< HEAD:FSMDriver55/FSMDriver55.cpp
-*FSMDriver5 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
-=======
-*FSMDriver55 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
->>>>>>> refactoring:src/FSMDriver55/FSMDriver55.cpp
+/** FSMDriver5 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 */
 FSMDriver5::FSMDriver5() : straightLine(this), approachingCurve(this), curve(this), outOfTrack(this), stuck(this) {
     change_to(&straightLine);
 }
-/**FSMDriver5 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver5 can be used together with Genetic Algorithm using this function.
+
+/** FSMDriver5 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver5 can be used together with Genetic Algorithm using this function.
 */
 FSMDriver5::FSMDriver5(int argc, char** argv) : straightLine(this), approachingCurve(this), curve(this), outOfTrack(this), stuck(this) {
-
 
     // LOW_GEAR_LIMIT = 4;
     // LOW_RPM = 1500;
@@ -142,7 +128,7 @@ void FSMDriver5::init(float *angles){
     for (int i = 0; i < NUM_SENSORS; ++i)
         angles[i] = i*10-90; // @todo como assim?
 }
-/**The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
+/** The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
 void FSMDriver5::transition(CarState &cs) {
     DrivingState *state = current_state;
 
@@ -152,7 +138,7 @@ void FSMDriver5::transition(CarState &cs) {
         float var = trackReadingsVariance(cs);
 
         /* @todo change numbers to constants with meaningful names. */
-        if (var > MAX_STRAIGHT_LINE_VAR || ((var>MIN_STRAIGHT_LINE_VAR) && current_state == &straightLine))
+        if (var > MAX_STRAIGHT_LINE_VAR || ((var > MIN_STRAIGHT_LINE_VAR) && current_state == &straightLine))
             state = &straightLine;
         else if ((var > MAX_APPROACHING_CURVE_VAR && current_state != &curve)
          || ((var > MIN_APPROACHING_CURVE_VAR) && current_state == &approachingCurve)) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
@@ -167,14 +153,14 @@ void FSMDriver5::transition(CarState &cs) {
 
     Log::instance()->updateLog(current_state, cs);
 }
-/**This function is used to turn the string of bits in a float representation of the parameters.*/
+/** This function is used to turn the string of bits in a float representation of the parameters.*/
 float FSMDriver5::binToFloat (string bits) {
     bitset<32> a (bits);
     float *value = reinterpret_cast<float*>(&a);
 
     return *value;
 }
-/**This function is used to turn the string of bits in a unsigned int representation of the parameters.*/
+/** This function is used to turn the string of bits in a unsigned int representation of the parameters.*/
 unsigned int FSMDriver5::binToUsignedInt (string bits) {
     bitset<32> a (bits);
     unsigned int *value = reinterpret_cast<unsigned int*>(&a);

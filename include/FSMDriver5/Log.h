@@ -47,59 +47,33 @@ public:
 
             lapCounter++;
         }
-
     }
-
-    /*void saveLog(){
-        ofstream myfile;
-        myfile.open("results.txt");
-        myfile << "Damage " << damage;
-        myfile << ";DistRaced " << distRaced;
-        myfile << ";total_time " << totalTime;
-        myfile << ";";
-        myfile << endl;
-        myfile.close();
-    }*/
-
-    /*
-    void saveTotalTime(){
-        ofstream myfile;
-        myfile.open("results.txt");
-        myfile << totalTime;
-        myfile.close();
-    }
-    */
-
 
     //send totalTime to shared memory
     void saveTotalTime(int segment_id){
         //if(lapCounter!=3) totalTime=0;
-
-
-        // char* shared_memory;
+        float* shared_memory;
 
         /* Attach the shared memory segment. */
-        // shared_memory = (char*) shmat (segment_id, 0, 0);
-
+        shared_memory = (float*) shmat (segment_id, 0, 0);
 
         cout << "totalTime: " << totalTime << endl;
         cout << "damage: " << damage << endl;
         cout << "totalDistRaced: " << totalDistRaced << endl;
         cout << "distRaced: " << distRaced << endl;
 
-        //Assigned shared memory
-        /*if(lapCounter==3){
-            sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced+distRaced);
-        }else{
-            sprintf (shared_memory, "%f %f %f", totalTime, damage, totalDistRaced);
-        }*/
+        /* Assigned shared memory */
+        // shared_memory[0] = totalTime;
+        // shared_memory[1] = damage;
+        // shared_memory[2] = distRaced;
+        shared_memory[0] = distRaced;
 
 
 
         /* Detach the shared memory segment. */
-        // shmdt (shared_memory);
-
+        shmdt (shared_memory);
     }
+
     int curveComplete(CarState cs){
         if(cs.getDistFromStart()>20){
             flag=1;
@@ -124,10 +98,6 @@ private:
     float distRaced=0;
     float totalTime=0;
     float totalDistRaced=0;
-
-
 };
-
-
 
 #endif // UNB_FSMDRIVER_LOG_H

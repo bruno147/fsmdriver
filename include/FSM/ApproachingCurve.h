@@ -27,16 +27,9 @@ public:
     float getSteering(CarState &cs);
     float getBrake(CarState &cs);
 
-    /** @todo inline no cpp, não no h*/
-    inline int getGear(CarState &cs) {
-        return StraightLine::getGear(cs);
-    }
-    inline float getAccel(CarState cs) {
-        return (cs.getSpeedX() > targetSpeed ? 0 : 1);
-    }
-    inline bool approachingRightTurn() {
-        return (rSensor > lSensor);
-    }
+    inline int getGear(CarState &cs);
+    inline float getAccel(CarState cs);
+    inline bool approachingRightTurn();
 };
 
 

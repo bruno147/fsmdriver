@@ -20,7 +20,6 @@ public:
 private:
     int currentGear;
 
-
     float getAccel(CarState &cs);
     bool isFacingWrongWay(CarState &cs);
     float getBrake(CarState cs);

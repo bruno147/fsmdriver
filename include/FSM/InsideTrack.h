@@ -14,7 +14,7 @@ class InsideTrack : public DrivingState {
 public:
     /* Constructor
      *
-     * @param o a pointer to the driver that owns the state.
+     * \param o a pointer to the driver that owns the state.
      * \param START_GEAR
      * \param LOW_GEAR_LIMIT
      * \param LOW_RPM
@@ -75,7 +75,7 @@ private:
     float getAccel(CarState &cs);
     void setTargetSpeed(CarState &cs);
     /** isFacingWrongWay verify if the car is driving the right path, once it is possible
-    * that the car collide and turn to the opposite way.
+    *   that the car collide and turn to the opposite way.
     * /param cs a data structure cointaining information from the car's sensors.
     */
     bool isFacingWrongWay(CarState &cs);
