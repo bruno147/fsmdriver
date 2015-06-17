@@ -8,8 +8,8 @@
 
 #include "Stuck.h"
 
-Stuck::Stuck(FSMDriver *o, float ss, int mrd, int mst, int msst)
-            : DrivingState(o), stuck_speed(ss), minimum_distance_raced(mrd),
+Stuck::Stuck(float ss, int mrd, int mst, int msst)
+            : stuck_speed(ss), minimum_distance_raced(mrd),
               maximum_number_of_ticks_stuck(mst), maximum_number_of_ticks_in_slow_speed(msst),
               elapsedTicks(0), slowSpeedTicks(0), trackInitialPos(0) {
 }
@@ -42,6 +42,8 @@ Stuck::justStartedRace(CarState &cs) {
     return (cs.getDistRaced() <= minimum_distance_raced);
 }
 
+
+// NUMEROS
 bool
 Stuck::onRightWay(float trackPos, float angle) {
     return (((trackPos < 0) && (angle > -1.57) && (angle < 0)) ||

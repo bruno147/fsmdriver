@@ -1,7 +1,6 @@
 #include "OutOfTrack.h"
 
-OutOfTrack::OutOfTrack(FSMDriver *o, float _ms, float _nap, int _vg4, int _vg3, int _vg2, float _maxra, float _minra)
-                       : DrivingState(o) {
+OutOfTrack::OutOfTrack(float _ms, float _nap, int _vg4, int _vg3, int _vg2, float _maxra, float _minra) {
     MAX_SKIDDING = _ms;
     NEGATIVE_ACCEL_PERCENT = _nap;
     VELOCITY_GEAR_4 = _vg4;

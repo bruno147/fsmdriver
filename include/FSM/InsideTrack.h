@@ -15,16 +15,15 @@ public:
     /* Constructor
      *
      * \param o a pointer to the driver that owns the state.
-     * \param START_GEAR
-     * \param LOW_GEAR_LIMIT
-     * \param LOW_RPM
-     * \param AVERAGE_RPM
-     * \param HIGH_RPM
-     * \param BASE_SPEED
-     * \param SPEED_FACTOR
+     * \param start_gear
+     * \param low_gear_limit
+     * \param low_rpm
+     * \param average_rpm
+     * \param high_rpm
+     * \param base_speed
+     * \param speed_factor
      */
-    InsideTrack(FSMDriver *o,
-                int _sg = 1, int _lgl = 4, int _lrpm = 1500,
+    InsideTrack(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
                 int _arpm = 4000, int _hrpm = 9000, float _bs = 83,
                 float _sf = 1.4);
     // InsideTrack(InsideTrack const &);
@@ -39,13 +38,13 @@ public:
     int getGear(CarState &cs);
     /** Auxiliar function to set class parameters
      *
-     * \param START_GEAR
-     * \param LOW_GEAR_LIMIT
-     * \param LOW_RPM
-     * \param AVERAGE_RPM
-     * \param HIGH_RPM
-     * \param BASE_SPEED
-     * \param SPEED_FACTOR
+     * \param start_gear
+     * \param low_gear_limit
+     * \param low_rpm
+     * \param average_rpm
+     * \param high_rpm
+     * \param base_speed
+     * \param speed_factor
      */
     void setParameters(int, int, int, int, int, float, float);
     //! Empty destructor
@@ -53,25 +52,25 @@ public:
 
 private:
     //! Parameters
-    int START_GEAR;
-    int LOW_GEAR_LIMIT;
-    int LOW_RPM;
-    int AVERAGE_RPM;
-    int HIGH_RPM;
-    float BASE_SPEED;
-    float SPEED_FACTOR;
+    int start_gear;
+    int low_gear_limit;
+    int low_rpm;
+    int average_rpm;
+    int high_rpm;
+    float base_speed;
+    float speed_factor;
 
 
-    int currentGear;
-    float distance, targetSpeed;
+    int current_gear;
+    float distance, target_speed;
 
-    bool shouldDecreaseGear(int currentGear, int rpm);
+    bool shouldDecreaseGear(int current_gear, int rpm);
     bool runningOnLow(int rpm);
     bool runningUnderAverage(int rpm);
     bool runningOnHigh(int rpm);
     bool isLowGear(int gear);
     bool isHighGear(int gear);
-    bool shouldIncreaseGear(int currentGear, int rpm);
+    bool shouldIncreaseGear(int current_gear, int rpm);
     float getAccel(CarState &cs);
     void setTargetSpeed(CarState &cs);
     /** isFacingWrongWay verify if the car is driving the right path, once it is possible

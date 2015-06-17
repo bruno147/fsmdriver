@@ -20,7 +20,7 @@ public:
 	/** Construtor.
 	 *
 	 * @param o a pointer to the driver that owns the state. */
-	DrivingState(FSMDriver *o);
+	DrivingState();
 
 	/** Virtual destructor. */
     virtual ~DrivingState();
@@ -35,10 +35,6 @@ public:
 
     /** Called when exiting the state. */
     virtual void exit();
-
-protected:
-	/** Pointer to the driver that owns the state. */
-	FSMDriver *owner;
 };
 
 #endif // UNB_FSMDRIVER_DRIVING_STATE_H

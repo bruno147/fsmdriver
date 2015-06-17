@@ -29,7 +29,7 @@ public:
      * @param msst the maximum ticks in slow speed
      *
      * @todo fix parameter descriptions */
-    Stuck(FSMDriver *o, float ss = 5.0, int mrd = 100, int mst = 300, int msst = 50);
+    Stuck(float ss = 5.0, int mrd = 100, int mst = 300, int msst = 50);
 
     /** Destructor. */
     ~Stuck();

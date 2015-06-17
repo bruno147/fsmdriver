@@ -2,17 +2,16 @@
 
 // float SPEED_FACTOR = 1.4;
 
-InsideTrack::InsideTrack(FSMDriver *o, int _sg, int _lgl, int _lrpm, int _arpm,
-                         int _hrpm, float _bs, float _sf)
-                        : DrivingState(o) {
-    START_GEAR = _sg;
-    LOW_GEAR_LIMIT = _lgl;
-    LOW_RPM = _lrpm;
-    AVERAGE_RPM = _arpm;
-    HIGH_RPM = _hrpm;
-    BASE_SPEED = _bs;
-    SPEED_FACTOR = _sf;
-    currentGear = START_GEAR;
+InsideTrack::InsideTrack(int _sg, int _lgl, int _lrpm, int _arpm,
+                         int _hrpm, float _bs, float _sf) {
+    start_gear = _sg;
+    low_gear_limit = _lgl;
+    low_rpm = _lrpm;
+    average_rpm = _arpm;
+    high_rpm = _hrpm;
+    base_speed = _bs;
+    speed_factor = _sf;
+    current_gear = start_gear;
 }
 
 // InsideTrack::InsideTrack(InsideTrack const &) {}
@@ -30,7 +29,7 @@ CarControl InsideTrack::drive(CarState &cs) {
 
 int InsideTrack::getGear(CarState &cs) {
     int gear = cs.getGear();
-    if(gear <= 0) return START_GEAR;
+    if(gear <= 0) return start_gear;
 
     int rpm = cs.getRpm();
 
@@ -40,33 +39,33 @@ int InsideTrack::getGear(CarState &cs) {
     return gear;
 }
 
-bool InsideTrack::shouldDecreaseGear(int currentGear, int rpm) {
-    if(isLowGear(currentGear) && runningOnLow(rpm)) return true;
-    if(isHighGear(currentGear) && runningUnderAverage(rpm)) return true;
+bool InsideTrack::shouldDecreaseGear(int current_gear, int rpm) {
+    if(isLowGear(current_gear) && runningOnLow(rpm)) return true;
+    if(isHighGear(current_gear) && runningUnderAverage(rpm)) return true;
     return false;
 }
 
 inline bool InsideTrack::runningOnLow(int rpm) {
-    return (rpm < LOW_RPM);
+    return (rpm < low_rpm);
 }
 
 inline bool InsideTrack::runningUnderAverage(int rpm) {
-    return (rpm <= AVERAGE_RPM);
+    return (rpm <= average_rpm);
 }
 
 inline bool InsideTrack::runningOnHigh(int rpm) {
-    return (rpm > HIGH_RPM);
+    return (rpm > high_rpm);
 }
 
 inline bool InsideTrack::isLowGear(int gear) {
-    return (gear > START_GEAR && gear < LOW_GEAR_LIMIT);
+    return (gear > start_gear && gear < low_gear_limit);
 }
 
 inline bool InsideTrack::isHighGear(int gear) {
-    return (gear >= LOW_GEAR_LIMIT);
+    return (gear >= low_gear_limit);
 }
 
-inline bool InsideTrack::shouldIncreaseGear(int currentGear, int rpm) {
+inline bool InsideTrack::shouldIncreaseGear(int current_gear, int rpm) {
     return runningOnHigh(rpm);
 }
 
@@ -75,15 +74,15 @@ bool InsideTrack::isFacingWrongWay(CarState &cs) {
 }
 
 float InsideTrack::getAccel(CarState &cs) { //@todo Change accelaration logic.
-    return cs.getSpeedX() > targetSpeed ? 0:1;
+    return cs.getSpeedX() > target_speed ? 0:1;
 }
 
 float InsideTrack::getBrake(CarState cs) {
-    return cs.getSpeedX() > targetSpeed ? 0.3:0;
+    return cs.getSpeedX() > target_speed ? 0.3:0;
 }
 
 void InsideTrack::setTargetSpeed(CarState &cs) {
-    this->targetSpeed = BASE_SPEED + SPEED_FACTOR*this->distance;
+    this->target_speed = base_speed + speed_factor*this->distance;
 }
 
 float InsideTrack::findFarthestDirection(CarState &cs) {
@@ -101,8 +100,8 @@ float InsideTrack::findFarthestDirection(CarState &cs) {
 }
 
 float InsideTrack::normalizeSteer(float angle) {
-    const float MAXSTEER = 0.785398;
-    return angle/MAXSTEER;
+    const float maxsteer = 0.785398;
+    return angle/maxsteer;
 }
 
 float InsideTrack::getSteer(CarState &cs) {

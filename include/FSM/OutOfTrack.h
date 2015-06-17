@@ -23,8 +23,7 @@ public:
      * \param MAX_RETURN_ANGLE
      * \param MIN_RETURN_ANGLE
      */
-    OutOfTrack(FSMDriver *o,
-               float _ms = 3, float _nap = 0.1, int _vg4 = 90,
+    OutOfTrack(float _ms = 3, float _nap = 0.1, int _vg4 = 90,
                int _vg3 = 70, int _vg2 = 40, float _maxra = 0.7,
                float _minra = 0.5);
     //! Construct from parameters.

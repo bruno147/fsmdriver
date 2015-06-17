@@ -1,17 +1,17 @@
 #include "StraightLine.h"
 
-int StraightLine::START_GEAR = 1;
-int StraightLine::LOW_GEAR_LIMIT = 4;
-int StraightLine::LOW_RPM = 1500;
-int StraightLine::AVERAGE_RPM = 4000;
-int StraightLine::HIGH_RPM = 9500;
+int StraightLine::start_gear = 1;
+int StraightLine::low_gear_limit = 4;
+int StraightLine::low_rpm = 1500;
+int StraightLine::average_rpm = 4000;
+int StraightLine::high_rpm = 9500;
 
-StraightLine::StraightLine(FSMDriver *o, int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) : DrivingState(o) {
-    START_GEAR = _sg;
-    LOW_GEAR_LIMIT = _lgl;
-    LOW_RPM = _lrpm;
-    AVERAGE_RPM = _arpm;
-    HIGH_RPM = _hrpm;
+StraightLine::StraightLine(FSMDriver *o, int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) {
+    start_gear = _sg;
+    low_gear_limit = _lgl;
+    low_rpm = _lrpm;
+    average_rpm = _arpm;
+    high_rpm = _hrpm;
 }
 
 // StraightLine::StraightLine(StraightLine const &) {}
@@ -24,9 +24,9 @@ CarControl StraightLine::drive(CarState &cs) {
     return CarControl(accel, brake, getGear(cs), steer, clutch, focus, meta);
 }
 
-bool StraightLine::shouldDecreaseGear(int currentGear, int rpm) {
-    if(isLowGear(currentGear) && runningOnLow(rpm)) return true;
-    if(isHighGear(currentGear) && runningUnderAverage(rpm)) return true;
+bool StraightLine::shouldDecreaseGear(int current_gear, int rpm) {
+    if(isLowGear(current_gear) && runningOnLow(rpm)) return true;
+    if(isHighGear(current_gear) && runningUnderAverage(rpm)) return true;
     return false;
 }
 
@@ -36,7 +36,7 @@ float StraightLine::getBrake(CarState &cs) {
 
 int StraightLine::getGear(CarState &cs) {
     int gear = cs.getGear();
-    if(gear <= 0) return START_GEAR;
+    if(gear <= 0) return start_gear;
 
     int rpm = cs.getRpm();
 
@@ -47,26 +47,26 @@ int StraightLine::getGear(CarState &cs) {
 }
 
 inline bool StraightLine::runningOnLow(int rpm) {
-    return (rpm < LOW_RPM);
+    return (rpm < low_rpm);
 }
 
 inline bool StraightLine::runningUnderAverage(int rpm) {
-    return (rpm <= AVERAGE_RPM);
+    return (rpm <= average_rpm);
 }
 
 inline bool StraightLine::runningOnHigh(int rpm) {
-    return (rpm > HIGH_RPM);
+    return (rpm > high_rpm);
 }
 
 inline bool StraightLine::isLowGear(int gear) {
-    return (gear > START_GEAR && gear < LOW_GEAR_LIMIT);
+    return (gear > start_gear && gear < low_gear_limit);
 }
 
 inline bool StraightLine::isHighGear(int gear) {
-    return (gear >= LOW_GEAR_LIMIT);
+    return (gear >= low_gear_limit);
 }
 
-inline bool StraightLine::shouldIncreaseGear(int currentGear, int rpm) {
+inline bool StraightLine::shouldIncreaseGear(int current_gear, int rpm) {
     return runningOnHigh(rpm);
 }
 

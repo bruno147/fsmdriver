@@ -1,6 +1,6 @@
 #include "Curve.h"
 
-Curve::Curve(FSMDriver *o) : DrivingState(o), currentGear(StraightLine::START_GEAR) {}
+Curve::Curve() : currentGear(StraightLine::start_gear) {}
 
 // Curve::Curve(Curve const &) {}
 

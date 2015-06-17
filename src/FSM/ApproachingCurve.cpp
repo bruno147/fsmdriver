@@ -1,6 +1,6 @@
 #include "ApproachingCurve.h"
 
-ApproachingCurve::ApproachingCurve(FSMDriver *o, int _ms, int _tp, int _bs) : DrivingState(o) {
+ApproachingCurve::ApproachingCurve(int _ms, int _tp, int _bs) {
     MAX_STEERING = _ms;
     TARGET_POS = _tp;
     BASE_SPEED = _bs;

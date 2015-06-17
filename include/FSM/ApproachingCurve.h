@@ -8,7 +8,7 @@
 /**Class to treat State where the section of the track before a curve, to better complete a curve it require a speed depending of the curve(for example how obligue it is) */
 class ApproachingCurve : public DrivingState {
 public:
-    ApproachingCurve(FSMDriver *o, int _ms = 0, int _tp = 0, int _bs = 0);
+    ApproachingCurve(int _ms = 0, int _tp = 0, int _bs = 0);
 
     /* Inherited documentation. */
     CarControl drive(CarState &);

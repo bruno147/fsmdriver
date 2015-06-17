@@ -18,12 +18,12 @@ int signum(float n) {
 /**
 *FSMDriver3 Constructor: it initilize at straightline state in the begining of the race, here the parameters are set with fixed values.
 */
-FSMDriver3::FSMDriver3() : insideTrack(this), outOfTrack(this), stuck(this) {
+FSMDriver3::FSMDriver3() {
     change_to(&insideTrack);
 }
 /**FSMDriver3 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver3 can be used together with Genetic Algorithm using this function.
 */
-FSMDriver3::FSMDriver3(int argc, char** argv) : insideTrack(this), outOfTrack(this), stuck(this) {
+FSMDriver3::FSMDriver3(int argc, char** argv) {
     change_to(&insideTrack);
 }
 

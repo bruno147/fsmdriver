@@ -8,7 +8,7 @@
 /**Class to treat curve state where the track has a minimal curvature. Note that this state is important at the race considering oponents with equal speed the way the driver complete the curve can achieve the lead at the race.*/
 class Curve : public DrivingState {
 public:
-    Curve(FSMDriver *o);
+    Curve();
     // Curve(Curve const &);
     // void operator=(Curve const&);
 
