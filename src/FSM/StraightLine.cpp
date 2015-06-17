@@ -1,3 +1,14 @@
+/**  @file: StraightLine.cpp
+ * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
+ *
+ * https://github.com/bruno147/fsmdriver
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version. 
+ */
+
 #include "StraightLine.h"
 
 int StraightLine::start_gear = 1;
@@ -6,7 +17,7 @@ int StraightLine::low_rpm = 1500;
 int StraightLine::average_rpm = 4000;
 int StraightLine::high_rpm = 9500;
 
-StraightLine::StraightLine(FSMDriver *o, int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) {
+StraightLine::StraightLine(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) {
     start_gear = _sg;
     low_gear_limit = _lgl;
     low_rpm = _lrpm;

@@ -1,10 +1,13 @@
 /**  @file: FSMDriver.cpp
- * @author: Guilherme N. Ramos (gnramos@unb.br)
+ * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
+ * https://github.com/bruno147/fsmdriver
+ * 
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
- * version. */
+ * version. 
+ */
 
 #include "FSMDriver.h"
 
@@ -16,15 +19,15 @@ FSMDriver::~FSMDriver() {
 }
 
 void
-FSMDriver::change_to(DrivingState *state) {
+FSMDriver::changeTo(DrivingState *state) {
 	assert(state);
 	previous_state = current_state;
 	current_state = state;
 }
 
 void
-FSMDriver::revert_state() {
-	change_to(previous_state);
+FSMDriver::revertState() {
+	changeTo(previous_state);
 }
 
 CarControl

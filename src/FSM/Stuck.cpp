@@ -1,17 +1,20 @@
 /**  @file: Stuck.cpp
- * @author: Guilherme N. Ramos (gnramos@unb.br)
+ * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
+ * https://github.com/bruno147/fsmdriver
+ * 
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
- * version. */
+ * version. 
+ */
 
 #include "Stuck.h"
 
 Stuck::Stuck(float ss, int mrd, int mst, int msst)
             : stuck_speed(ss), minimum_distance_raced(mrd),
               maximum_number_of_ticks_stuck(mst), maximum_number_of_ticks_in_slow_speed(msst),
-              elapsedTicks(0), slowSpeedTicks(0), trackInitialPos(0) {
+              elapsed_ticks(0), slow_speed_ticks(0), track_initial_pos(0) {
 }
 
 Stuck::~Stuck() {
@@ -20,19 +23,19 @@ Stuck::~Stuck() {
 
 CarControl
 Stuck::drive(CarState &cs) {
-    ++elapsedTicks;
+    ++elapsed_ticks;
 
-    trackInitialPos = getInitialPos(cs);
+    track_initial_pos = getInitialPos(cs);
 
     if(notStuckAnymore(cs) || hasBeenStuckLongEnough()){
-        elapsedTicks = 0;
-        slowSpeedTicks = 0;
-        trackInitialPos = 0;
+        elapsed_ticks = 0;
+        slow_speed_ticks = 0;
+        track_initial_pos = 0;
     }
 
     const float accel = 1, brake = 0, clutch = 0;
     const int gear = -1, focus = 0, meta = 0;
-    float steer = getSteer(trackInitialPos, cs);
+    float steer = getSteer(track_initial_pos, cs);
 
     return CarControl(accel, brake, gear, steer, clutch, focus, meta);
 }
@@ -45,11 +48,11 @@ Stuck::justStartedRace(CarState &cs) {
 
 // NUMEROS
 bool
-Stuck::onRightWay(float trackPos, float angle) {
-    return (((trackPos < 0) && (angle > -1.57) && (angle < 0)) ||
-            ((trackPos > 0) && (angle < 1.57 ) && (angle > 0)) ||
-            ((trackPos > 1) && (angle > 0))||
-            ((trackPos < -1) && (angle < 0)));
+Stuck::onRightWay(float track_pos, float angle) {
+    return (((track_pos < 0) && (angle > -1.57) && (angle < 0)) ||
+            ((track_pos > 0) && (angle < 1.57 ) && (angle > 0)) ||
+            ((track_pos > 1) && (angle > 0))||
+            ((track_pos < -1) && (angle < 0)));
 }
 
 /* @todo give this test (and the previous ones) with a meaningful name... */
@@ -60,7 +63,7 @@ Stuck::notStuckAnymore(CarState &cs) {
 
 bool
 Stuck::hasBeenStuckLongEnough() {
-    return (elapsedTicks >= maximum_number_of_ticks_stuck);
+    return (elapsed_ticks >= maximum_number_of_ticks_stuck);
 }
 
 bool Stuck::isStuck(CarState &cs) {
@@ -68,28 +71,28 @@ bool Stuck::isStuck(CarState &cs) {
 }
 
 float
-Stuck::getSteer(float trackInitialPos, CarState &cs){
+Stuck::getSteer(float track_initial_pos, CarState &cs){
     if(abs(cs.getAngle()) > 1.557) // around 180 graus
-        return (trackInitialPos > 0 ? -1 : 1);
+        return (track_initial_pos > 0 ? -1 : 1);
 
-    return (trackInitialPos > 0 ? 1 : -1);
+    return (track_initial_pos > 0 ? 1 : -1);
 }
 
 bool
 Stuck::seemsStuck(CarState &cs) {
     if(cs.getSpeedX() < stuck_speed)
-        ++slowSpeedTicks;
+        ++slow_speed_ticks;
     else
-        slowSpeedTicks = 0;
+        slow_speed_ticks = 0;
 
     if(notStuckAnymore(cs))
-        slowSpeedTicks = 0;
+        slow_speed_ticks = 0;
 
-    return (slowSpeedTicks > maximum_number_of_ticks_in_slow_speed);
+    return (slow_speed_ticks > maximum_number_of_ticks_in_slow_speed);
 }
 
 float
 Stuck::getInitialPos(CarState &cs) {
-	return (trackInitialPos == 0 ? cs.getTrackPos() : trackInitialPos);
+	return (track_initial_pos == 0 ? cs.getTrackPos() : track_initial_pos);
 }
 

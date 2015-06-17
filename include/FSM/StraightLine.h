@@ -1,3 +1,15 @@
+/**  @file: StraightLine.h
+ * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
+ *
+ * https://github.com/bruno147/fsmdriver
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version. 
+ */
+
+
 #ifndef UNB_FSMDRIVER_STATE_STRAIGHT_LINE_H
 #define UNB_FSMDRIVER_STATE_STRAIGHT_LINE_H
 
@@ -8,7 +20,7 @@ class StraightLine : public DrivingState {
 public:
     static int start_gear;
 
-    StraightLine(FSMDriver *o, int _sg = 1, int _lgl = 4, int _lrpm = 1500,
+    StraightLine(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
                  int _arpm = 4000, int _hrpm = 9500);
     // StraightLine(StraightLine const &);
     // void operator=(StraightLine const&);

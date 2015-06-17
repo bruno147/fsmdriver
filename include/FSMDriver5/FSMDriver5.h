@@ -1,3 +1,15 @@
+/**  @file: FSMDriver5.h
+ * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
+ *
+ * https://github.com/bruno147/fsmdriver
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version. 
+ */
+
+
 #ifndef UNB_FSMDRIVER_FSMDRIVER5_H
 #define UNB_FSMDRIVER_FSMDRIVER5_H
 
@@ -19,18 +31,18 @@
  * @todo document methods */
 class FSMDriver5 : public FSMDriver {
 private:
-    StraightLine straightLine;
-    ApproachingCurve approachingCurve;
+    StraightLine straight_line;
+    ApproachingCurve approaching_curve;
     Curve curve;
-    OutOfTrack outOfTrack;
+    OutOfTrack out_of_track;
     Stuck stuck;
 
     int segment_id;
 
-    int MAX_STRAIGHT_LINE_VAR;
-    int MIN_STRAIGHT_LINE_VAR;
-    int MAX_APPROACHING_CURVE_VAR;
-    int MIN_APPROACHING_CURVE_VAR;
+    int max_straight_line_var;
+    int min_straight_line_var;
+    int max_approaching_curve_var;
+    int min_approaching_curve_var;
 
     float binToFloat (string bits);
     unsigned int binToUsignedInt (string bits);
