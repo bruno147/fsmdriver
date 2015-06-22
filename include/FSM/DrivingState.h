@@ -1,5 +1,4 @@
 /**  @file: DrivingState.h
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 
@@ -21,8 +20,7 @@ class FSMDriver;
 class DrivingState {
 public:
 	/** Construtor.
-	 *
-	 * @param o a pointer to the driver that owns the state. */
+     */
 	DrivingState();
 
 	/** Virtual destructor. */

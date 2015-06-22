@@ -1,5 +1,4 @@
 /**  @file: StraightLine.h
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 
@@ -16,18 +15,18 @@
 #include "DrivingState.h"
 
 /**Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.*/
+ /*doc classe*/
 class StraightLine : public DrivingState {
 public:
     static int start_gear;
-
+    // doc construtor
     StraightLine(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
                  int _arpm = 4000, int _hrpm = 9500);
-    // StraightLine(StraightLine const &);
-    // void operator=(StraightLine const&);
 
     /* Inherited documentation. */
     CarControl drive(CarState &);
 
+    // o pq de serem estaticos
     static int getGear(CarState &cs);
 
     ~StraightLine();

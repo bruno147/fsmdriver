@@ -1,5 +1,4 @@
 /**  @file: Curve.cpp
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 
@@ -11,11 +10,12 @@
 
 #include "Curve.h"
 
-Curve::Curve() : current_gear(StraightLine::start_gear) {}
+Curve::Curve() : current_gear(StraightLine::start_gear) {
+    /* Nothing. */
+}
 
-// Curve::Curve(Curve const &) {}
-
-CarControl Curve::drive(CarState &cs) {
+CarControl
+Curve::drive(CarState &cs) {
 	float steer = getSteer(cs);
 	int gear = StraightLine::getGear(cs);
 	float accel  = getAccel(cs);
@@ -25,19 +25,23 @@ CarControl Curve::drive(CarState &cs) {
 	return CarControl(accel, brake, gear, steer, clutch);
 }
 
-float Curve::getAccel(CarState &cs) { //@todo Change accelaration logic.
+float
+Curve::getAccel(CarState &cs) { //@todo Change accelaration logic.
 	return 0.6;
 }
 
-bool Curve::isFacingWrongWay(CarState &cs) {
+bool
+Curve::isFacingWrongWay(CarState &cs) {
     return cs.getAngle() < -M_PI/2 || cs.getAngle() > M_PI/2;
 }
 
-float Curve::getBrake(CarState cs) {
+float
+Curve::getBrake(CarState cs) {
 	return (cs.getSpeedX() < 0 ? 1:0);
 }
 
-float Curve::findFarthestDirection(CarState &cs) {
+float
+Curve::findFarthestDirection(CarState &cs) {
     float farthestSensor = -INFINITY;
     float farthestDirection = 0;
     for (int i = 0; i < 19; i++) {
@@ -50,13 +54,17 @@ float Curve::findFarthestDirection(CarState &cs) {
     return normalizeSteer(-farthestDirection);
 }
 
-float Curve::normalizeSteer(float angle) {
+float
+Curve::normalizeSteer(float angle) {
     const float maxsteer = 0.785398;
     return angle/maxsteer;
 }
-/**The steer is a essential actuator, getSteer obtain it using the track sensors to get the higher one and aplied that sensor's angle.*/
-float Curve::getSteer(CarState &cs) {
+/** The steer is a essential actuator, getSteer obtain it using the track sensors to get the higher one and aplied that sensor's angle.*/
+float
+Curve::getSteer(CarState &cs) {
     return isFacingWrongWay(cs) ? cs.getAngle() : findFarthestDirection(cs);
 }
 
-Curve::~Curve() {}
+Curve::~Curve() {
+    /* Nothing. */
+}

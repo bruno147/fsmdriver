@@ -1,5 +1,4 @@
 /**  @file: FSMDriver5.h
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 

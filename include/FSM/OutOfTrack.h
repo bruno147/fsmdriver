@@ -1,5 +1,4 @@
 /**  @file: OutOfTrack.h
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 
@@ -26,14 +25,13 @@ class OutOfTrack : public DrivingState {
 public:
     /** Constructor.
      *
-     * @param o a pointer to the driver that owns the state.
-     * \param max_skidding
-     * \param negative_accel_percent
-     * \param velocity_gear_4
-     * \param velocity_gear_3
-     * \param velocity_gear_2
-     * \param max_return_angle
-     * \param min_return_angle
+     * @param max_skidding
+     * @param negative_accel_percent
+     * @param velocity_gear_4
+     * @param velocity_gear_3
+     * @param velocity_gear_2
+     * @param max_return_angle
+     * @param min_return_angle
      */
     OutOfTrack(float _ms = 3, float _nap = 0.1, int _vg4 = 90,
                int _vg3 = 70, int _vg2 = 40, float _maxra = 0.7,
@@ -48,13 +46,13 @@ public:
 
     /** Auxiliar function to set class parameters
      *
-     * \param max_skidding
-     * \param negative_accel_percent
-     * \param velocity_gear_4
-     * \param velocity_gear_3
-     * \param velocity_gear_2
-     * \param max_return_angle
-     * \param min_return_angle
+     * @param max_skidding
+     * @param negative_accel_percent
+     * @param velocity_gear_4
+     * @param velocity_gear_3
+     * @param velocity_gear_2
+     * @param max_return_angle
+     * @param min_return_angle
      */
     void setParameters(float, float, int, int, int, float, float);
     //! Empty destructor

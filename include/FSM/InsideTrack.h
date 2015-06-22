@@ -1,5 +1,4 @@
 /**  @file: InsideTrack.h
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 
@@ -25,21 +24,17 @@ class InsideTrack : public DrivingState {
 public:
     /* Constructor
      *
-     * \param o a pointer to the driver that owns the state.
-     * \param start_gear
-     * \param low_gear_limit
-     * \param low_rpm
-     * \param average_rpm
-     * \param high_rpm
-     * \param base_speed
-     * \param speed_factor
+     * @param start_gear
+     * @param low_gear_limit
+     * @param low_rpm
+     * @param average_rpm
+     * @param high_rpm
+     * @param base_speed
+     * @param speed_factor
      */
     InsideTrack(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
                 int _arpm = 4000, int _hrpm = 9000, float _bs = 83,
                 float _sf = 1.4);
-    // InsideTrack(InsideTrack const &);
-    // void operator=(InsideTrack const&);
-
 
     /* Inherited documentation. */
     CarControl drive(CarState &);
@@ -49,13 +44,13 @@ public:
     int getGear(CarState &cs);
     /** Auxiliar function to set class parameters
      *
-     * \param start_gear
-     * \param low_gear_limit
-     * \param low_rpm
-     * \param average_rpm
-     * \param high_rpm
-     * \param base_speed
-     * \param speed_factor
+     * @param start_gear
+     * @param low_gear_limit
+     * @param low_rpm
+     * @param average_rpm
+     * @param high_rpm
+     * @param base_speed
+     * @param speed_factor
      */
     void setParameters(int, int, int, int, int, float, float);
     //! Empty destructor

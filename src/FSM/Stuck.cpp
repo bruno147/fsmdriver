@@ -1,5 +1,4 @@
 /**  @file: Stuck.cpp
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 
@@ -46,7 +45,7 @@ Stuck::justStartedRace(CarState &cs) {
 }
 
 
-// NUMEROS
+// @todo NUMEROS
 bool
 Stuck::onRightWay(float track_pos, float angle) {
     return (((track_pos < 0) && (angle > -1.57) && (angle < 0)) ||

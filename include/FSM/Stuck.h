@@ -1,5 +1,4 @@
 /**  @file: Stuck.h
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 
@@ -26,7 +25,6 @@ class Stuck : public DrivingState {
 public:
     /** Constructor.
      *
-     * @param o a pointer to the driver that owns the state.
      * @param ss the stuck speed
      * @param mrd the minimum raced distance
      * @param mst the maximum stuck ticks

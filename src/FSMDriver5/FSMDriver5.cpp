@@ -1,10 +1,20 @@
+/**  @file: FSMDriver5.cpp
+ *
+ * https://github.com/bruno147/fsmdriver
+ * 
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version. 
+ */
+
 #include "FSMDriver5.h"
 
 /******************************************************************************/
 const int NUM_SENSORS = 19;
 /******************************************************************************/
 
-/**The varience describe the track curvature, information used to choose the state that will control the car.*/
+/** The varience describe the track curvature, information used to choose the state that will control the car.*/
 float trackReadingsVariance(CarState &cs) {
     vector<float> sensors(NUM_SENSORS);
     float mean = 0, var = 0;
@@ -114,22 +124,27 @@ FSMDriver5::FSMDriver5(int argc, char** argv) {
     stuck.maximum_number_of_ticks_in_slow_speed = maximum_number_of_ticks_in_slow_speed;
 }
 
-void FSMDriver5::onRestart() {
+void
+FSMDriver5::onRestart() {
     cout << "Restarting the race!" << endl;
 }
-string FSMDriver5::getArgument(int i, char** argv){
+string
+FSMDriver5::getArgument(int i, char** argv){
     return string(argv[1]).substr((i*32), ((i+1)*32));
 }
-void FSMDriver5::onShutdown() {
+void
+FSMDriver5::onShutdown() {
     Log::instance()->saveTotalTime(segment_id);
     cout << "End of race!" << endl;
 }
-void FSMDriver5::init(float *angles){
+void
+FSMDriver5::init(float *angles){
     for (int i = 0; i < NUM_SENSORS; ++i)
         angles[i] = i*10-90; // @todo como assim?
 }
 /** The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
-void FSMDriver5::transition(CarState &cs) {
+void
+FSMDriver5::transition(CarState &cs) {
     DrivingState *state = current_state;
 
     if(stuck.isStuck(cs)) {
@@ -154,14 +169,16 @@ void FSMDriver5::transition(CarState &cs) {
     Log::instance()->updateLog(current_state, cs);
 }
 /** This function is used to turn the string of bits in a float representation of the parameters.*/
-float FSMDriver5::binToFloat (string bits) {
+float
+FSMDriver5::binToFloat (string bits) {
     bitset<32> a (bits);
     float *value = reinterpret_cast<float*>(&a);
 
     return *value;
 }
 /** This function is used to turn the string of bits in a unsigned int representation of the parameters.*/
-unsigned int FSMDriver5::binToUsignedInt (string bits) {
+unsigned int
+FSMDriver5::binToUsignedInt (string bits) {
     bitset<32> a (bits);
     unsigned int *value = reinterpret_cast<unsigned int*>(&a);
 

@@ -1,5 +1,4 @@
 /**  @file: Curve.h
- * @author: Bruno Macedo, Gabriel Araujo, Gabriel Sousa, Matheus Crestani, Yuri Galli, Guilherme N. Ramos (gnramos@unb.br)
  *
  * https://github.com/bruno147/fsmdriver
  * 
@@ -16,12 +15,10 @@
 #include "DrivingState.h"
 #include "StraightLine.h"
 
-/**Class to treat curve state where the track has a minimal curvature. Note that this state is important at the race considering oponents with equal speed the way the driver complete the curve can achieve the lead at the race.*/
+/** Class to treat curve state where the track has a minimal curvature. Note that this state is important at the race considering oponents with equal speed the way the driver complete the curve can achieve the lead at the race.*/
 class Curve : public DrivingState {
 public:
     Curve();
-    // Curve(Curve const &);
-    // void operator=(Curve const&);
 
     /* Inherited documentation. */
     CarControl drive(CarState &);
