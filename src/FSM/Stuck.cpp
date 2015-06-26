@@ -11,9 +11,11 @@
 #include "Stuck.h"
 
 Stuck::Stuck(float ss, int mrd, int mst, int msst)
-            : stuck_speed(ss), minimum_distance_raced(mrd),
-              maximum_number_of_ticks_stuck(mst), maximum_number_of_ticks_in_slow_speed(msst),
-              elapsed_ticks(0), slow_speed_ticks(0), track_initial_pos(0) {
+            : elapsed_ticks(0), slow_speed_ticks(0), track_initial_pos(0) {
+    stuck_speed = ss;
+    minimum_distance_raced = mrd;
+    maximum_number_of_ticks_stuck = mst;
+    maximum_number_of_ticks_in_slow_speed = msst;
 }
 
 Stuck::~Stuck() {
@@ -37,6 +39,15 @@ Stuck::drive(CarState &cs) {
     float steer = getSteer(track_initial_pos, cs);
 
     return CarControl(accel, brake, gear, steer, clutch, focus, meta);
+}
+
+void
+Stuck::setParameters(float ss, int mrd, int mst, int msst)
+{
+    stuck_speed = ss;
+    minimum_distance_raced = mrd;
+    maximum_number_of_ticks_stuck = mst;
+    maximum_number_of_ticks_in_slow_speed = msst;
 }
 
 bool

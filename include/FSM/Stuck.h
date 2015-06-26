@@ -25,10 +25,7 @@ class Stuck : public DrivingState {
 public:
     /** Constructor.
      *
-     * @param ss the stuck speed
-     * @param mrd the minimum raced distance
-     * @param mst the maximum stuck ticks
-     * @param msst the maximum ticks in slow speed
+     * Call setParameters
      *
      * @todo fix parameter descriptions */
     Stuck(float ss = 5.0, int mrd = 100, int mst = 300, int msst = 50);
@@ -45,6 +42,8 @@ public:
      * @return true if the controller is stuck, false otherwise. */
     bool isStuck(CarState &cs);
 
+    void setParameters(float ss, int mrd, int mst, int msst);
+
 private:
     /** @todo proper documentation of attributes */
     float stuck_speed;
@@ -52,7 +51,6 @@ private:
     unsigned int maximum_number_of_ticks_stuck;
     unsigned int maximum_number_of_ticks_in_slow_speed;
 
-private:
     /** @todo proper documentation of attributes */
     bool seemsStuck(CarState &cs);
     bool justStartedRace(CarState &cs);
