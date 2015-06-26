@@ -24,13 +24,7 @@ class InsideTrack : public DrivingState {
 public:
     /* Constructor
      *
-     * @param start_gear
-     * @param low_gear_limit
-     * @param low_rpm
-     * @param average_rpm
-     * @param high_rpm
-     * @param base_speed
-     * @param speed_factor
+     * Call setParameters
      */
     InsideTrack(int _sg = 1, int _lgl = 4, int _lrpm = 1500,
                 int _arpm = 4000, int _hrpm = 9000, float _bs = 83,

@@ -12,14 +12,8 @@
 
 InsideTrack::InsideTrack(int _sg, int _lgl, int _lrpm, int _arpm,
                          int _hrpm, float _bs, float _sf) {
-    start_gear = _sg;
-    low_gear_limit = _lgl;
-    low_rpm = _lrpm;
-    average_rpm = _arpm;
-    high_rpm = _hrpm;
-    base_speed = _bs;
-    speed_factor = _sf;
-    current_gear = start_gear;
+
+    setParameters(_sg, _lgl, _lrpm, _arpm, _hrpm, _bs, _sf);
 }
 
 CarControl
@@ -31,6 +25,18 @@ InsideTrack::drive(CarState &cs) {
     float brake = getBrake(cs);
 	float clutch = 0;
 	return CarControl(accel, brake, gear, steer, clutch);
+}
+
+void InsideTrack::setParameters( int _sg, int _lgl, int _lrpm, int _arpm,
+                    int _hrpm, float _bs, float _sf) {
+    start_gear = _sg;
+    low_gear_limit = _lgl;
+    low_rpm = _lrpm;
+    average_rpm = _arpm;
+    high_rpm = _hrpm;
+    base_speed = _bs;
+    speed_factor = _sf;
+    current_gear = start_gear;
 }
 
 int
