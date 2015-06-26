@@ -25,21 +25,11 @@ class OutOfTrack : public DrivingState {
 public:
     /** Constructor.
      *
-     * @param max_skidding
-     * @param negative_accel_percent
-     * @param velocity_gear_4
-     * @param velocity_gear_3
-     * @param velocity_gear_2
-     * @param max_return_angle
-     * @param min_return_angle
+     * Call setParameters
      */
     OutOfTrack(float _ms = 3, float _nap = 0.1, int _vg4 = 90,
                int _vg3 = 70, int _vg2 = 40, float _maxra = 0.7,
                float _minra = 0.5);
-    //! Construct from parameters.
-    // OutOfTrack(OutOfTrack const &);
-    // void operator=(OutOfTrack const&);
-
 
     /* Inherited documentation. */
     CarControl drive(CarState &);
@@ -70,7 +60,6 @@ private:
     float max_return_angle;
     float min_return_angle;
 
-private:
     float getBrake(CarState &cs);
     float getAccel(CarState &cs);
     int getGear(CarState &cs);

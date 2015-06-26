@@ -11,13 +11,7 @@
 #include "OutOfTrack.h"
 
 OutOfTrack::OutOfTrack(float _ms, float _nap, int _vg4, int _vg3, int _vg2, float _maxra, float _minra) {
-    max_skidding = _ms;
-    negative_accel_percent = _nap;
-    velocity_gear_4 = _vg4;
-    velocity_gear_3 = _vg3;
-    velocity_gear_2 = _vg2;
-    max_return_angle = _maxra;
-    min_return_angle = _minra;
+    setParameters(_ms, _nap, _vg4, _vg3, _vg2, _maxra, _minra);
 }
 
 CarControl
@@ -26,6 +20,17 @@ OutOfTrack::drive(CarState &cs) {
     const int focus = 0, meta = 0;
 
     return CarControl(getAccel(cs), getBrake(cs), getGear(cs), getSteer(cs), clutch, focus, meta);
+}
+
+void
+OutOfTrack::setParameters(float _ms, float _nap, int _vg4, int _vg3, int _vg2, float _maxra, float _minra) {
+    max_skidding = _ms;
+    negative_accel_percent = _nap;
+    velocity_gear_4 = _vg4;
+    velocity_gear_3 = _vg3;
+    velocity_gear_2 = _vg2;
+    max_return_angle = _maxra;
+    min_return_angle = _minra;
 }
 
 float

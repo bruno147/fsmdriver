@@ -27,7 +27,8 @@ InsideTrack::drive(CarState &cs) {
 	return CarControl(accel, brake, gear, steer, clutch);
 }
 
-void InsideTrack::setParameters( int _sg, int _lgl, int _lrpm, int _arpm,
+void
+InsideTrack::setParameters( int _sg, int _lgl, int _lrpm, int _arpm,
                     int _hrpm, float _bs, float _sf) {
     start_gear = _sg;
     low_gear_limit = _lgl;
