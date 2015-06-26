@@ -11,9 +11,7 @@
 #include "ApproachingCurve.h"
 
 ApproachingCurve::ApproachingCurve(int _ms, int _tp, int _bs) {
-    max_steering = _ms;
-    target_pos = _tp;
-    base_speed = _bs;
+    setParameters(_ms, _tp, _bs);
 }
 
 CarControl
@@ -27,6 +25,14 @@ ApproachingCurve::drive(CarState &cs) {
     return CarControl(getAccel(cs), getBrake(cs), getGear(cs), cs.getAngle(), clutch, focus, meta);
     // Use the line below if the behavior of adjusting the car to the curve ahead is desired (not fully functional):
     // return CarControl(getAccel(cs), getBrake(cs), getGear(cs), getSteering(cs), clutch, focus, meta);
+}
+
+void
+ApproachingCurve::setParameters(int _ms, int _tp, int _bs)
+{
+    max_steering = _ms;
+    target_pos = _tp;
+    base_speed = _bs;
 }
 
 void

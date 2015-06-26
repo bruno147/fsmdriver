@@ -29,16 +29,17 @@ public:
     // o pq de serem estaticos
     static int getGear(CarState &cs);
 
+    void setParameters(int, int, int, int, int);
+
     ~StraightLine();
 
-public:
+private:
     /** @todo documentar. Por que estáticos?
      * @todo deixar argumentos privados. */
     static int low_gear_limit;
     static int low_rpm;
     static int average_rpm;
     static int high_rpm;
-private:
 
     float getBrake(CarState &cs);
 

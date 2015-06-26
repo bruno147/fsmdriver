@@ -23,13 +23,15 @@ public:
     /* Inherited documentation. */
     CarControl drive(CarState &);
 
+    void setParameters(int, int, int);
+
     ~ApproachingCurve();
 
 private:
     float max_steering, target_pos, base_speed;
     bool sensors_are_updated;
     float r_sensor, c_sensor, l_sensor, target_speed;
-public:
+
     void updateSensors(CarState &cs);
     float getSteering(CarState &cs);
     float getBrake(CarState &cs);

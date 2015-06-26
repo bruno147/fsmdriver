@@ -17,11 +17,7 @@ int StraightLine::average_rpm = 4000;
 int StraightLine::high_rpm = 9500;
 
 StraightLine::StraightLine(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm) {
-    start_gear = _sg;
-    low_gear_limit = _lgl;
-    low_rpm = _lrpm;
-    average_rpm = _arpm;
-    high_rpm = _hrpm;
+    setParameters(_sg, _lgl, _lrpm, _arpm, _hrpm);
 }
 
 CarControl
@@ -32,6 +28,17 @@ StraightLine::drive(CarState &cs) {
 
     return CarControl(accel, brake, getGear(cs), steer, clutch, focus, meta);
 }
+
+void
+StraightLine::setParameters(int _sg, int _lgl, int _lrpm, int _arpm, int _hrpm)
+{
+    start_gear = _sg;
+    low_gear_limit = _lgl;
+    low_rpm = _lrpm;
+    average_rpm = _arpm;
+    high_rpm = _hrpm;
+}
+
 
 bool
 StraightLine::shouldDecreaseGear(int current_gear, int rpm) {
