@@ -26,7 +26,7 @@ Stuck::drive(CarState &cs) {
 
     track_initial_pos = getInitialPos(cs);
 
-    if(notStuckAnymore(cs) || hasBeenStuckLongEnough()){
+    if(notStuckAnymore(cs) || hasBeenStuckLongEnough()) {
         elapsed_ticks = 0;
         slow_speed_ticks = 0;
         track_initial_pos = 0;
@@ -45,16 +45,14 @@ Stuck::justStartedRace(CarState &cs) {
 }
 
 
-// @todo NUMEROS
 bool
 Stuck::onRightWay(float track_pos, float angle) {
-    return (((track_pos < 0) && (angle > -1.57) && (angle < 0)) ||
-            ((track_pos > 0) && (angle < 1.57 ) && (angle > 0)) ||
+    return (((track_pos < 0) && (angle > -M_PI/2) && (angle < 0)) ||
+            ((track_pos > 0) && (angle < M_PI/2) && (angle > 0)) ||
             ((track_pos > 1) && (angle > 0))||
             ((track_pos < -1) && (angle < 0)));
 }
 
-/* @todo give this test (and the previous ones) with a meaningful name... */
 bool
 Stuck::notStuckAnymore(CarState &cs) {
     return onRightWay(cs.getTrackPos(), cs.getAngle());
@@ -71,7 +69,7 @@ bool Stuck::isStuck(CarState &cs) {
 
 float
 Stuck::getSteer(float track_initial_pos, CarState &cs){
-    if(abs(cs.getAngle()) > 1.557) // around 180 graus
+    if(abs(cs.getAngle()) > M_PI) // around 180 graus
         return (track_initial_pos > 0 ? -1 : 1);
 
     return (track_initial_pos > 0 ? 1 : -1);

@@ -26,8 +26,9 @@ Curve::drive(CarState &cs) {
 }
 
 float
-Curve::getAccel(CarState &cs) { //@todo Change accelaration logic.
-	return 0.6;
+Curve::getAccel(CarState &cs) {
+    float curveAccel = 0.6;
+	return curveAccel;
 }
 
 bool

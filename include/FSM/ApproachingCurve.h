@@ -25,18 +25,16 @@ public:
 
     ~ApproachingCurve();
 
-public:
-    /** @todo deixar argumentos privados. */
+private:
     float max_steering, target_pos, base_speed;
-
     bool sensors_are_updated;
     float r_sensor, c_sensor, l_sensor, target_speed;
-
-
+public:
     void updateSensors(CarState &cs);
     float getSteering(CarState &cs);
     float getBrake(CarState &cs);
 
+    inline bool isGoingWrongWay(CarState cs);
     inline int getGear(CarState &cs);
     inline float getAccel(CarState cs);
     inline bool approachingRightTurn();

@@ -45,7 +45,7 @@ public:
      * @return true if the controller is stuck, false otherwise. */
     bool isStuck(CarState &cs);
 
-public:
+private:
     /** @todo proper documentation of attributes */
     float stuck_speed;
     unsigned int minimum_distance_raced;

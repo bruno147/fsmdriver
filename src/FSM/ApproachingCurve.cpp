@@ -34,13 +34,11 @@ ApproachingCurve::updateSensors(CarState &cs) {
     float speedFactor = 5000;                       // The target speed is obtained through a constant factor
 
     if (cs.getFocus(2) == -1) {                     // Focus sensors are available only once per second
-        // cout << "FOCUS MISS!" << endl;
         r_sensor = cs.getTrack(10);                  // Use track sensors
         c_sensor = cs.getTrack(9);
         l_sensor = cs.getTrack(8);
     }
     else {
-        // cout << "FOCUS HIT!" << endl;
         r_sensor = cs.getFocus(3);                   // Use focus sensors
         c_sensor = cs.getFocus(2);
         l_sensor = cs.getFocus(1);
@@ -58,8 +56,6 @@ ApproachingCurve::getSteering(CarState &cs) {
     // If the controller is not in a pre-defined region amongst the inside limits of the track (between 0.7 and 0.9 with the current
     // set of values, normalized), than it will be adjusted to do so
     bool adjustedToCurve = ((fabs(cs.getTrackPos()) - target_pos >= 0) && (fabs(cs.getTrackPos()) - target_pos < 0.2));
-    // Previous conditions:																// 0.2 is an arbitrary margin
-    // bool adjustedToCurve = (cs.getTrackPos() <= TARGET_POS);
 
     if(!adjustedToCurve) {
         if(approachingRightTurn())
@@ -77,8 +73,7 @@ ApproachingCurve::getBrake(CarState &cs) {
     float brake_factor = 0.02;
     float diff = cs.getSpeedX() - target_speed;
 
-    // if (fabs(cs.getSpeedX()) < 2) return 1;
-    if (cs.getSpeedX() < 0) return 1;
+    if (isGoingWrongWay(cs)) return 1;
     if (diff > 0) brake = brake_factor * diff;
 
     return brake;
@@ -94,6 +89,11 @@ ApproachingCurve::getAccel(CarState cs) {
     return (cs.getSpeedX() > target_speed ? 0 : 1);
 }
 
+inline bool
+ApproachingCurve::isGoingWrongWay(CarState cs) {
+    return (cs.getSpeedX() < 0);
+
+}
 inline bool
 ApproachingCurve::approachingRightTurn() {
     return (r_sensor > l_sensor);

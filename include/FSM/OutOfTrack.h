@@ -58,10 +58,9 @@ public:
     //! Empty destructor
     ~OutOfTrack();
 
-public:
+private:
     //! Parameters
     /** @todo documentar
-     *  @todo deixar argumentos privados. 
      */
     float max_skidding;
     float negative_accel_percent;

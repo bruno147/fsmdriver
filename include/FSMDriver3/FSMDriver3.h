@@ -46,8 +46,6 @@ public:
     virtual void init(float *angles);
     //! Empty constructor.
     FSMDriver3();
-    //! Construct from parameters.
-    FSMDriver3(int, char**);
     //! Empty destructor
     virtual ~FSMDriver3();
     //! Transitions between states.

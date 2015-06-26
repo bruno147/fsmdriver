@@ -30,7 +30,6 @@ InsideTrack::drive(CarState &cs) {
 	float accel  = getAccel(cs);
     float brake = getBrake(cs);
 	float clutch = 0;
-    // cout << "speed: " << this->targetSpeed << endl;
 	return CarControl(accel, brake, gear, steer, clutch);
 }
 
@@ -90,7 +89,7 @@ InsideTrack::isFacingWrongWay(CarState &cs) {
 }
 
 float
-InsideTrack::getAccel(CarState &cs) { //@todo Change accelaration logic.
+InsideTrack::getAccel(CarState &cs) {
     return cs.getSpeedX() > target_speed ? 0:1;
 }
 

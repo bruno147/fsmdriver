@@ -18,7 +18,6 @@
 #include "Curve.h"
 #include "OutOfTrack.h"
 #include "Stuck.h"
-#include "Log.h"
 
 #include <vector>
 #include <bitset>
@@ -43,12 +42,6 @@ private:
     int max_approaching_curve_var;
     int min_approaching_curve_var;
 
-    float binToFloat (string bits);
-    unsigned int binToUsignedInt (string bits);
-
-    std::string getArgument(int i, char** argv);
-
-    float    parameters[22];/**Driver parameters,it can be fixed or set by Genetic Algorithm*/
 
 public:
     virtual void onShutdown();
@@ -58,7 +51,6 @@ public:
     virtual void init(float *angles);
 
     FSMDriver5();
-    FSMDriver5(int, char**);
     virtual ~FSMDriver5();
 
     /** Transitions between states (if appropriate).

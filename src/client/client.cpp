@@ -155,8 +155,7 @@ int main(int argc, char *argv[])
            hostInfo->h_addr_list[0], hostInfo->h_length);
     serverAddress.sin_port = htons(serverPort);
 
-//    tDriver d;
-    tDriver d(argc,argv);
+    tDriver d;
     strcpy(d.trackName,trackName);
     d.stage = stage;
 

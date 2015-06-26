@@ -31,11 +31,6 @@ int signum(float n) {
 FSMDriver3::FSMDriver3() {
     changeTo(&inside_track);
 }
-/**FSMDriver3 Constructor: instead of fixed parameters set by the code, this function receive it from the main, the FSMDriver3 can be used together with Genetic Algorithm using this function.
-*/
-FSMDriver3::FSMDriver3(int argc, char** argv) {
-    changeTo(&inside_track);
-}
 
 void
 FSMDriver3::onRestart() {
