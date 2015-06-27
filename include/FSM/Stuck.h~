@@ -46,8 +46,7 @@ public:
      * @param cs the driver's perception of the environment.
      * @return true if the controller is stuck, false otherwise. */
     bool isStuck(CarState &cs);
-    /** Initialize stuck parameters with ss, mrd, mst and msst
-    * @param ss (stuck speed), mrd (minimum distance raced), mst (maximum number of_ticks stuck), msst (maximum number of ticks in slow speed), see description bellow.
+    /** Initialize 
     */
     void setParameters(float ss, int mrd, int mst, int msst);
 
