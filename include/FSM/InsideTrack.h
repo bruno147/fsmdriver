@@ -74,7 +74,7 @@ private:
     /**current_speed is the driver's speed at the present code execution
     */
     int current_gear;
-    /** diatnce is the highest value of the 19 track sensors
+    /** distance is the highest value of the 19 track sensors
     */
     float distance;
     /** target_speed is the speed the car must reach, it is calculated based on distance, base_speed and speed_factor
