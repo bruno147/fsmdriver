@@ -77,7 +77,7 @@ private:
     /** diatnce is the highest value of the 19 track sensors
     */
     float distance;
-    /** target_speed is the speed the car must reach, it is calculated based on distance, base_speed and speed_factor
+    /** target_speed is the speed the car must stay
     */
     float target_speed;
     /** Check the current_gear and rpm, if the gear and rpm is above a certain value the function authorize decrease gear at one gear

@@ -52,6 +52,10 @@ public:
     /*!
     *   This method decides whenever the current state does not fit with
     *   the car status and needs to be changed.The transition choose the most fitted state at the moment of the race.
+    *   The transition check if the car is stuck by the it's speed, if it is lower than certain value for long enough 
+    *   it is stuck, if it is not, the function check the car is inside or out side the track using tracks sensors(when
+    * outside the track the track's sensors return -1) 
+    *   and than choosing the appropriate state.
     *	\param cs a data structure cointaining information from the car's sensors.
     */
     void transition(CarState &cs);
