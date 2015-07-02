@@ -58,7 +58,9 @@ FSMDriver3::onShutdown() {
     }
     cout << "End of race!" << endl;
 }
-
+/**
+* Initializing the NUM_SENSORS track's angles using a gausian configuration, in order to make more sensors directed to the front of the car and consequently improve a curve detection 
+*/
 void
 FSMDriver3::init(float *angles){
     for (int i = 0; i < NUM_SENSORS; ++i)
