@@ -25,7 +25,6 @@ public:
     /** Constructor.
      *
      * Call setParameters
-     * @param _ms (max_skidding), _nap (negative_accel_percent), _vg4 (velocity_gear_4), _vg3 (velocity_gear_3), _vg2 (velocity_gear_2), maxra (max_return_angle), minra (min_return_angle), description   	* can be found bellow
      */
     OutOfTrack(float _ms = 3, float _nap = 0.1, int _vg4 = 90,
                int _vg3 = 70, int _vg2 = 40, float _maxra = 0.7,
