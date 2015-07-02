@@ -31,7 +31,8 @@ public:
      *
      * Call setParameters
      *
-     * @param ss (stuck speed), mrd (minimum distance raced), mst (maximum number of_ticks stuck), msst (maximum number of ticks in slow speed), see description bellow.
+     * @param ss (stuck speed), mrd (minimum distance raced), mst (maximum number of_ticks stuck),
+     * msst (maximum number of ticks in slow speed), see description bellow.
      */
     Stuck(float ss = 5.0, int mrd = 100, int mst = 300, int msst = 50);
 
@@ -47,7 +48,8 @@ public:
      * @return true if the controller is stuck, false otherwise. */
     bool isStuck(CarState &cs);
     /** Initialize stuck parameters with ss, mrd, mst and msst
-    * @param ss (stuck speed), mrd (minimum distance raced), mst (maximum number of_ticks stuck), msst (maximum number of ticks in slow speed), see description bellow.
+    * @param ss (stuck speed), mrd (minimum distance raced), mst (maximum number of_ticks stuck), 
+    * msst (maximum number of ticks in slow speed), see description bellow.
     */
     void setParameters(float ss, int mrd, int mst, int msst);
 
@@ -61,7 +63,8 @@ private:
     /** maximum_number_of_ticks_stuck determine the total time (by ticks) that stuck state can work without change to another state
     */
     unsigned int maximum_number_of_ticks_stuck;
-    /** maximum_number_of_ticks_in_slow_slow_speed is the value of ticks that the pilot can be bellow the stuck_speed to determine if is stuck or not
+    /** maximum_number_of_ticks_in_slow_speed is the value of ticks that the pilot can be bellow 
+    *the stuck_speed to determine if is stuck or not
     */
     unsigned int maximum_number_of_ticks_in_slow_speed;
 
@@ -81,11 +84,13 @@ private:
     */
     bool onRightWay(float trackPos, float angle);
     /**  Based on the car's speed and stuck_speed this function determine if the car is stuck or not
-    * @param track_pos is the sensor value that measure the distance of the car to the tracks borders, angle is the sensors value of the angle between the car direction and race direction.
+    * @param track_pos is the sensor value that measure the distance of the car to the tracks borders, angle 
+    * is the sensors value of the angle between the car direction and race direction.
     * @return true if the car is not stuck anymore or false if it is
     */
     bool notStuckAnymore(CarState &cs);
-    /** Since the driver can not be stuck for a long time without goint back the track, a time limit is used, this check if the stuck state surpass that limit
+    /** Since the driver can not be stuck for a long time without goint back the track, a time limit is used,
+    *this check if the stuck state surpass that limit
     * @param cs the driver's perception of the environment.
     * @return true if the driver pass the time limit or false if not
     */

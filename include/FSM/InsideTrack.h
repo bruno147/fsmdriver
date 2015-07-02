@@ -146,9 +146,10 @@ private:
     *@return a normalized value
     */
     float normalizeSteer(float angle);
-    /** getSteer obtain steer value checking first if the driven is at the right direction, if not the steer is calculated using angle value, case not using the distance(highest track sensor value)
+    /** getSteer obtain steer value checking first if the driven is at the right direction, if not the steer is 
+    *calculated using angle value, case not using the distance(highest track sensor value)
     *@param angle a data from the car's sensor angle.
-    *@return a normalized value
+    *@return a normalized steer value
     */
     float getSteer(CarState &cs);
 };
