@@ -9,8 +9,8 @@
  */
 
 #include "FSMDriver.h"
-
-FSMDriver::FSMDriver() : current_state(nullptr), previous_state(nullptr) {
+// TODO new method for choose dirt or road track
+FSMDriver::FSMDriver() : current_state(nullptr), previous_state(nullptr), tested(UNKN), threshold(11.6035) {
 }
 
 FSMDriver::~FSMDriver() {
@@ -31,6 +31,39 @@ FSMDriver::revertState() {
 
 CarControl
 FSMDriver::wDrive(CarState cs) {
-	transition(cs);
-	return current_state->drive(cs);
+    transition(cs);
+    if(tested == UNKN && stage == BaseDriver::WARMUP)   return testTrack(cs);
+    else    return current_state->drive(cs);
+}
+
+CarControl
+FSMDriver::testTrack(CarState cs)
+{
+    static bool flag = false, flag2 = false;
+    float accel = 1, steer = 0, brake = 0, clutch = 0;
+    int gear = 1, focus = 0, meta = 0;
+
+    if(cs.getSpeedX() >= 80) {
+        flag2 = true;
+        if(!flag){
+            dist = cs.getDistRaced();
+            flag = true;
+        }
+    }
+    if(cs.getSpeedX() <= 2 && flag2) {
+        dist = dist - cs.getDistRaced();
+        // cout << "Dist = " << dist << endl;
+        if(-dist < threshold)   tested = ROAD;
+        else                    tested = DIRT;
+    }
+    if(flag2) {
+        accel = 0;
+        brake = 1;
+    }
+    // if(tested == ROAD)   cout << "tested = ROAD " << tested << endl;
+    if(tested == ROAD)  road_or_dirt = "ROAD";
+    // if(tested == DIRT)   cout << "tested = DIRT " << tested << endl;
+    if(tested == DIRT)  road_or_dirt = "DIRT";
+
+    return CarControl(accel, brake, gear, steer, clutch, focus, meta);
 }
