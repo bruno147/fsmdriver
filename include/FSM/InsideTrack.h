@@ -50,7 +50,7 @@ public:
     */
     int getGear(CarState &cs);
     /** Auxiliar function to set class parameters
-     */
+    */ 
     void setParameters(int, int, int, int, int, float, float);
     //! Empty destructor
     ~InsideTrack();
