@@ -17,7 +17,7 @@
  /**
   * @brief StraightLine state.
   * @details Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.
-  * 
+  * @param start_gear initial gear set at the begining of the race
   * @param low_gear_limit threshlod to bound low gears.
   * @param low_rpm threshlod of rpm to delimit the change of low gears.
   * @param average_rpm threshlod to decrease high gears.
@@ -35,7 +35,8 @@ public:
 
     /* Static bacause the state Curve uses. */
     static int getGear(CarState &cs);
-
+    /** Initialize driver parameters
+    */
     void setParameters(int, int, int, int, int);
 
     ~StraightLine();
@@ -50,15 +51,47 @@ private:
     static int average_rpm;
     /** high_gear threshold to increase the high gears. */
     static int high_rpm;
-
+    /** get Brake verify if the car is running back, if true it brakes
+    * @param cs the driver's perception of the environment.
+    * @return the brake value, '1' if it is running back and '0' if not
+    */
     float getBrake(CarState &cs);
-
+    /** Check the current_gear and rpm, if the gear and rpm is above a certain value the function authorize decrease gear at one gear
+    * @param current_gear the gear of the car at the moment of execution
+    * @param rpm the value of rpm read by the sensor
+    * @return true if the driver must decrease gear and false if it must not 
+    */
     static bool shouldDecreaseGear(int current_gear, int rpm);
+    /** Check if rpm is bellow a certain value(low_rpm)
+    * @param rpm the value of rpm read by the sensor
+    * @return true if rpm is bellow low_rpm and false if it is not
+    */
     static inline bool runningOnLow(int rpm);
+    /** Check if rpm is bellow a certain value(average_rpm)
+    * @param rpm the value of rpm read by the sensor
+    * @return true if rpm is bellow average_rpm and false if it is not
+    */
     static inline bool runningUnderAverage(int rpm);
+    /** Check if rpm is above a certain value(high_rpm)
+    * @param rpm the value of rpm read by the sensor
+    * @return true if rpm is above high_rpm and false if it is not
+    */
     static inline bool runningOnHigh(int rpm);
+    /** Check if gear is between two value(start_gear and low_gear_limit)
+    * @param rpm the value of rpm read by the sensor
+    * @return true if gear is between start_gear and low_gear_limit, false if it is not
+    */
     static inline bool isLowGear(int gear);
+    /** Check if gear is above a certain value(low_gear_limit)
+    * @param rpm the value of rpm read by the sensor
+    * @return true if gear is above low_gear_limit, false if it is not
+    */
     static inline bool isHighGear(int gear);
+    /** Check the current_gear and rpm, if the gear and rpm is bellow a certain value the function authorize increase gear at one gear
+    * @param current_gear the gear of the car at the moment of execution
+    * @param rpm the value of rpm read by the sensor
+    * @return true if the driver must increase gear and false if it must not 
+    */
     static inline bool shouldIncreaseGear(int current_gear, int rpm);
 };
 
