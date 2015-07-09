@@ -16,16 +16,25 @@
 #include "DrivingState.h"
 
 /**
- * Handles the driving when the car is outside track limits. Since the outside the track the track's type change, like dirt road,
+ * @brief OutOfTrack state.
+ * @details Handles the driving when the car is outside track limits. Since the outside the track the track's type change, like dirt road,
  * the driver losses performance that state manage to take the drive out of the track. 
  *
+ * @param max_skidding defines the threshold to start to break to avoid skidding.
+ * @param negative_accel_percent dictate how much to release the acceleration pedal to avoid to skidding,
+ *                               its defined with the axis speed of car.
+ * @param velocity_gear_4 threshold to change the gear to 4.
+ * @param velocity_gear_3 threshold to change the gear to 3.
+ * @param velocity_gear_2 threshold to change the gear to 2.
+ * @param max_return_angle upper boundary to angle of return to track.
+ * @param min_return_angle lower boundary to angle of return to track.
  */
 class OutOfTrack : public DrivingState {
 public:
     /** Constructor.
      *
      * Call setParameters
-     * @param _ms (max_skidding), _nap (negative_accel_percent), _vg4 (velocity_gear_4), _vg3 (velocity_gear_3), _vg2 (velocity_gear_2), maxra (max_return_angle), minra (min_return_angle), description   	* can be found bellow
+     * @param _ms (max_skidding), _nap (negative_accel_percent), _vg4 (velocity_gear_4), _vg3 (velocity_gear_3), _vg2 (velocity_gear_2), maxra (max_return_angle), minra (min_return_angle), description    * can be found bellow
      */
     OutOfTrack(float _ms = 3, float _nap = 0.1, int _vg4 = 90,
                int _vg3 = 70, int _vg2 = 40, float _maxra = 0.7,
@@ -36,13 +45,6 @@ public:
 
     /** Auxiliar function to set class parameters
      *
-     * @param max_skidding
-     * @param negative_accel_percent
-     * @param velocity_gear_4
-     * @param velocity_gear_3
-     * @param velocity_gear_2
-     * @param max_return_angle
-     * @param min_return_angle
      */
     void setParameters(float, float, int, int, int, float, float);
     //! Empty destructor

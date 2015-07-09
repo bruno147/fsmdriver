@@ -39,6 +39,7 @@ float trackReadingsVariance(CarState &cs) {
 // FSMDriver5 Class
 
 /** FSMDriver5 Constructor: it initilize at straight_line state in the begining of the race, here the parameters are set with fixed values.
+    @see transition()
 */
 FSMDriver5::FSMDriver5() {
     changeTo(&straight_line);
@@ -55,9 +56,9 @@ FSMDriver5::onShutdown() {
 void
 FSMDriver5::init(float *angles){
     for (int i = 0; i < NUM_SENSORS; ++i)
-        angles[i] = i*10-90; // @todo como assim?
+        angles[i] = i*10-90;
 }
-/** The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
+/** The transition choose the most fitted state at the moment of the race. The selection depends of variance of the range finders values. */
 void
 FSMDriver5::transition(CarState &cs) {
     DrivingState *state = current_state;
@@ -71,7 +72,7 @@ FSMDriver5::transition(CarState &cs) {
         if (var > max_straight_line_var || ((var > min_straight_line_var) && current_state == &straight_line))
             state = &straight_line;
         else if ((var > max_approaching_curve_var && current_state != &curve)
-         || ((var > min_approaching_curve_var) && current_state == &approaching_curve)) /* @todo change this value (or previous) to something that works - race start is too slow. And in a straight line, should *not* enter this state... */
+         || ((var > min_approaching_curve_var) && current_state == &approaching_curve))
             state = &approaching_curve;
         else if(var > 0)
             state = &curve;

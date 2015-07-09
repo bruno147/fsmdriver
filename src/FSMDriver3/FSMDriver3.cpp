@@ -83,21 +83,21 @@ FSMDriver3::init(float *angles){
     cout << "Read the file, online learning " << count << endl;
 }
 
-/** Parameters Evolved with Genetic Algorithm*/
+/** Parameters Evolved with Genetic Algorithm. */
 void FSMDriver3::setROAD() {
         inside_track.setParameters(1, 2, 6956, 3728, 9411, 84.131, 0.973418);
         out_of_track.setParameters(32.0151, 0.146842, 165, 129, 368, 0.159876, 0.0839129);
         stuck.setParameters(5, 100, 300, 50);
 }
 
-/** Parameters Evolved with Genetic Algorithm*/
+/** Parameters Evolved with Genetic Algorithm. */
 void FSMDriver3::setDIRT() {
         inside_track.setParameters(1, 4, 1796, 1857, 4340, 94.5951, 0.962757);
         out_of_track.setParameters(395.807, 0.0439577, 114, 113, 251, 0.0753426, 0.534217);
         stuck.setParameters(5, 100, 300, 50);
 }
 
-/**The transition choose the most fitted state at the moment of the race. Note that the transition move to each state with only one pointer to each of than, what is called singleton.*/
+/** The transition choose the most fitted state at the moment of the race. */
 void
 FSMDriver3::transition(CarState &cs) {
     DrivingState *state = current_state;
@@ -143,7 +143,6 @@ FSMDriver3::transition(CarState &cs) {
         if (cs.getTrack(1) > 0)
             state = &inside_track;
         else {
-            // TODO melhorar a captura do landmark
             if(cs.getSpeedX() > 85) {
                 memory.push_back(Knowledge(abs(cs.getSpeedX())*0.9, cs.getDistFromStart()));
                 sort(memory.begin(), memory.end(), Knowledge::aux_sort);

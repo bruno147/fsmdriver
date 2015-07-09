@@ -14,8 +14,15 @@
 
 #include "DrivingState.h"
 
-/**Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.*/
- /*doc classe*/
+ /**
+  * @brief StraightLine state.
+  * @details Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.
+  * 
+  * @param low_gear_limit threshlod to bound low gears.
+  * @param low_rpm threshlod of rpm to delimit the change of low gears.
+  * @param average_rpm threshlod to decrease high gears.
+  * @param high_rpm threshlod to delimit the change of high gears.
+  */
 class StraightLine : public DrivingState {
 public:
     static int start_gear;

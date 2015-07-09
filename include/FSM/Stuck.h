@@ -17,13 +17,18 @@
 #include "DrivingState.h"
 
 /**
- * Handles the driving when the car is stuck. This usually means it is stopped
+ * @brief Stuck state.
+ * @details Handles the driving when the car is stuck. This usually means it is stopped
  * or has been driving at a very low speed for a while, mesuared by slow_speed_ticks.
  * Entering this state mean that the driver may be hitting a wall or a corner. The 
  * stuck has  a limit time to work without going to another state. it is highly desireble
  * at a actual race that the drive do not enter at this state, since the pilot can complete 
- * the race faster if it do not happend.
- *
+ * the race faster if it do not happend..
+ * 
+ * @param stuck_speed defines the threshold to monitorate if its in stuck.
+ * @param minimum_distance_raced just to avoid to enter in stuck at the beginning of race when the car is stopped.
+ * @param maximum_number_of_ticks_stuck maximum number of ticks in which reverse gear is allowed.
+ * @param maximum_number_of_ticks_in_slow_speed maximum number of ticks in low speed before stuck is triggered.
  */
 class Stuck : public DrivingState {
 public:
@@ -39,7 +44,6 @@ public:
     /** Destructor. */
     ~Stuck();
 
-    /** @todo describe behavior */
     CarControl drive(CarState &);
 
     /** Indicates if the controller is stuck.
