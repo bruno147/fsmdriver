@@ -12,14 +12,17 @@
 #define UNB_FSMDRIVER_FSMDRIVER3_H
 
 #include <vector>
+#include <fstream>
+#include <algorithm>
 
 #include "InsideTrack.h"
 #include "OutOfTrack.h"
 #include "Stuck.h"
 #include "FSMDriver.h"
+#include "Knowledge.h"
 
-/*! \class FSMDriver3
-*   \brief The driver itself.
+/** @class FSMDriver3
+*   @brief The driver itself.
 *
 *   This class defines the driver based on a FSM.
 *
@@ -31,34 +34,49 @@
 
 class FSMDriver3 : public FSMDriver {
 private:
-    //! States.
+    // States.
     InsideTrack inside_track;
     OutOfTrack out_of_track;
     Stuck stuck;
 
 public:
-    //! Called when the driver finishes the race.
+    /** Called when the driver finishes the race. */
     virtual void onShutdown();
-    //! Called when TORCS asks a race restart.
+    /** Called when TORCS asks a race restart. */
     virtual void onRestart();
 
-
-    /**Initialization of the desired angles for the rangefinders. It Initialize the NUM_SENSORS track's angles using a gausian 
-    *configuration in order directed more sensors in the front of the car and consequently improve a curve detection 
-    */
+    /**
+     * @brief init angles of range finders.
+     * @details In order to maximize the efficiency of the information received from
+     * the track, the vector of sensors in the Three-State FSM was initialized
+     * according to a normal distribution, i.e., the sensors are more
+     * densely distributed in front of car and less on the sides.
+     * 
+     * @param angles values in degrees of the range finders.
+     */
     virtual void init(float *angles);
-    //! Empty constructor.
+    /** Empty constructor. */
     FSMDriver3();
-    //! Empty destructor
+    /** Empty destructor */
     virtual ~FSMDriver3();
-    //! Transitions between states.
-    /*!
+    /** Transitions between states. */
+    /**
     *   This method decides whenever the current state does not fit with the car status and needs to be changed.The transition choose the most fitted state at the moment of the race.
     *   The transition check if the car is stuck by the it's speed, if it is lower than certain value for long enough it is stuck, if it is not, the function check the car is inside or
     *   out side the track using tracks sensors than choosing the appropriate state.
     *	@param cs a data structure cointaining information from the car's sensors.
     */
     void transition(CarState &cs);
+    /**
+     * @brief Set Road Parameters.
+     * @details Set all states with the parameters found with Genetic Algorithm, for road tracks.
+     */
+    void setROAD();
+    /**
+     * @brief Set Dirt Parameters.
+     * @details Set all states with the parameters found with Genetic Algorithm, for dirt tracks.
+     */
+    void setDIRT();
 };
 
 #endif // FSMDriver3_H

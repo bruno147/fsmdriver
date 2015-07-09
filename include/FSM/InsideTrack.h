@@ -19,6 +19,20 @@
  * sensors track wil return values > 0 inside the track. This state is responsible 
  * for any event that occur inside the track including curves and straightline tracks. 
  */
+/**
+ * @brief InsideTrack state
+ * @details  Handles the driving when the car is within track limits, which mean that the the 
+ *           sensors track wil return values > 0 inside the track. This state is responsible 
+ *           for any event that occur inside the track including curves and straightline tracks.
+ * 
+ * @param low_gear_limit threshlod to bound low gears.
+ * @param low_rpm threshlod of rpm to delimit the change of low gears.
+ * @param average_rpm threshlod to decrease high gears.
+ * @param high_rpm threshlod to increase high gears.
+ * @param base_speed proportionality between highest value read by range finders and TARGET SPEED.
+ * @param speed_factor lowest speed allowed.
+ * 
+ */
 class InsideTrack : public DrivingState {
 public:
     /* Constructor
@@ -36,14 +50,6 @@ public:
     */
     int getGear(CarState &cs);
     /** Auxiliar function to set class parameters
-     *
-     * @param start_gear
-     * @param low_gear_limit
-     * @param low_rpm
-     * @param average_rpm
-     * @param high_rpm
-     * @param base_speed
-     * @param speed_factor
      */
     void setParameters(int, int, int, int, int, float, float);
     //! Empty destructor

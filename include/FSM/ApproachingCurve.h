@@ -15,7 +15,14 @@
 #include "DrivingState.h"
 #include "StraightLine.h"
 
-/** Class to treat State where the section of the track before a curve, to better complete a curve it require a speed depending of the curve(for example how obligue it is) */
+/**
+* @brief ApproachingCurve state
+* @details Class to treat State where the section of the track before a curve, to better complete a curve it require a speed depending of the curve(for example how obligue it is)
+*
+* @param max_steering maximum allowed steering value.
+* @param target_pos desired percentage position.
+* @param base_speed lowest speed allowed during turns.
+*/
 class ApproachingCurve : public DrivingState {
 public:
     ApproachingCurve(int _ms = 0, int _tp = 0, int _bs = 0);

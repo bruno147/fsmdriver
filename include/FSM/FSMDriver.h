@@ -11,6 +11,10 @@
 #ifndef UNB_FSMDRIVER_FSM_H
 #define UNB_FSMDRIVER_FSM_H
 
+#define UNKN   0
+#define ROAD   1
+#define DIRT   2
+
 #include "DrivingState.h"
 #include "WrapperBaseDriver.h"
 
@@ -42,13 +46,22 @@ public:
 	 * @return the actions to take. */
     CarControl wDrive(CarState cs);
 
-protected:
 	/** Pointer to the FSM's current state. */
 	DrivingState *current_state;
-
-private:
 	/** Pointer to the state the FSM was previously in. */
 	DrivingState *previous_state;
+
+	/** Indicates wich state of the test track was, unknown or road or dirt. */
+	int tested;
+	/** Indicates wich track the drive is, road or dirt. */
+	std::string road_or_dirt;
+// protected:
+private:
+	/** Distance covered in braking. */
+	float dist;
+	/** Threshold value for decide if the track is road or dirt. */
+	float threshold;
+	CarControl testTrack(CarState cs);
 };
 
 #endif // UNB_FSMDRIVER_FSM_H

@@ -14,8 +14,15 @@
 
 #include "DrivingState.h"
 
-/**Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.*/
- /*doc classe*/
+ /**
+  * @brief StraightLine state.
+  * @details Class to treat the state where there is a minimal curvature possible, this state is important considering that it can perform maximum speed.
+  * 
+  * @param low_gear_limit threshlod to bound low gears.
+  * @param low_rpm threshlod of rpm to delimit the change of low gears.
+  * @param average_rpm threshlod to decrease high gears.
+  * @param high_rpm threshlod to delimit the change of high gears.
+  */
 class StraightLine : public DrivingState {
 public:
     static int start_gear;
@@ -26,7 +33,7 @@ public:
     /* Inherited documentation. */
     CarControl drive(CarState &);
 
-    // o pq de serem estaticos
+    /* Static bacause the state Curve uses. */
     static int getGear(CarState &cs);
 
     void setParameters(int, int, int, int, int);
@@ -34,11 +41,14 @@ public:
     ~StraightLine();
 
 private:
-    /** @todo documentar. Por que estáticos?
-     * @todo deixar argumentos privados. */
+    /** Statics because they are parameters of getGear. */
+    /** low_gear_limit separetes high and low gears. */
     static int low_gear_limit;
+    /** low_rpm threshlod value to change low gears. */
     static int low_rpm;
+    /** average_rpm threshold to decrease the high gears. */
     static int average_rpm;
+    /** high_gear threshold to increase the high gears. */
     static int high_rpm;
 
     float getBrake(CarState &cs);
